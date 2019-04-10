@@ -48,18 +48,23 @@ set -- "${POSITIONAL[@]}"
 
 
 
-###Download and install pf-mask-utilities
-if [ ! -d pf-mask-utilities ]; then
-	git clone https://github.com/smithsg84/pf-mask-utilities.git
+###Clone PriorityFlow from Prof. Condon github
+if [ ! -d PriorityFlow ]; then
+	git clone https://github.com/lecondon/PriorityFlow.git
 fi
 
-cd pf-mask-utilities
-make
+###Copy Example2 (Irregular domain with no river network) and all functional files
 
-cd ..
+cp PriorityFlow/Workflow_Example2.R .
+cp -R PriorityFlow/functions .
 
-chmod 755 subset_domain_by_shape.py
-echo ./subset_domain_by_shape.py $sel_type $s $out_name
+###Subset elevation and mask first
+chmod 755 subset_elevation_by_shape.py
+echo ./subset_elevation_by_shape.py $sel_type $s $out_name
 
-###Run python file
-./subset_domain_by_shape.py $sel_type $s $out_name
+##Run python file
+#./subset_elevation_by_shape.py $sel_type $s $out_name
+
+###Modify Workflow_Example2.R to take input from commandline
+
+

@@ -21,7 +21,9 @@ To run this project on your local machine, you will need:
 You will run the subset_domain.sh file in order to install pf-mask-utilities, set permission for the python file (subset_domain_by_shape.py), and run the python file.
 subset_domain.sh takes three inputs:
 
+```
 subset_domain.sh [-sel_type sel_type] [-s specific] [-out_name out_name]
+```
 
 ### Description
 
@@ -33,19 +35,18 @@ subset_domain.sh [-sel_type sel_type] [-s specific] [-out_name out_name]
 
 **-out_name out_name** (Optional) Name of the output solid file. If not specified, subsetting basin id will be used 
 
-```
-Give an example
-```
+###Examples
 Subsetting by basin id
 
+```
 ./subset_domain.sh -sel_type -id -s 14 -out_name Upper_Colorado
+```
 
-```
-Give an example
-```
 Subsetting by point
 
+```
 ./subset_domain.sh -sel_type -p -s 32.8 -108.3 -out_name Upper_Colorado
+```
 
 
 ## Python workflow

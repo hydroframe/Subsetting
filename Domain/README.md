@@ -35,7 +35,7 @@ subset_domain.sh [-sel_type sel_type] [-s specific] [-out_name out_name]
 
 **-out_name out_name** (Optional) Name of the output solid file. If not specified, subsetting basin id will be used 
 
-###Examples
+### Examples
 
 Subsetting by basin id
 

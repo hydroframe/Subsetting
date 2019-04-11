@@ -47,7 +47,6 @@ done
 set -- "${POSITIONAL[@]}"
 
 
-
 ###Clone PriorityFlow from Prof. Condon github
 if [ ! -d PriorityFlow ]; then
 	git clone https://github.com/lecondon/PriorityFlow.git
@@ -61,10 +60,13 @@ cp -R PriorityFlow/functions .
 ###Subset elevation and mask first
 chmod 755 subset_elevation_by_shape.py
 echo ./subset_elevation_by_shape.py $sel_type $s $out_name
+./subset_elevation_by_shape.py $sel_type $s $out_name
 
 ##Run python file
 #./subset_elevation_by_shape.py $sel_type $s $out_name
 
-###Modify Workflow_Example2.R to take input from commandline
-
+###Run Priority Flow
+chmod 755 run_priority_flow.py
+echo ./run_priority_flow.py $out_name
+./run_priority_flow.py $out_name
 

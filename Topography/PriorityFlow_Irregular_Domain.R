@@ -40,15 +40,15 @@ dx=1000 #grid cell size for slope calculations
 dy=1000 #grid cell size for slope calcualtions
 
 #Runname - for output writing
-runname='Test'
+runname='14'
 
 ##########################################
 # Inputs
 # The DEM and mask should be formated as a matrices with the same
 # dimensions as the domain (i.e. ncol=nx, nrow=ny)
 # The mask should consist of 0's and 1's with 1's for any grid cell within the domain
-dem=matrix(scan("dem_test.txt"), ncol=215, byrow=T)
-domainmask=matrix(scan("mask_test.txt"), ncol=215, byrow=T)
+dem=matrix(scan("14_dem.txt"), ncol=603, byrow=T)
+domainmask=matrix(scan("14_mask.txt"), ncol=603, byrow=T)
 
 ny=nrow(dem)
 nx=ncol(dem)
@@ -177,3 +177,4 @@ write.table( t(subbasin$segments[,ny:1]) , paste(runname, ".subbasin_streams.out
 
 ## write out the subbasin summary information
 write.table(subbasin$summary, paste(runname, ".Subbasin_Summary.txt", sep=""), row.names=F)
+

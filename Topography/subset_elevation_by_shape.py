@@ -1,20 +1,16 @@
 #!/usr/local/bin/python3
 
-import gdal, ogr
+#required libraries
+import gdal, ogr, osr
 import shapely
 import numpy as np
-from glob import glob
 import os
 import sys
-import subprocess
-import matplotlib.pyplot as plt
 
-def latlon2pixzone(xll, yll, dx, dy, lat0,lat1,lon0,lon1):
-	rl = abs((yll - lat0)/dy)
-	ru = abs((yll - lat1)/dy)
-	cu = abs((lon0 - xll)/dx)
-	cl = abs((lon1 - xll)/dx)
-	return int(round(rl)), int(round(ru)), int(round(cl)), int(round(cu))
+def latlon2pixzone(xul, yul, dx, dy, lat0,lon0):
+	rl = abs((yul - lat0)/dy)
+	cu = abs((lon0 - xul)/dx)
+	return int(round(rl)), int(round(cu))
 
 def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
 	#target raster file
@@ -38,16 +34,6 @@ def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
 		target_ds.FlushCache()
 		return 0
 
-def reshape2d(f,ds_ref):
-	arr = np.loadtxt(f,skiprows=1)
-	arr = np.reshape(arr,(ds_ref.RasterYSize,ds_ref.RasterXSize),'C')
-	return np.flipud(arr)
-
-def reshape3d(f,ds_ref):
-	arr = np.loadtxt(f,skiprows=1)
-	arr = np.reshape(arr,(5,ds_ref.RasterYSize,ds_ref.RasterXSize),'C')
-	return arr[:,::-1,:]
-
 def subset(arr,shp_raster_arr,value,ds_ref, ndata=0):
 	arr1 = arr.copy()
 	#create new geom
@@ -66,46 +52,33 @@ def subset(arr,shp_raster_arr,value,ds_ref, ndata=0):
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
 	return new_arr, new_geom
 
-def createTif_Single(fname, res_arr, geom, ds_ref, dtype=gdal.GDT_Int16, ndata=-99):
-	driver = gdal.GetDriverByName('GTiff')
-	dataset = driver.Create(
-			fname,
-			res_arr.shape[1],
-			res_arr.shape[0],
-			1,
-			dtype,
-			options = ['COMPRESS=LZW'])
-	dataset.SetGeoTransform(geom)
-	dataset.SetProjection(ds_ref.GetProjection())
-	outband = dataset.GetRasterBand(1)
-	outband.WriteArray(res_arr)
-	outband.FlushCache()
-	outband.SetNoDataValue(ndata)
-	dataset.FlushCache()
+###select feature method: either select feature by id or by point coordinate
+select_type = sys.argv[1]
 
-def createTif_Multi(fname, res_arr, geom, ds_ref, dtype=gdal.GDT_Int16, ndata=-99):
-	driver = gdal.GetDriverByName('GTiff')
-	dataset = driver.Create(
-			fname,
-			res_arr.shape[2],
-			res_arr.shape[1],
-			res_arr.shape[0],
-			dtype,
-			options = ['COMPRESS=LZW'])
-	dataset.SetGeoTransform(geom)
-	dataset.SetProjection(ds_ref.GetProjection())
-	for i in range(res_arr.shape[0]):
-		outband = dataset.GetRasterBand(i+1)
-		outband.WriteArray(res_arr[i,:,:])
-		outband.FlushCache()
-		outband.SetNoDataValue(ndata)
-	dataset.FlushCache()
+#print (select_type)
+if (select_type != '-id' and select_type != '-p') :
+	print('select type should be either: (1) basin_id: -id or (2)point coordinate: -p')
+	sys.exit()
+elif select_type == '-id':
+	basin_id = sys.argv[2]
+	#print(basin_id)
+	basin_id = int(basin_id)
+elif select_type == '-p':
+	p_lat = sys.argv[2]
+	p_lon = sys.argv[3]
+	p_lat = float(p_lat)
+	p_lon = float(p_lon)
+else:
+	print('select type should be either: (1) basin_id: -id or (2)point coordinate: -p')
+	sys.exit()
 
-#needed files
+
+###required raster files
 conus_pf_1k_dem = 'HSProc_Stream5LakesSinks_EP0.1_dem.tif'
 
 avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/Topography/HSProc_Stream5LakesSinks_Ep0.1/'
 
+###required shapefile
 region_shp = 'Regions.shp'
 
 avra_path_shp = '/iplant/home/shared/avra/CONUS_1.0/SteadyState_Final/Subdomain_Extraction/Shape_Files/Regions_shp/'
@@ -114,7 +87,7 @@ region_shps = [region_shp.split('.')[0]+x for x in ['.shp','.dbf','.prj','.shx',
 
 region_raster = 'Regions.tif'
 
-#check if file exits
+###check if file exits, if not we need to login to avra and download. This part requires icommand authorization
 if not os.path.isfile(conus_pf_1k_dem):	
 	print(conus_pf_1k_dem+' does not exits...downloading from avra')
 	auth = os.system('iinit')
@@ -134,30 +107,61 @@ if not os.path.isfile(region_shp):
 	for shp_component_file in region_shps:
 		os.system('iget -K '+avra_path_shp+shp_component_file+' .')
 
-#basin id
-basin_id = 14
 
-##read dem raster
+###read dem raster
 ds_ref = gdal.Open(conus_pf_1k_dem)
 arr_ref = ds_ref.ReadAsArray()
 
 
-##rasterize region shapefile
+###rasterize region shapefile
 if os.path.isfile(region_raster):
 	os.remove(region_raster)
 
 rasterize(region_raster,region_shp,ds_ref)
 
 shp_raster_arr = gdal.Open(region_raster).ReadAsArray()
+if select_type == '-p':
+	##get current file projection
+	outSrs = osr.SpatialReference(wkt=ds_ref.GetProjection())
+	ds_geom = ds_ref.GetGeoTransform()
+	
+	##Transform between EPSG:4326 and current file projection:
+	inSrs = osr.SpatialReference()
+	inSrs.ImportFromEPSG(4326)
+	coordTransform = osr.CoordinateTransformation(inSrs, outSrs)
+	#create a geometry from coordinates
+	inPoint = ogr.Geometry(ogr.wkbPoint)
+	inPoint.AddPoint(p_lon,p_lat)
+	#transform point
+	inPoint.Transform(coordTransform)
+	new_p_lat, new_p_lon = inPoint.GetY(), inPoint.GetX()
+	
+	##get basin id of which contains point:
+	p_y, p_x = latlon2pixzone(ds_geom[0], ds_geom[3], 
+								ds_geom[1], ds_geom[5], 
+								new_p_lat,new_p_lon)
+	basin_id = shp_raster_arr[p_y,p_x]
 
-#crop to get a tighter mask
+###crop to get a tighter mask
 new_dem, new_geom = subset(arr_ref,shp_raster_arr,basin_id,ds_ref)
 new_mask, _ = subset(shp_raster_arr,shp_raster_arr,basin_id,ds_ref)
 new_mask[new_mask==basin_id] = 1
 
-#create dem and mask text file
-np.savetxt('UC_dem.txt',new_dem,fmt='%.2f',delimiter=' ')
-np.savetxt('UC_mask.txt',new_mask,fmt='%d',delimiter=' ')
+try:
+	if select_type == '-id':
+		out_name = sys.argv[3]
+	elif select_type == '-p':
+		out_name = sys.argv[4]
+
+	out_dem = out_name+'_dem.txt'
+	out_mask = out_name+'_mask.txt'
+except:
+	out_dem = str(basin_id)+'_dem.txt'
+	out_mask = str(basin_id)+'_mask.txt'
+
+###create dem and mask text file
+np.savetxt(out_dem,new_dem,fmt='%.2f',delimiter=' ')
+np.savetxt(out_mask,new_mask,fmt='%d',delimiter=' ')
 
 
 

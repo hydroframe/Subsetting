@@ -53,7 +53,10 @@ def subset(arr,shp_raster_arr,value,ds_ref, ndata=0):
 	else:
 		arr1[:,shp_raster_arr!=value] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
-	return new_arr, new_geom
+	###add one extra grid cell to every direction
+	return_arr = np.zeros((new_arr.shape[0]+2,new_arr.shape[1]+2))
+	return_arr[1:-1,1:-1] = new_arr
+	return return_arr, new_geom
 
 ###select feature method: either select feature by id or by point coordinate
 select_type = sys.argv[1]
@@ -159,8 +162,8 @@ if select_type == '-p':
 ###crop to get a tighter mask
 mask_mat, new_geom = subset(arr_ref,shp_raster_arr,basin_id,ds_ref)
 bordt_mat, _ = subset(arr_border_type,shp_raster_arr,basin_id,ds_ref)
-lakes_mat_crop, _ = subset(lakes_mat,shp_raster_arr,basin_id,ds_ref,ndata=-99)
-sinks_mat_crop, _ = subset(sinks_mat,shp_raster_arr,basin_id,ds_ref,ndata=-99)
+lakes_mat_crop, _ = subset(lakes_mat,shp_raster_arr,basin_id,ds_ref)
+sinks_mat_crop, _ = subset(sinks_mat,shp_raster_arr,basin_id,ds_ref)
 
 ###create back borders
 ##Back borders occure where mask[y+1]-mask[y] is negative (i.e. the cell above is a zero and the cell is inside the mask, i.e. a 1)
@@ -227,7 +230,7 @@ list_patches = list(patches.keys())
 for patch in patches:
 	with open(patch,'w') as fo:
 		fo.write(header)
-		np.savetxt(fo,patches[patch],'%.3f',' ')
+		np.savetxt(fo,patches[patch].reshape([-1,1]),'%.3f',' ')
 
 ###Create solid domain file
 #This part assumes that you have install pf-mask-utilities

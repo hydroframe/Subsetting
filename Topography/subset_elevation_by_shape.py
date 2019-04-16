@@ -50,6 +50,9 @@ def subset(arr,shp_raster_arr,value,ds_ref, ndata=0):
 	else:
 		arr1[:,shp_raster_arr!=value] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
+	###add one extra grid cell to every direction
+	return_arr = np.zeros((new_arr.shape[0]+2,new_arr.shape[1]+2))
+	return_arr[1:-1,1:-1] = new_arr
 	return new_arr, new_geom
 
 ###select feature method: either select feature by id or by point coordinate

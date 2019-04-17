@@ -2,13 +2,12 @@
 
 #required libraries
 import gdal, ogr, osr
-import shapely
 import numpy as np
-from glob import glob
+#from glob import glob
 import os
 import sys
-import subprocess
-import matplotlib.pyplot as plt
+#import subprocess
+#import matplotlib.pyplot as plt
 
 def latlon2pixzone(xul, yul, dx, dy, lat0,lon0):
 	rl = abs((yul - lat0)/dy)
@@ -53,9 +52,11 @@ def subset(arr,shp_raster_arr,value,ds_ref, ndata=0):
 	else:
 		arr1[:,shp_raster_arr!=value] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
-	###add one extra grid cell to every direction
-	return_arr = np.zeros((new_arr.shape[0]+2,new_arr.shape[1]+2))
-	return_arr[1:-1,1:-1] = new_arr
+	###add n extra grid cells to every direction
+	n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
+	#print (n)
+	return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
+	return_arr[n:-n,n:-n] = new_arr
 	return return_arr, new_geom
 
 ###select feature method: either select feature by id or by point coordinate

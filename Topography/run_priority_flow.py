@@ -11,15 +11,18 @@ from glob import glob
 try:
 	out_name = sys.argv[1]
 	out_dem = out_name+'_dem.txt'
+	out_river = out_name+'_river.txt'
 	out_mask = out_name+'_mask.txt'
 except:
 	#if out_name is not specified, this code will grab the most recent created text files
 	list_text_dem = glob('*_dem.txt')
 	list_text_mask = glob('*_mask.txt')
+	list_text_river = glob('*_river.txt')
 	if not list_text_dem:
 		print('error...please check if text files were correctly generated')
 		sys.exit()
 	out_dem = list_text_dem[-1]
+	out_river = list_text_river[-1]
 	out_mask = list_text_mask[-1]
 	out_name = os.path.basename(out_dem).split('_')[0]
 
@@ -27,7 +30,7 @@ dem_arr = np.loadtxt(out_dem)
 ncol = dem_arr.shape[1] #get number of column of the text file
 nrow = dem_arr.shape[0] #get number of row of the text file
 
-with open('Workflow_Example2.R','r') as fi:
+with open('Workflow_Example4.R','r') as fi:
 	content = fi.read()
 
 content = content.split('\n')
@@ -41,6 +44,9 @@ for line in content:
 		line = line.replace('Test',out_name) #define new runname
 	if 'dem_test.txt' in line:
 		line = line.replace('dem_test.txt',out_dem) #open the newly subsetted dem file
+		line = line.replace('215',str(ncol)) #place the correct number of column
+	if 'river_mask_test.txt' in line:
+		line = line.replace('river_mask_test.txt',out_river) #open the newly subsetted dem file
 		line = line.replace('215',str(ncol)) #place the correct number of column
 	if 'mask_test.txt' in line:
 		line = line.replace('mask_test.txt',out_mask) #open the newly subsetted dem file

@@ -2,7 +2,7 @@
 
 #required libraries
 import gdal, ogr, osr
-import shapely
+#import shapely
 import numpy as np
 import os
 import sys
@@ -50,10 +50,12 @@ def subset(arr,shp_raster_arr,value,ds_ref, ndata=0):
 	else:
 		arr1[:,shp_raster_arr!=value] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
-	###add one extra grid cell to every direction
-	return_arr = np.zeros((new_arr.shape[0]+2,new_arr.shape[1]+2))
-	return_arr[1:-1,1:-1] = new_arr
-	return new_arr, new_geom
+	###add n extra grid cells to every direction
+	n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
+	#print (n)
+	return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
+	return_arr[n:-n,n:-n] = new_arr
+	return return_arr, new_geom
 
 ###select feature method: either select feature by id or by point coordinate
 select_type = sys.argv[1]
@@ -78,6 +80,7 @@ else:
 
 ###required raster files
 conus_pf_1k_dem = 'HSProc_Stream5LakesSinks_EP0.1_dem.tif'
+river_mask_sa = 'HSProc_Stream5LakesSinks_EP0.1_RivMask.sa'
 
 avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/Topography/HSProc_Stream5LakesSinks_Ep0.1/'
 
@@ -99,6 +102,7 @@ if not os.path.isfile(conus_pf_1k_dem):
 		sys.exit()
 	
 	os.system('iget -K '+avra_path_tif+conus_pf_1k_dem+' .')
+	os.system('iget -K '+avra_path_tif+river_mask_sa+' .')
 
 if not os.path.isfile(region_shp):
 	print(region_shp+' does not exits...downloading from avra')
@@ -115,6 +119,9 @@ if not os.path.isfile(region_shp):
 ds_ref = gdal.Open(conus_pf_1k_dem)
 arr_ref = ds_ref.ReadAsArray()
 
+##read river mask
+river_raw = np.loadtxt(river_mask_sa,skiprows=1)
+river_arr = river_raw.reshape(arr_ref.shape)[::-1,:]
 
 ###rasterize region shapefile
 if os.path.isfile(region_raster):
@@ -147,6 +154,7 @@ if select_type == '-p':
 
 ###crop to get a tighter mask
 new_dem, new_geom = subset(arr_ref,shp_raster_arr,basin_id,ds_ref)
+new_river, _ = subset(river_arr,shp_raster_arr,basin_id,ds_ref)
 new_mask, _ = subset(shp_raster_arr,shp_raster_arr,basin_id,ds_ref)
 new_mask[new_mask==basin_id] = 1
 
@@ -157,13 +165,16 @@ try:
 		out_name = sys.argv[4]
 
 	out_dem = out_name+'_dem.txt'
+	out_river = out_name+'_river.txt'
 	out_mask = out_name+'_mask.txt'
 except:
 	out_dem = str(basin_id)+'_dem.txt'
+	out_river = str(basin_id)+'_river.txt'
 	out_mask = str(basin_id)+'_mask.txt'
 
-###create dem and mask text file
+###create dem, river and mask text file
 np.savetxt(out_dem,new_dem,fmt='%.2f',delimiter=' ')
+np.savetxt(out_river,new_river,fmt='%d',delimiter=' ')
 np.savetxt(out_mask,new_mask,fmt='%d',delimiter=' ')
 
 

@@ -52,9 +52,9 @@ if [ ! -d PriorityFlow ]; then
 	git clone https://github.com/lecondon/PriorityFlow.git
 fi
 
-###Copy Example2 (Irregular domain with no river network) and all functional files
+###Copy Example4 (Irregular domain with river network) and all functional files
 
-cp PriorityFlow/Workflow_Example2.R .
+cp PriorityFlow/Workflow_Example4.R .
 cp -R PriorityFlow/functions .
 
 ###Subset elevation and mask first

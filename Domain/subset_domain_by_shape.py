@@ -49,14 +49,19 @@ def subset(arr,shp_raster_arr,value,ds_ref, ndata=0):
 	if len(arr.shape) == 2:
 		arr1[shp_raster_arr!=value] = ndata
 		new_arr = arr1[min(yy):max(yy)+1,min(xx):max(xx)+1]
+		###add n extra grid cells to every direction
+		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
+		#print (n)
+		return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
+		return_arr[n:-n,n:-n] = new_arr
 	else:
 		arr1[:,shp_raster_arr!=value] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
-	###add n extra grid cells to every direction
-	n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
-	#print (n)
-	return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
-	return_arr[n:-n,n:-n] = new_arr
+		###add n extra grid cells to every direction
+		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
+		#print (n)
+		return_arr = np.zeros((new_arr.shape[0],new_arr.shape[1]+2*n,new_arr.shape[2]+2*n))
+		return_arr[:,n:-n,n:-n] = new_arr
 	return return_arr, new_geom
 
 ###select feature method: either select feature by id or by point coordinate

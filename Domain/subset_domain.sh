@@ -19,17 +19,8 @@ do
 key="$1"
 
 case $key in
-    -sel_type)
-    sel_type="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -s)
-    if [ "$sel_type" = '-id' ]; then
-    	s="$2"
-    else
-    	s="$2 $3"
-    fi
+    -mask)
+    mask="$2"
     shift # past argument
     shift # past value
     ;;
@@ -58,8 +49,8 @@ make
 
 cd ..
 
-chmod 755 subset_domain_by_shape.py
-echo ./subset_domain_by_shape.py $sel_type $s $out_name
+chmod 755 subset_domain_by_mask.py
+echo ./subset_domain_by_mask.py $mask $out_name
 
 ###Run python file
-./subset_domain_by_shape.py $sel_type $s $out_name
+./subset_domain_by_mask.py $mask $out_name

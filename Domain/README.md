@@ -18,43 +18,30 @@ To run this project on your local machine, you will need:
 
 ## Usage
 
-You will run the subset_domain.sh file in order to install pf-mask-utilities, set permission for the python file (subset_domain_by_shape.py), and run the python file.
-subset_domain.sh takes three inputs:
+You will run the subset_domain.sh file in order to install pf-mask-utilities, set permission for the python file (subset_domain_by_mask.py), and run the python file.
+subset_domain.sh takes two inputs:
 
 ```
-subset_domain.sh [-sel_type sel_type] [-s specific] [-out_name out_name]
+subset_domain.sh [-mask mask] [-out_name out_name]
 ```
 
 ### Description
 
-**-sel_type sel_type:** (Required) You can choose subsetting a domain by either:
- * (1) stating the basin id (referenced to HydroSHED watershed id): -id
- * or (2) choosing one point which lies inside the basin: -p
+**-mask mask:** (Required) The mask raster file for domain subsetting. The mask must has the same dimension and projection with *conus_1km_PFmask2.tif* file.
 
-**-s specific** (Required) If you choose *-id* for *-sel_type*, you need to specify the basin id. If you choose *-p* for *-sel_type*, please specify the point coordinates (i.e. lat long) in EPSG:4326 projection
+**-out_name out_name** (Optional) Name of the output solid file. If not specified, name of the input mask file will be used 
 
-**-out_name out_name** (Optional) Name of the output solid file. If not specified, subsetting basin id will be used 
-
-### Examples
-
-Subsetting by basin id
+### Example:
 
 ```
-./subset_domain.sh -sel_type -id -s 14 -out_name Upper_Colorado
+./subset_domain.sh -mask Coast1_mask.tif -out_name Coast1_mask
 ```
-
-Subsetting by point
-
-```
-./subset_domain.sh -sel_type -p -s 32.8 -108.3 -out_name Upper_Colorado
-```
-
 
 ## Python workflow
 
-A note about workflow for the python file (subset_domain_by_shape.py):
-1. Download all the required rasters and shapefile from Cyverse
-2. Rasterize the shapefile with the same extent and projection of the *conus_1km_PFmask2.tif*
+A note about workflow for the python file (subset_domain_by_mask.py):
+1. Download all the required domain rasters from Cyverse
+2. Read the mask file
 3. Crop all the rasters to extents which only contain the target basin
 4. Create borders (back, front, left, right, top, bottom) ascii files. **Notes:** this part adopted from Prof. Condon R codes.
 5. Create a solid domain file by calling mask-to-pfsol function
@@ -69,3 +56,6 @@ See the list of [contributors](https://github.com/orgs/hydroframe/people) who pa
 * R codes for subsetting and creating patch borders by Prof. Condon (UA)
 * ParFlow Mask utilities codes by Mr. Steven Smith (LLNL)
 
+
+### Side note:
+The old Python code *subset_domain_by_mask.py* is still being kept for future use.

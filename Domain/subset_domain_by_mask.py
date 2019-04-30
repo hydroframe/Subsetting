@@ -9,33 +9,6 @@ import sys
 #import subprocess
 #import matplotlib.pyplot as plt
 
-def latlon2pixzone(xul, yul, dx, dy, lat0,lon0):
-	rl = abs((yul - lat0)/dy)
-	cu = abs((lon0 - xul)/dx)
-	return int(round(rl)), int(round(cu))
-
-def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
-	#target raster file
-	geom_ref = ds_ref.GetGeoTransform()
-	target_ds = gdal.GetDriverByName('GTiff').Create(out_raster,
-													ds_ref.RasterXSize,
-													ds_ref.RasterYSize,
-													1, dtype)
-	target_ds.SetProjection(ds_ref.GetProjection())
-	target_ds.SetGeoTransform(geom_ref)
-	target_ds.GetRasterBand(1).SetNoDataValue(ndata)
-	#shapefile
-	shp_source = ogr.Open(in_shape)
-	shp_layer = shp_source.GetLayer()
-	#Rasterize layer
-	if gdal.RasterizeLayer(target_ds, [1],
-							shp_layer,
-							options=["ATTRIBUTE=OBJECTID"])  != 0:
-		raise Exception("error rasterizing layer: %s" % shp_layer)
-	else:
-		target_ds.FlushCache()
-		return 0
-
 def subset(arr,mask_arr,ds_ref, ndata=0):
 	arr1 = arr.copy()
 	#create new geom
@@ -50,7 +23,7 @@ def subset(arr,mask_arr,ds_ref, ndata=0):
 		arr1[mask_arr!=1] = ndata
 		new_arr = arr1[min(yy):max(yy)+1,min(xx):max(xx)+1]
 		###add n extra grid cells to every direction
-		n = int(max(new_arr.shape)*0.05) #proportional to new array dimensions
+		n = int(max(new_arr.shape)*0.1) #proportional to new array dimensions
 		#print (n)
 		return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
 		return_arr[n:-n,n:-n] = new_arr
@@ -58,7 +31,7 @@ def subset(arr,mask_arr,ds_ref, ndata=0):
 		arr1[:,mask_arr!=1] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
 		###add n extra grid cells to every direction
-		n = int(max(new_arr.shape)*0.05) #proportional to new array dimensions
+		n = int(max(new_arr.shape)*0.1) #proportional to new array dimensions
 		#print (n)
 		return_arr = np.zeros((new_arr.shape[0],new_arr.shape[1]+2*n,new_arr.shape[2]+2*n))
 		return_arr[:,n:-n,n:-n] = new_arr
@@ -80,7 +53,7 @@ conus_pf_1k_mask = 'conus_1km_PFmask2.tif'
 conus_pf_1k_sinks = 'conus_1km_PFmask_manualsinks.tif' #1 for cells inside domain, 0 for cells outside domain, 2 for sinks
 conus_pf_1k_lakes = 'conus_1km_PFmask_selectLakesmask.tif' #1 for lakes, 0 for everything else
 conus_pf_1k_lakes_border = 'conus_1km_PFmask_selectLakesborder.tif'
-conus_pf_1k_border_type = '1km_PF_BorderCellType.tif' # A mask marking with 1 for for cells with an ocean border and 2 for cells with a land border
+conus_pf_1k_border_type = '1km_PF_BorderCells_Type.tif' # A mask marking with 1 for cells with an ocean border and 2 for cells with a land border
 
 conus_pf_1k_tifs = [conus_pf_1k_mask,conus_pf_1k_sinks,conus_pf_1k_lakes,
 					conus_pf_1k_lakes_border,conus_pf_1k_lakes_border,

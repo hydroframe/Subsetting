@@ -23,7 +23,7 @@ def subset(arr,mask_arr,ds_ref, ndata=0):
 		arr1[mask_arr!=1] = ndata
 		new_arr = arr1[min(yy):max(yy)+1,min(xx):max(xx)+1]
 		###add n extra grid cells to every direction
-		n = int(max(new_arr.shape)*0.1) #proportional to new array dimensions
+		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
 		#print (n)
 		return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
 		return_arr[n:-n,n:-n] = new_arr
@@ -31,7 +31,7 @@ def subset(arr,mask_arr,ds_ref, ndata=0):
 		arr1[:,mask_arr!=1] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
 		###add n extra grid cells to every direction
-		n = int(max(new_arr.shape)*0.1) #proportional to new array dimensions
+		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
 		#print (n)
 		return_arr = np.zeros((new_arr.shape[0],new_arr.shape[1]+2*n,new_arr.shape[2]+2*n))
 		return_arr[:,n:-n,n:-n] = new_arr

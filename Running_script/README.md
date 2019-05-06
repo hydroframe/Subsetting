@@ -47,16 +47,16 @@ A note about workflow for the python file (generate_tcl_script.py):
 2. Get dimensions of the solidfile
 3. Find how many patch needs to run the simulation
 4. Read the tcl template file and generate a new one by making changes in
-	a) 'set runname'
-	b) 'pfset ComputationalGrid.NX'
-	c) 'pfset ComputationalGrid.NY'
-	d) 'pfset GeomInput.domaininput.FileName'
-	e) 'pfset Geom.domain.Patches'
-	f) 'pfset BCPressure.PatchNames'
-	g) 'pfset TopoSlopesY.Type'
-	h) 'pfset TopoSlopesX.Type'
-	i) 'pfset TopoSlopesX.FileName'
-	j) 'pfset TopoSlopesY.FileName'
+	* 'set runname'
+	* 'pfset ComputationalGrid.NX'
+	* 'pfset ComputationalGrid.NY'
+	* 'pfset GeomInput.domaininput.FileName'
+	* 'pfset Geom.domain.Patches'
+	* 'pfset BCPressure.PatchNames'
+	* 'pfset TopoSlopesY.Type'
+	* 'pfset TopoSlopesX.Type'
+	* 'pfset TopoSlopesX.FileName'
+	* 'pfset TopoSlopesY.FileName'
 
 ## Authors
 

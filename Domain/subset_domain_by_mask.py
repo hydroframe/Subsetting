@@ -56,8 +56,7 @@ conus_pf_1k_lakes_border = 'conus_1km_PFmask_selectLakesborder.tif'
 conus_pf_1k_border_type = '1km_PF_BorderCells_Type.tif' # A mask marking with 1 for cells with an ocean border and 2 for cells with a land border
 
 conus_pf_1k_tifs = [conus_pf_1k_mask,conus_pf_1k_sinks,conus_pf_1k_lakes,
-					conus_pf_1k_lakes_border,conus_pf_1k_lakes_border,
-					conus_pf_1k_border_type]
+					conus_pf_1k_lakes_border,conus_pf_1k_border_type]
 avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
 
 ###check if file exits, if not we need to login to avra and download. This part requires icommand authorization

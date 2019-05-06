@@ -128,6 +128,6 @@ with open(run_name+'.tcl','w') as fo:
 
 ###Remove all the previous simulation
 os.system('rm -rf '+run_name+'.out.*')
-#os.system('tclsh '+run_name+'.tcl')
+#os.system('tclsh '+run_name+'.tcl') #run the PF script
 
 

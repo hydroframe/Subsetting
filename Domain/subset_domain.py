@@ -204,9 +204,14 @@ if args.type == 'shapefile':
 	mask_arr = (shp_raster_arr == basin_id).astype(np.int)
 
 elif args.type == 'mask':
-	file_ext = os.path.splitext(os.path.basename(args.mask_file))[1]
+	mask_file = args.mask_file
+	if not os.path.isfile(mask_file):
+		print (mask_file+' does not exits...please create one')
+		sys.exit()
+	
+	file_ext = os.path.splitext(os.path.basename(mask_file))[1]
 	if file_ext == '.tif':
-		ds_mask = gdal.Open(args.mask_file)
+		ds_mask = gdal.Open(mask_file)
 	
 		#check if mask file has the same projection and extent with the domain mask file
 		if any([ds_ref.GetProjection() != ds_mask.GetProjection(),
@@ -214,19 +219,9 @@ elif args.type == 'mask':
 			print ('mask and domain do not match...exit')
 			sys.exit()
 	
-	mask_arr = read_from_file(args.mask_file)
+	mask_arr = read_from_file(mask_file)
 
 elif args.type == 'define_watershed':
-	file_ext = os.path.splitext(os.path.basename(args.dir_file))[1]
-	if file_ext == '.tif':
-		ds_dir = gdal.Open(args.dir_file)
-	
-		#check if direction file has the same projection and extent with the domain mask file
-		if any([ds_ref.GetProjection() != ds_dir.GetProjection(),
-				sorted(ds_ref.GetGeoTransform()) != sorted(ds_dir.GetGeoTransform())]):
-			print ('direction and domain do not match...exit')
-			sys.exit()
-	
 	dir_file = args.dir_file
 	if not os.path.isfile(dir_file):
 		print(dir_file+' does not exits...downloading from avra')
@@ -237,6 +232,16 @@ elif args.type == 'define_watershed':
 		
 		avra_path_direction = '/iplant/home/shared/avra/CONUS2.0/Inputs/Topography/Str5Ep0/'
 		os.system('iget -K '+avra_path_direction+dir_file+' .')
+	
+	file_ext = os.path.splitext(os.path.basename(dir_file))[1]
+	if file_ext == '.tif':
+		ds_dir = gdal.Open(dir_file)
+	
+		#check if direction file has the same projection and extent with the domain mask file
+		if any([ds_ref.GetProjection() != ds_dir.GetProjection(),
+				sorted(ds_ref.GetGeoTransform()) != sorted(ds_dir.GetGeoTransform())]):
+			print ('direction and domain do not match...exit')
+			sys.exit()
 	
 	outlet_file = args.outlet_file
 	if not os.path.isfile(outlet_file):

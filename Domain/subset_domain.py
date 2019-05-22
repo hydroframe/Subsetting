@@ -73,6 +73,8 @@ def subset(arr,mask_arr,ds_ref, ndata=0):
 		new_arr = arr1[min(yy):max(yy)+1,min(xx):max(xx)+1]
 		###add n extra grid cells to every direction
 		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
+		if n == 0:
+			n = max(new_arr.shape)
 		#print (n)
 		return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
 		return_arr[n:-n,n:-n] = new_arr
@@ -81,6 +83,8 @@ def subset(arr,mask_arr,ds_ref, ndata=0):
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
 		###add n extra grid cells to every direction
 		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
+		if n == 0:
+			n = max(new_arr.shape)
 		#print (n)
 		return_arr = np.zeros((new_arr.shape[0],new_arr.shape[1]+2*n,new_arr.shape[2]+2*n))
 		return_arr[:,n:-n,n:-n] = new_arr
@@ -97,6 +101,7 @@ parser_a.add_argument('-id',type=int, help = 'id of the selected watershed')
 parser_a.add_argument('-out_name',type=str, help = 'name of output solidfile (optional)')
 parser_a.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_a.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
+parser_a.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
 #parser_a.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -106,6 +111,7 @@ parser_b.add_argument('-mask_file',type=str, help = 'input mask file')
 parser_b.add_argument('-out_name',type=str, help = 'name of output solidfile (optional)')
 parser_b.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_b.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
+parser_b.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
 #parser_b.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -116,6 +122,7 @@ parser_c.add_argument('-outlet_file',type=str, help = 'file contains coordinates
 parser_c.add_argument('-out_name',type=str, help = 'name of output solidfile (required)')
 parser_c.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_c.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
+parser_c.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
 #parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -170,6 +177,11 @@ if not args.dz:
 	dz = 1000
 else:
 	dz = args.dz
+
+if not args.printmask:
+	printmask = 0
+else:
+	printmask = 1
 
 if args.type == 'shapefile':
 	basin_id = args.id
@@ -253,8 +265,12 @@ elif args.type == 'define_watershed':
 	queue = queue.reshape(-1,2)
 	
 	#get the mask array from DelinWatershed function
-	mask_arr = DelinWatershed(queue, dir_arr)
+	mask_arr = DelinWatershed(queue, dir_arr,printflag=True)
 
+if printmask:
+	import matplotlib.pyplot as plt
+	plt.imshow(arr_ref+mask_arr*2)
+	plt.savefig('mask.png')
 
 ###crop to get a tighter mask
 mask_mat, new_geom = subset(arr_ref,mask_arr,ds_ref)

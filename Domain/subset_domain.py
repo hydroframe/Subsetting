@@ -227,8 +227,24 @@ elif args.type == 'define_watershed':
 			print ('direction and domain do not match...exit')
 			sys.exit()
 	
-	dir_arr = read_from_file(args.dir_file)
-	queue = np.loadtxt(args.outlet_file)
+	dir_file = args.dir_file
+	if not os.path.isfile(dir_file):
+		print(dir_file+' does not exits...downloading from avra')
+		auth = os.system('iinit')
+		if auth != 0:
+			print('Authentication failed...exit')
+			sys.exit()
+		
+		avra_path_direction = '/iplant/home/shared/avra/CONUS2.0/Inputs/Topography/Str5Ep0/'
+		os.system('iget -K '+avra_path_direction+dir_file+' .')
+	
+	outlet_file = args.outlet_file
+	if not os.path.isfile(outlet_file):
+		print (outlet_file+' does not exits...please create one')
+		sys.exit()
+	
+	dir_arr = read_from_file(dir_file)
+	queue = np.loadtxt(outlet_file)
 	queue = queue.reshape(-1,2)
 	
 	#get the mask array from DelinWatershed function

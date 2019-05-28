@@ -1,0 +1,43 @@
+You can get your NLDAS data, too!
+Note: This workflow outlines getting 3D NLDAS data but the concepts apply to 1D and 2D data, as well.
+
+1. Log into Powell and navigate to /data/common/NLDAS/
+
+2. Copy /preproc/ directory or the individual files you need into your working directory in Powell.
+ a. What you need:
+    i. batch.get_nldas
+    ii. get_nldas.3D.f90 (This will depend on your problem i.e. for 3D forcing data)
+
+3. Copy your domain lat/long text file to your working directory
+ a. In a new terminal window, navigate to the directory where your lat/long file is located.
+ b. scp your_latlong_file.txt user@powell.mines.edu:/path/to/your/working/directory
+
+4. Create a link to the wgrib program.
+ a. Navigate to your working directory
+ b. ln -s /path/to/wgrib/location
+ c. Example: ln Ðs /data/common/wgrib/
+
+5. Edit batch.get_nldas file by the following format: 
+ 		! Batch file must be in the following format:
+		! "/path_to_top_level_nldas_dir/"
+		! "/path_to_output_directory/"	
+		! "/path_to_lat-lon_file/lat-lon_file_name.txt"
+		! nx ny nz  (nz is the number of met timesteps per PFB file) 
+		! x0 y0 z0  (i.e., ComputationalGrid.Lower.X, --.Lower.Y, --.Lower.Z)
+		! dx dy dz   (i.e., ComputationalGrid.DX, etc.)
+		! start_year start_month start_day start_hour (YYYY MM DD HH)
+		! end_year end_month end_day end_hour         (YYYY MM DD HH)
+  	  	! Interp value
+
+6. Edit get_nldas.3D.f90 file.
+ a. On both lines 164 and 165, include the pathway to the wgrib program
+	i. These lines may differ for the different .f90 files so your best bet is to search the file for "! Execute wgrib" 
+b. Replace "wgrib" with /data/common/wgrib/wgrib or whatever the path you defined in step #4
+
+7. Compile the .f90 file
+ a. gfortran -o executable_name.exe get_nldas.your_file.f90
+
+8. Run the executable
+ a. ./executable_name.exe
+
+9. Watch the magic happen!

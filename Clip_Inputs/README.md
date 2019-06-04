@@ -20,7 +20,7 @@ To run this project on your local machine, you will need:
 ### Synopsis
 
 ```
-clip_inputs.py [-i | --input_file] [-x0] [-y0] [-z0] {shapefile|mask|define_watershed} [-shp_file] [-id] [-out_name] [-dx] [-dz] [-printmask] [-mask_file] [-dir_file] [-outlet_file]
+python3 clip_inputs.py [-i | --input_file] [-x0] [-y0] [-z0] {shapefile|mask|define_watershed} [-shp_file] [-id] [-out_name] [-dx] [-dz] [-printmask] [-mask_file] [-dir_file] [-outlet_file]
 ```
 
 ### Description
@@ -58,33 +58,33 @@ clip_inputs.py [-i | --input_file] [-x0] [-y0] [-z0] {shapefile|mask|define_wate
 
 ### Examples
 
-Subsetting by basin id
-
-```
-./subset_subsurface.sh -sel_type -id -s 14 -out_name Upper_Colorado
-```
-
 Subsetting by mask
 
 ```
-./subset_subsurface.sh -sel_type -p -s 32.8 -108.3 -out_name Upper_Colorado
+python3 clip_inputs.py --input_file Str5Ep0_unsmth.mx0.5.mn5.sec0.5.stan_slopey.sa \
+mask -mask_file ../../mask/InternalLake1_mask.tif
+```
+
+Subsetting by shapefile
+
+```
+python3 clip_inputs.py --input_file Str5Ep0_unsmth.mx0.5.mn5.sec0.5.stan_slopex.pfb \
+shapefile -shp_file ../../shp/Regions.shp -id 15
 ```
 
 Subsetting by defined watershed
 
 ```
-./subset_subsurface.sh -sel_type -p -s 32.8 -108.3 -out_name Upper_Colorado
+python3 clip_inputs.py --input_file Str5Ep0_unsmth.mx0.5.mn5.sec0.5.stan_slopex.pfb \
+define_watershed -dir_file ../../mask/Str5Ep0_direction.tif -outlet_file outlet.txt -out_name Lake2 -printmask 1
 ```
 
-## Python workflow
+### Python workflow
 
-A note about workflow for the python file (subset_domain_by_shape.py):
-1. Download all the required rasters and shapefile from Cyverse
-2. Rasterize the shapefile with the same extent and projection of the *conus_1km_PFmask2.tif*
-3. Crop all the rasters to extents which only contain the target basin
-4. Create .pfb, .sa, .silo files
-
-## Acknowledgments
-
-* ParFlow raster domain files created by Prof. Condon (UA)
+A note about workflow for the python file (clip_inputs.py):
+1. Download all the required domain rasters from Cyverse
+2. Read the mask file
+3. Read the input file
+3. Crop all the input file to extents which only contain the target basin
+4. Create .pfb files
 

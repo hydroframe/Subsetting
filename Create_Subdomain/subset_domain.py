@@ -71,23 +71,29 @@ def subset(arr,mask_arr,ds_ref, ndata=0):
 	if len(arr.shape) == 2:
 		arr1[mask_arr!=1] = ndata
 		new_arr = arr1[min(yy):max(yy)+1,min(xx):max(xx)+1]
-		###add n extra grid cells to every direction
-		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
-		if n == 0:
-			n = max(new_arr.shape)
-		#print (n)
-		return_arr = np.zeros((new_arr.shape[0]+2*n,new_arr.shape[1]+2*n))
-		return_arr[n:-n,n:-n] = new_arr
+		###add grid cell to make dimensions as multiple of 32 (nicer PxQxR)
+		len_y, len_x = new_arr.shape
+		new_len_y = ((len_y//32)+1)*32
+		n1 = (new_len_y-len_y)//2
+		n2 = new_len_y-len_y-n1
+		new_len_x = ((len_x//32)+1)*32
+		n3 = (new_len_x-len_x)//2
+		n4 = new_len_x-len_x-n3
+		return_arr = np.zeros((new_len_y,new_len_x))
+		return_arr[n1:-n2,n3:-n4] = new_arr
 	else:
 		arr1[:,mask_arr!=1] = ndata
 		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
-		###add n extra grid cells to every direction
-		n = int(max(new_arr.shape)*0.02) #proportional to new array dimensions
-		if n == 0:
-			n = max(new_arr.shape)
-		#print (n)
-		return_arr = np.zeros((new_arr.shape[0],new_arr.shape[1]+2*n,new_arr.shape[2]+2*n))
-		return_arr[:,n:-n,n:-n] = new_arr
+		###add grid cell to make dimensions as multiple of 32 (nicer PxQxR)
+		_, len_y, len_x = new_arr.shape
+		new_len_y = ((len_y//32)+1)*32
+		n1 = (new_len_y-len_y)//2
+		n2 = new_len_y-len_y-n1
+		new_len_x = ((len_x//32)+1)*32
+		n3 = (new_len_x-len_x)//2
+		n4 = new_len_x-len_x-n3
+		return_arr = np.zeros((new_arr.shape[0],new_len_y,new_len_x))
+		return_arr[:,n1:-n2,n3:-n4] = new_arr
 	return return_arr, new_geom
 
 

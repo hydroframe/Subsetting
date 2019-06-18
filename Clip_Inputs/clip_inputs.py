@@ -58,48 +58,47 @@ def read_from_file(infile):
 		sys.exit()
 	return res_arr
 
-def subset(arr,mask_arr,ds_ref, ndata=0):
+def subset(arr,mask_arr,ds_ref, crop_to_domain, ndata=0):
 	arr1 = arr.copy()
 	#create new geom
 	old_geom = ds_ref.GetGeoTransform()
 	#find new up left index
 	yy,xx = np.where(mask_arr==1)
+	len_y = max(yy)-min(yy)+1
+	len_x = max(xx)-min(xx)+1
+	###add grid cell to make dimensions as multiple of 32 (nicer PxQxR)
+	new_len_y = ((len_y//32)+1)*32
+	n1 = (new_len_y-len_y)//2
+	n2 = new_len_y-len_y-n1
+	new_len_x = ((len_x//32)+1)*32
+	n3 = (new_len_x-len_x)//2
+	n4 = new_len_x-len_x-n3
+	###create new geom
 	new_x = old_geom[0] + old_geom[1]*(min(xx)+1)
 	new_y = old_geom[3] + old_geom[5]*(min(yy)+1)
 	new_geom = (new_x,old_geom[1],old_geom[2],new_y,old_geom[4],old_geom[5])
 	#start subsetting
 	if len(arr.shape) == 2:
-		arr1[mask_arr!=1] = ndata
-		new_arr = arr1[min(yy):max(yy)+1,min(xx):max(xx)+1]
-		###add grid cell to make dimensions as multiple of 32 (nicer PxQxR)
-		len_y, len_x = new_arr.shape
-		new_len_y = ((len_y//32)+1)*32
-		n1 = (new_len_y-len_y)//2
-		n2 = new_len_y-len_y-n1
-		new_len_x = ((len_x//32)+1)*32
-		n3 = (new_len_x-len_x)//2
-		n4 = new_len_x-len_x-n3
-		return_arr = np.zeros((new_len_y,new_len_x))
-		return_arr[n1:-n2,n3:-n4] = new_arr
+		if crop_to_domain:
+			arr1[mask_arr!=1] = ndata
+			return_arr = np.zeros((new_len_y,new_len_x))
+			return_arr[n1:-n2,n3:-n4] = arr1[min(yy):max(yy)+1,min(xx):max(xx)+1]
+		else:
+			return_arr = arr1[min(yy)-n1:max(yy)+n2+1,min(xx)-n3:max(xx)+n4+1]
 		return_arr = return_arr[np.newaxis,...]
 	else:
-		arr1[:,mask_arr!=1] = ndata
-		new_arr = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
-		###add grid cell to make dimensions as multiple of 32 (nicer PxQxR)
-		_, len_y, len_x = new_arr.shape
-		new_len_y = ((len_y//32)+1)*32
-		n1 = (new_len_y-len_y)//2
-		n2 = new_len_y-len_y-n1
-		new_len_x = ((len_x//32)+1)*32
-		n3 = (new_len_x-len_x)//2
-		n4 = new_len_x-len_x-n3
-		return_arr = np.zeros((new_arr.shape[0],new_len_y,new_len_x))
-		return_arr[:,n1:-n2,n3:-n4] = new_arr
+		if crop_to_domain:
+			arr1[:,mask_arr!=1] = ndata
+			return_arr = np.zeros((arr1.shape[0],new_len_y,new_len_x))
+			return_arr[:,n1:-n2,n3:-n4] = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
+		else:
+			return_arr = arr1[:,min(yy)-n1:max(yy)+n2+1,min(xx)-n3:max(xx)+n4+1]
 	return return_arr, new_geom
 
 
 parser = argparse.ArgumentParser(description='Create a clipped input ParFlow binary files')
 parser.add_argument('-i','--input_file',type=str, help='input file for subsetting')
+parser.add_argument('--crop_to_domain',type=int, help='crop to domain (i.e. value outside of the domain will be assign as nodata -- optional).Default is 1')
 parser.add_argument('-x0',type=int, help='x0 (optional).Default is 0')
 parser.add_argument('-y0',type=int, help='y0 (optional).Default is 0')
 parser.add_argument('-z0',type=int, help='z0 (optional).Default is 0')
@@ -182,32 +181,37 @@ if file_ext == '.tif':
 arr_in = read_from_file(infile)
 
 #deal with optional arguments
-if not args.dx:
+if args.crop_to_domain is None:
+	crop_to_domain = 1
+else:
+	crop_to_domain = args.crop_to_domain
+
+if args.dx is None:
 	dx = 1000.
 else:
 	dx = args.dx
 
-if not args.dz:
+if args.dz is None:
 	dz = 1000.
 else:
 	dz = args.dz
 
-if not args.printmask:
+if args.printmask is None:
 	printmask = 0
 else:
 	printmask = 1
 
-if not args.x0:
+if args.x0 is None:
 	x0 = 0.
 else:
 	x0 = args.x0
 
-if not args.y0:
+if args.y0 is None:
 	y0 = 0.
 else:
 	y0 = args.y0
 
-if not args.z0:
+if args.z0 is None:
 	z0 = 0.
 else:
 	z0 = args.z0
@@ -303,7 +307,7 @@ if printmask:
 	plt.savefig('mask.png')
 
 ###crop to get a tighter mask
-clip_arr, new_geom = subset(arr_in,mask_arr,ds_ref)
+clip_arr, new_geom = subset(arr_in,mask_arr,ds_ref,crop_to_domain)
 
 ###create clipped outputs
 if args.out_name:

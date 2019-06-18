@@ -20,12 +20,14 @@ To run this project on your local machine, you will need:
 ### Synopsis
 
 ```
-python3 clip_inputs.py [-i | --input_file] [-x0] [-y0] [-z0] {shapefile|mask|define_watershed} [-shp_file] [-id] [-out_name] [-dx] [-dz] [-printmask] [-mask_file] [-dir_file] [-outlet_file]
+python3 clip_inputs.py [-i | --input_file] [--crop_to_domain] [-x0] [-y0] [-z0] {shapefile|mask|define_watershed} [-shp_file] [-id] [-out_name] [-dx] [-dz] [-printmask] [-mask_file] [-dir_file] [-outlet_file]
 ```
 
 ### Description
 
 **-i | --input_file** (Required) Input file to be subsetted. Input file can be in either *tif*, *sa*, or *pfb* format.
+
+**--crop_to_domain** (Optional) Pixels outside of the domain will be assign value as nodata. Default value is 1.
 
 **-x0** (Optional) Lower X of the domain. Default value is 0.
 
@@ -68,7 +70,7 @@ mask -mask_file ../../mask/InternalLake1_mask.tif
 Subsetting by shapefile
 
 ```
-python3 clip_inputs.py --input_file Str5Ep0_unsmth.mx0.5.mn5.sec0.5.stan_slopex.pfb \
+python3 clip_inputs.py --input_file Str5Ep0_unsmth.mx0.5.mn5.sec0.5.stan_slopex.pfb --crop_to_domain 0\
 shapefile -shp_file ../../shp/Regions.shp -id 15
 ```
 

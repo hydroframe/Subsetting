@@ -43,7 +43,7 @@ def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
 def read_from_file(infile):
 	#get extension
 	ext = os.path.splitext(os.path.basename(infile))[1]
-	if ext == '.tif':
+	if ext in ['.tif','.tiff']:
 		res_arr = gdal.Open(infile).ReadAsArray()
 	elif ext == '.sa': #parflow ascii file
 		with open(infile, 'r') as fi:

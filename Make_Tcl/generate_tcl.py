@@ -26,7 +26,8 @@ def read_infile(infile):
 			'Patch.top.BCPressure.Cycle','Patch.top.BCPressure.rain.Value',
 			'Patch.top.BCPressure.rec.Value','Patch.top.BCPressure.alltime.Value',
 			'Solver.EvapTransFile','Solver.EvapTrans.FileName',
-			'TopoSlopesX.FileName', 'TopoSlopesY.FileName','pfdist']
+			'TopoSlopesX.FileName', 'TopoSlopesY.FileName','pfdist',
+			'Geom.domain.ICPressure.Value','Geom.domain.ICPressure.RefPatch']
 	
 	with open(infile,'r') as fi:
 		content = fi.read()
@@ -74,6 +75,9 @@ parser.add_argument('-K','--perm',type=float, default = 0.02849, help='Permeabil
 parser.add_argument('--porosity',type=float, default = 0.39738, help='Porosity (optional). Default is 0.39738 (i.e. average porosity of the Upper Colorado basin)', required=False)
 parser.add_argument('--rain',type=float, default = -0.05, help='Rain value (optional). Default is -0.05', required=False)
 parser.add_argument('--rec',type=float, default = 0.0, help='Recession value (optional). Default is 0.0', required=False)
+parser.add_argument('--constant',type=int, default=0, help='Constant boundary condition for top layer (optional). Default is No (0)', required=False)
+parser.add_argument('--initw',choices=['top','bottom'], default='bottom', help='Where to set initial pressure (optional). Default is bottom', required=False)
+parser.add_argument('--init',type=float, default = 0.0, help='Initial pressure for bottom layer (optional). Default is 0.0', required=False)
 
 #### TIMING INFO
 parser.add_argument('-s','--start',type=float, default = 0.0, help='Start time(optional). Default is 0.0', required=False)
@@ -118,6 +122,9 @@ K = args.perm
 poros = args.porosity
 rain = args.rain
 rec = args.rec
+constant = args.constant
+init = args.init
+initw = args.initw
 
 #### parsing timing info
 start_time = args.start
@@ -175,23 +182,33 @@ results['Geom.domain.Porosity.Value']['vals'][0][-1] = str(poros)
 ##### change boundary pressure of top layer
 if evap_choice == 0:
 	#Comment out evap file
-	results['Patch.top.BCPressure.Cycle']['vals'][1][0] = '#'+results['Patch.top.BCPressure.Cycle']['vals'][1][0]
-	results['Patch.top.BCPressure.alltime.Value']['vals'][0][0] = '#'+results['Patch.top.BCPressure.alltime.Value']['vals'][0][0]
 	results['Solver.EvapTransFile']['vals'][0][-1] = 'False'
 	results['Solver.EvapTrans.FileName']['vals'][0][0] = '#'+results['Solver.EvapTrans.FileName']['vals'][0][0]
-	#Change rain and rec values
-	results['Patch.top.BCPressure.rain.Value']['vals'][0][-1] = str(rain)
-	results['Patch.top.BCPressure.rec.Value']['vals'][0][-1] = str(rec)
+	if constant == 1:
+		#Comment out rain rec
+		results['Patch.top.BCPressure.Cycle']['vals'][0][0] = '#'+results['Patch.top.BCPressure.Cycle']['vals'][0][0]
+		results['Patch.top.BCPressure.rain.Value']['vals'][0][0] = '#'+results['Patch.top.BCPressure.rain.Value']['vals'][0][0]
+		results['Patch.top.BCPressure.rec.Value']['vals'][0][0] = '#'+results['Patch.top.BCPressure.rec.Value']['vals'][0][0]
+		#set constant input
+		results['Patch.top.BCPressure.Cycle']['vals'][1][-1] = '\"constant\"'
+		results['Patch.top.BCPressure.alltime.Value']['vals'][0][-1] = str(0.0)
+	else:
+		#Change rain and rec values
+		results['Patch.top.BCPressure.rain.Value']['vals'][0][-1] = str(rain)
+		results['Patch.top.BCPressure.rec.Value']['vals'][0][-1] = str(rec)
+		#comment out constant input
+		results['Patch.top.BCPressure.Cycle']['vals'][1][0] = '#'+results['Patch.top.BCPressure.Cycle']['vals'][1][0]
+		results['Patch.top.BCPressure.alltime.Value']['vals'][0][0] = '#'+results['Patch.top.BCPressure.alltime.Value']['vals'][0][0]
 else:
-	#Comment out rain rec
-	results['Patch.top.BCPressure.Cycle']['vals'][0][0] = '#'+results['Patch.top.BCPressure.Cycle']['vals'][0][0]
-	results['Patch.top.BCPressure.rain.Value']['vals'][0][0] = '#'+results['Patch.top.BCPressure.rain.Value']['vals'][0][0]
-	results['Patch.top.BCPressure.rec.Value']['vals'][0][0] = '#'+results['Patch.top.BCPressure.rec.Value']['vals'][0][0]
 	#Change evap files
 	results['Patch.top.BCPressure.Cycle']['vals'][1][-1] = '\"constant\"'
 	results['Patch.top.BCPressure.alltime.Value']['vals'][0][-1] = str(0.0)
 	results['Solver.EvapTransFile']['vals'][0][-1] = 'True'
 	results['Solver.EvapTrans.FileName']['vals'][0][-1] = evap_file
+
+##### change initial pressure height
+results['Geom.domain.ICPressure.Value']['vals'][0][-1] = str(init)
+results['Geom.domain.ICPressure.RefPatch']['vals'][0][-1] = initw
 
 #### change timing info
 results['TimingInfo.BaseUnit']['vals'][0][-1] = str(baseu)

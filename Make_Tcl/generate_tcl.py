@@ -23,11 +23,11 @@ def read_infile(infile):
 			'Geom.domain.Perm.Value','TimingInfo.BaseUnit','TimingInfo.StartTime',
 			'TimingInfo.StopTime','TimingInfo.DumpInterval','TimeStep.Value',
 			'Geom.domain.Porosity.Value','BCPressure.PatchNames',
-			'Patch.top.BCPressure.Cycle','Patch.top.BCPressure.rain.Value',
-			'Patch.top.BCPressure.rec.Value','Patch.top.BCPressure.alltime.Value',
-			'Solver.EvapTransFile','Solver.EvapTrans.FileName',
-			'TopoSlopesX.FileName', 'TopoSlopesY.FileName','pfdist',
-			'Geom.domain.ICPressure.Value','Geom.domain.ICPressure.RefPatch']
+			'Patch.top.BCPressure.Type','Patch.top.BCPressure.Cycle',
+			'Patch.top.BCPressure.rain.Value','Patch.top.BCPressure.rec.Value',
+			'Patch.top.BCPressure.alltime.Value','Solver.EvapTransFile',
+			'Solver.EvapTrans.FileName','TopoSlopesX.FileName', 'TopoSlopesY.FileName',
+			'pfdist','Geom.domain.ICPressure.Value','Geom.domain.ICPressure.RefPatch']
 	
 	with open(infile,'r') as fi:
 		content = fi.read()
@@ -75,6 +75,7 @@ parser.add_argument('-K','--perm',type=float, default = 0.02849, help='Permeabil
 parser.add_argument('--porosity',type=float, default = 0.39738, help='Porosity (optional). Default is 0.39738 (i.e. average porosity of the Upper Colorado basin)', required=False)
 parser.add_argument('--rain',type=float, default = -0.05, help='Rain value (optional). Default is -0.05', required=False)
 parser.add_argument('--rec',type=float, default = 0.0, help='Recession value (optional). Default is 0.0', required=False)
+parser.add_argument('--flow',type=str, default='OverlandFlow', help='Flow type for top layer (optional). Default is OverlandFlow', required=False)
 parser.add_argument('--constant',type=int, default=0, help='Constant boundary condition for top layer (optional). Default is No (0)', required=False)
 parser.add_argument('--initw',choices=['top','bottom'], default='bottom', help='Where to set initial pressure (optional). Default is bottom', required=False)
 parser.add_argument('--init',type=float, default = 0.0, help='Initial pressure for bottom layer (optional). Default is 0.0', required=False)
@@ -125,6 +126,11 @@ rec = args.rec
 constant = args.constant
 init = args.init
 initw = args.initw
+flow = args.flow
+
+if constant == 1 and flow == 'OverlandFlow':
+    parser.error('--flow should be set to FluxConst when --constant==1.')
+
 
 #### parsing timing info
 start_time = args.start
@@ -192,6 +198,8 @@ if evap_choice == 0:
 		#set constant input
 		results['Patch.top.BCPressure.Cycle']['vals'][1][-1] = '\"constant\"'
 		results['Patch.top.BCPressure.alltime.Value']['vals'][0][-1] = str(0.0)
+		#set flow type for top layer
+		results['Patch.top.BCPressure.Type']['vals'][0][-1] = flow
 	else:
 		#Change rain and rec values
 		results['Patch.top.BCPressure.rain.Value']['vals'][0][-1] = str(rain)

@@ -18,7 +18,7 @@ def latlon2pixzone(xul, yul, dx, dy, lat0,lon0):
 	cu = abs((lon0 - xul)/dx)
 	return int(round(rl)), int(round(cu))
 
-def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
+def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int32,ndata=-99):
 	#target raster file
 	geom_ref = ds_ref.GetGeoTransform()
 	target_ds = gdal.GetDriverByName('GTiff').Create(out_raster,

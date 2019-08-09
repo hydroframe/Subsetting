@@ -40,7 +40,10 @@ def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
 
 ###select feature method: either select feature by id or by point coordinate
 basin_id = sys.argv[1]
-out_file = 'UC.latlon.txt'
+basin_id = int(basin_id)
+
+out_file = sys.argv[2]
+
 
 ###required raster files
 conus_pf_1k_mask = 'conus_1km_PFmask2.tif'

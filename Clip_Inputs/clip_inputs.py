@@ -121,6 +121,11 @@ if __name__ == "__main__":
                                                  'ParFlow binary files')
     parser.add_argument('-i', '--input_file', type=str, required=True,
                         help='input file for subsetting')
+
+    parser.add_argument('-pfmask', '--pf_conus_mask_1km', type=str,
+                        default='conus_1km_PFmask2.tif',
+                        help='ParFlow CONUS 1km mask')
+
     parser.add_argument('--crop_to_domain', type=int,
                         help='crop to domain (i.e. value outside of the '
                              'domain will be assign as nodata -- optional). '
@@ -189,18 +194,16 @@ if __name__ == "__main__":
     # parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
     # parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
-    # required raster files
-    conus_pf_1k_mask = 'conus_1km_PFmask2.tif'
-
     # parsing arguments
     args = parser.parse_args()
 
+    # Check if pfconus mask file exists, if not we need to login 
+    # to avra and download.
+    conus_pf_1k_mask = args.pf_conus_mask_1km
 
-    avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
-
-    # Check if file exits, if not we need to login to avra and download.
     # This part requires icommand authorization
     if not os.path.isfile(conus_pf_1k_mask):
+        avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
         print(conus_pf_1k_mask+' does not exist...downloading from avra')
         auth = os.system('iinit')
         if auth != 0:
@@ -212,7 +215,6 @@ if __name__ == "__main__":
     # read domain raster
     ds_ref = gdal.Open(conus_pf_1k_mask)
     arr_ref = ds_ref.ReadAsArray()
-
 
     # read input file
     try:

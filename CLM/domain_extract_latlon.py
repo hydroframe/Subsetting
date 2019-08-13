@@ -16,7 +16,7 @@ def pixzone2latlon(xul, yul, dx, dy, x0,y0):
 	lon = xul + dx*x0
 	return lat, lon
 
-def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
+def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int32,ndata=-99):
 	#target raster file
 	geom_ref = ds_ref.GetGeoTransform()
 	target_ds = gdal.GetDriverByName('GTiff').Create(out_raster,
@@ -32,7 +32,7 @@ def rasterize(out_raster,in_shape,ds_ref,dtype=gdal.GDT_Int16,ndata=-99):
 	#Rasterize layer
 	if gdal.RasterizeLayer(target_ds, [1],
 							shp_layer,
-							options=["ATTRIBUTE=OBJECTID"])  != 0:
+							options=["ATTRIBUTE=BASIN_ID"])  != 0:
 		raise Exception("error rasterizing layer: %s" % shp_layer)
 	else:
 		target_ds.FlushCache()
@@ -49,7 +49,7 @@ conus_pf_1k_tifs = [conus_pf_1k_mask]
 avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
 
 ###required shapefile
-region_shp = 'Regions.shp'
+region_shp = 'hydroshed_BB.shp'
 
 avra_path_shp = '/iplant/home/shared/avra/CONUS_1.0/SteadyState_Final/Subdomain_Extraction/Shape_Files/Regions_shp/'
 
@@ -96,7 +96,8 @@ if os.path.isfile(region_raster):
 rasterize(region_raster,region_shp,ds_ref)
 
 shp_raster_arr = gdal.Open(region_raster).ReadAsArray()
-yy,xx = np.where(shp_raster_arr==basin_id)
+
+yy,xx = np.where(shp_raster_arr==int(basin_id))
 
 ##find the extends
 new_arr = shp_raster_arr[min(yy):max(yy)+1,min(xx):max(xx)+1]

@@ -136,6 +136,17 @@ if __name__ == "__main__":
                         help='y0 (optional).Default is 0')
     parser.add_argument('-z0', type=int, default=0,
                         help='z0 (optional).Default is 0')
+    parser.add_argument('-dx', type=int, default=1000,
+                        help='Spatial resolution of solidfile (optional). '
+                             'Default is 1000')
+    parser.add_argument('-dz', type=int, default=1000,
+                        help='Lateral resolution of solidfile (optional). '
+                             'Default is 1000')
+    parser.add_argument('-printmask', type=int, default=0,
+                        help='Print mask (optional). Default is 0')
+    parser.add_argument('-out_name', type=str,
+                          help='Name of output solidfile (optional)')
+
     subparsers = parser.add_subparsers(dest='type',
                                        help='subset using three options:')
 
@@ -143,40 +154,18 @@ if __name__ == "__main__":
     parser_a = subparsers.add_parser('shapefile',
                                      help='subset using shapefile and the '
                                           'selected id of watershed')
-    parser_a.add_argument('-shp_file', type=str, required=True, help='input shapefile')
-    parser_a.add_argument('-id', type=int, required=True, help='id of the selected watershed')
-    parser_a.add_argument('-out_name', type=str,
-                          help='Name of output solidfile (optional)')
-    parser_a.add_argument('-dx', type=int, default=1000,
-                          help='Spatial resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_a.add_argument('-dz', type=int, default=1000,
-                          help='Lateral resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_a.add_argument('-printmask', type=int, default=0,
-                          help='Print mask (optional). Default is 0')
+    parser_a.add_argument('-shp_file', type=str, required=True,
+                          help='input shapefile')
+    parser_a.add_argument('-id', type=int, required=True,
+                          help='id of the selected watershed')
     parser_a.add_argument('-att', type=str, required=False, default='OBJECTID',
                           help='Column name of the shape attribute to use '
                                'during rasterize')
-    # parser_a.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
-    # parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
     # group 2: using mask file
     parser_b = subparsers.add_parser('mask', help='subset using a mask file')
     parser_b.add_argument('-mask_file', type=str, required=True,
                           help='input mask file')
-    parser_b.add_argument('-out_name', type=str,
-                          help='Name of output solidfile (optional)')
-    parser_b.add_argument('-dx', type=int, default=1000,
-                          help='Spatial resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_b.add_argument('-dz', type=int, default=1000,
-                          help='Lateral resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_b.add_argument('-printmask', type=int, default=0,
-                          help='print mask (optional). Default is 0')
-    # parser_b.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
-    # parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
     # group 3: using custom watershed
     parser_c = subparsers.add_parser('define_watershed',
@@ -186,20 +175,8 @@ if __name__ == "__main__":
                           help='input direction file',)
     parser_c.add_argument('-outlet_file', type=str, required=True,
                           help='file contains coordinates of outlet points')
-    parser_c.add_argument('-out_name', type=str, required=True,
-                          help='name of output solidfile')
-    parser_c.add_argument('-dx', type=int, default=1000,
-                          help='Spatial resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_c.add_argument('-dz', type=int, default=1000,
-                          help='Lateral resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_c.add_argument('-printmask', type=int, default=0,
-                          help='print mask (optional). Default is 0')
-    # parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
-    # parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
-    # parsing arguments
+    # parse arguments
     args = parser.parse_args()
 
     # make sure that type is not None. Exit early if it is.

@@ -143,8 +143,8 @@ if __name__ == "__main__":
     parser_a = subparsers.add_parser('shapefile',
                                      help='subset using shapefile and the '
                                           'selected id of watershed')
-    parser_a.add_argument('-shp_file', type=str, help='input shapefile')
-    parser_a.add_argument('-id', type=int, help='id of the selected watershed')
+    parser_a.add_argument('-shp_file', type=str, required=True, help='input shapefile')
+    parser_a.add_argument('-id', type=int, required=True, help='id of the selected watershed')
     parser_a.add_argument('-out_name', type=str,
                           help='Name of output solidfile (optional)')
     parser_a.add_argument('-dx', type=int, default=1000,
@@ -199,6 +199,11 @@ if __name__ == "__main__":
 
     # parsing arguments
     args = parser.parse_args()
+
+    # make sure that type is not None. Exit early if it is.
+    if args.type is None:
+        parser.print_usage()
+        sys.exit(1)
 
     # Check if pfconus mask file exists, if not we need to login 
     # to avra and download.

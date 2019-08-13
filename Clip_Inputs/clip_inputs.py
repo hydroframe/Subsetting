@@ -119,7 +119,7 @@ def subset(arr, mask_arr, ds_ref, crop_to_domain, ndata=0):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Create a clipped input '
                                                  'ParFlow binary files')
-    parser.add_argument('-i', '--input_file', type=str,
+    parser.add_argument('-i', '--input_file', type=str, required=True,
                         help='input file for subsetting')
     parser.add_argument('--crop_to_domain', type=int,
                         help='crop to domain (i.e. value outside of the '
@@ -192,12 +192,16 @@ if __name__ == "__main__":
     # required raster files
     conus_pf_1k_mask = 'conus_1km_PFmask2.tif'
 
+    # parsing arguments
+    args = parser.parse_args()
+
+
     avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
 
     # Check if file exits, if not we need to login to avra and download.
     # This part requires icommand authorization
     if not os.path.isfile(conus_pf_1k_mask):
-        print(conus_pf_1k_mask+' does not exits...downloading from avra')
+        print(conus_pf_1k_mask+' does not exist...downloading from avra')
         auth = os.system('iinit')
         if auth != 0:
             print('Authentication failed...exit')
@@ -209,8 +213,6 @@ if __name__ == "__main__":
     ds_ref = gdal.Open(conus_pf_1k_mask)
     arr_ref = ds_ref.ReadAsArray()
 
-    # parsing arguments
-    args = parser.parse_args()
 
     # read input file
     try:

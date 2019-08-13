@@ -162,8 +162,10 @@ if __name__ == "__main__":
     # parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
     # group 2: using mask file
-    parser_b = subparsers.add_parser('mask', help='subset using a mask file')
-    parser_b.add_argument('-mask_file', type=str, help='input mask file')
+    parser_b = subparsers.add_parser('mask', required=True,
+                                     help='subset using a mask file')
+    parser_b.add_argument('-mask_file', type=str, required=True,
+                          help='input mask file')
     parser_b.add_argument('-out_name', type=str,
                           help='Name of output solidfile (optional)')
     parser_b.add_argument('-dx', type=int, default=1000,
@@ -178,14 +180,15 @@ if __name__ == "__main__":
     # parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
     # group 3: using custom watershed
-    parser_c = subparsers.add_parser('define_watershed',
+    parser_c = subparsers.add_parser('define_watershed', required=True,
                                      help='subset using a newly created '
                                           'watershed')
-    parser_c.add_argument('-dir_file', type=str, help='input direction file',)
-    parser_c.add_argument('-outlet_file', type=str,
+    parser_c.add_argument('-dir_file', type=str, required=True,
+                          help='input direction file',)
+    parser_c.add_argument('-outlet_file', type=str, required=True,
                           help='file contains coordinates of outlet points')
-    parser_c.add_argument('-out_name', type=str,
-                          help='name of output solidfile (required)')
+    parser_c.add_argument('-out_name', type=str, required=True,
+                          help='name of output solidfile')
     parser_c.add_argument('-dx', type=int, default=1000,
                           help='Spatial resolution of solidfile (optional). '
                                'Default is 1000')

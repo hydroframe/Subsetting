@@ -126,13 +126,16 @@ if __name__ == "__main__":
                         default='conus_1km_PFmask2.tif',
                         help='ParFlow CONUS 1km mask')
 
-    parser.add_argument('--crop_to_domain', type=int,
+    parser.add_argument('--crop_to_domain', type=int, default=1,
                         help='crop to domain (i.e. value outside of the '
                              'domain will be assign as nodata -- optional). '
                              'Default is 1')
-    parser.add_argument('-x0', type=int, help='x0 (optional).Default is 0')
-    parser.add_argument('-y0', type=int, help='y0 (optional).Default is 0')
-    parser.add_argument('-z0', type=int, help='z0 (optional).Default is 0')
+    parser.add_argument('-x0', type=int, default=0,
+                        help='x0 (optional).Default is 0')
+    parser.add_argument('-y0', type=int, default=0,
+                        help='y0 (optional).Default is 0')
+    parser.add_argument('-z0', type=int, default=0,
+                        help='z0 (optional).Default is 0')
     subparsers = parser.add_subparsers(dest='type',
                                        help='subset using three options:')
 
@@ -144,13 +147,13 @@ if __name__ == "__main__":
     parser_a.add_argument('-id', type=int, help='id of the selected watershed')
     parser_a.add_argument('-out_name', type=str,
                           help='Name of output solidfile (optional)')
-    parser_a.add_argument('-dx', type=int,
+    parser_a.add_argument('-dx', type=int, default=1000,
                           help='Spatial resolution of solidfile (optional). '
                                'Default is 1000')
-    parser_a.add_argument('-dz', type=int,
+    parser_a.add_argument('-dz', type=int, default=1000,
                           help='Lateral resolution of solidfile (optional). '
                                'Default is 1000')
-    parser_a.add_argument('-printmask', type=int,
+    parser_a.add_argument('-printmask', type=int, default=0,
                           help='Print mask (optional). Default is 0')
     parser_a.add_argument('-att', type=str, required=False, default='OBJECTID',
                           help='Column name of the shape attribute to use '
@@ -163,13 +166,13 @@ if __name__ == "__main__":
     parser_b.add_argument('-mask_file', type=str, help='input mask file')
     parser_b.add_argument('-out_name', type=str,
                           help='Name of output solidfile (optional)')
-    parser_b.add_argument('-dx', type=int,
+    parser_b.add_argument('-dx', type=int, default=1000,
                           help='Spatial resolution of solidfile (optional). '
                                'Default is 1000')
-    parser_b.add_argument('-dz', type=int,
+    parser_b.add_argument('-dz', type=int, default=1000,
                           help='Lateral resolution of solidfile (optional). '
                                'Default is 1000')
-    parser_b.add_argument('-printmask', type=int,
+    parser_b.add_argument('-printmask', type=int, default=0,
                           help='print mask (optional). Default is 0')
     # parser_b.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
     # parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
@@ -183,13 +186,13 @@ if __name__ == "__main__":
                           help='file contains coordinates of outlet points')
     parser_c.add_argument('-out_name', type=str,
                           help='name of output solidfile (required)')
-    parser_c.add_argument('-dx', type=int,
+    parser_c.add_argument('-dx', type=int, default=1000,
                           help='Spatial resolution of solidfile (optional). '
                                'Default is 1000')
-    parser_c.add_argument('-dz', type=int,
+    parser_c.add_argument('-dz', type=int, default=1000,
                           help='Lateral resolution of solidfile (optional). '
                                'Default is 1000')
-    parser_c.add_argument('-printmask', type=int,
+    parser_c.add_argument('-printmask', type=int, default=0,
                           help='print mask (optional). Default is 0')
     # parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
     # parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
@@ -216,14 +219,10 @@ if __name__ == "__main__":
     ds_ref = gdal.Open(conus_pf_1k_mask)
     arr_ref = ds_ref.ReadAsArray()
 
-    # read input file
-    try:
-        infile = args.i
-    except Exception:
-        infile = args.input_file
-
+    # make sure that the input file exists before proceeding
+    infile = args.input_file
     if not os.path.isfile(infile):
-        print(infile+' does not exits...exitting')
+        print(f'{infile} does not exist...exiting')
         sys.exit()
 
     file_ext = os.path.splitext(os.path.basename(infile))[1]
@@ -240,41 +239,14 @@ if __name__ == "__main__":
 
     arr_in = read_from_file(infile)
 
-    # deal with optional arguments
-    if args.crop_to_domain is None:
-        crop_to_domain = 1
-    else:
-        crop_to_domain = args.crop_to_domain
-
-    if args.dx is None:
-        dx = 1000.
-    else:
-        dx = args.dx
-
-    if args.dz is None:
-        dz = 1000.
-    else:
-        dz = args.dz
-
-    if args.printmask is None:
-        printmask = 0
-    else:
-        printmask = 1
-
-    if args.x0 is None:
-        x0 = 0.
-    else:
-        x0 = args.x0
-
-    if args.y0 is None:
-        y0 = 0.
-    else:
-        y0 = args.y0
-
-    if args.z0 is None:
-        z0 = 0.
-    else:
-        z0 = args.z0
+    # read arguments into more friendly variable names
+    crop_to_domain = args.crop_to_domain
+    dx = args.dx
+    dz = args.dz
+    printmask = args.printmask
+    x0 = args.x0
+    y0 = args.y0
+    z0 = args.z0
 
     # main arguments
     if args.type == 'shapefile':

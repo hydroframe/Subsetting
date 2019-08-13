@@ -162,8 +162,7 @@ if __name__ == "__main__":
     # parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
     # group 2: using mask file
-    parser_b = subparsers.add_parser('mask', required=True,
-                                     help='subset using a mask file')
+    parser_b = subparsers.add_parser('mask', help='subset using a mask file')
     parser_b.add_argument('-mask_file', type=str, required=True,
                           help='input mask file')
     parser_b.add_argument('-out_name', type=str,
@@ -180,7 +179,7 @@ if __name__ == "__main__":
     # parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
     # group 3: using custom watershed
-    parser_c = subparsers.add_parser('define_watershed', required=True,
+    parser_c = subparsers.add_parser('define_watershed',
                                      help='subset using a newly created '
                                           'watershed')
     parser_c.add_argument('-dir_file', type=str, required=True,

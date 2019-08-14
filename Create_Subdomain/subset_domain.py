@@ -126,6 +126,22 @@ if __name__ == "__main__":
                              'Default is 1000')
     parser.add_argument('-printmask', type=int, default=0,
                         help='print mask (optional). Default is 0')
+    parser.add_argument('-pfmask', '--conus_pf_1k_mask', type=str,
+                        default='conus_1km_PFmask2.tif',
+                        help='ParFlow CONUS 1km mask (tif)')
+    parser.add_argument('-pflakesmask', '--conus_pf_1k_lakes', type=str,
+                        default='conus_1km_PFmask_selectLakesmask.tif',
+                        help='ParFlow CONUS 1km lakes mask (tif)')
+    parser.add_argument('-pflakesborder', '--conus_pf_1k_lakes_border',
+                        type=str,
+                        default='conus_1km_PFmask_selectLakesborder.tif',
+                        help='ParFlow CONUS 1km lake borders (tif)')
+    parser.add_argument('-pfbordertype', '--conus_pf_1k_border_type',
+                        type=str, default='1km_PF_BorderCellType.tif',
+                        help='ParFlow CONUS 1km border cell type (tif)')
+    parser.add_argument('-pfsinks', '--conus_pf_1k_sinks',
+                        type=str, default='conus_1km_PFmask_manualsinks.tif',
+                        help='ParFlow CONUS 1km sinks (tif)')
 
     subparsers = parser.add_subparsers(dest='type',
                                        help='subset using three options:')
@@ -167,26 +183,26 @@ if __name__ == "__main__":
         os.chdir('..')
 
     # required raster files
-    conus_pf_1k_mask = 'conus_1km_PFmask2.tif'
+    conus_pf_1k_mask = args.conus_pf_1k_mask
 
     # 1 for cells inside domain, 0 for cells outside domain, 2 for sinks
-    conus_pf_1k_sinks = 'conus_1km_PFmask_manualsinks.tif'
+    conus_pf_1k_sinks = args.conus_pf_1k_sinks
 
     # 1 for lakes, 0 for everything else
-    conus_pf_1k_lakes = 'conus_1km_PFmask_selectLakesmask.tif'
-    conus_pf_1k_lakes_border = 'conus_1km_PFmask_selectLakesborder.tif'
+    conus_pf_1k_lakes = args.conus_pf_1k_lakes
+    conus_pf_1k_lakes_border = args.conus_pf_1k_lakes_border
 
     # A mask marking with 1 for for cells with an ocean border and
     # 2 for cells with a land border
-    conus_pf_1k_border_type = '1km_PF_BorderCellType.tif'
+    conus_pf_1k_border_type = args.conus_pf_1k_border_type
 
     conus_pf_1k_tifs = [conus_pf_1k_mask, conus_pf_1k_sinks, conus_pf_1k_lakes,
                         conus_pf_1k_lakes_border, conus_pf_1k_border_type]
-    avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
 
     # check if file exits, if not we need to login to avra and download.
     # This part requires icommand authorization
     if any([not os.path.isfile(x) for x in conus_pf_1k_tifs]):
+        avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
         print(conus_pf_1k_mask+' does not exits...downloading from avra')
         auth = os.system('iinit')
         if auth != 0:

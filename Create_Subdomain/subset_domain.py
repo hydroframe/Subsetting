@@ -1,17 +1,15 @@
 #!/usr/local/bin/python3
 
-#required libraries
-import gdal, ogr, osr
+import gdal
+import ogr
 import numpy as np
 import pandas as pd
 import argparse
-#from glob import glob
 import os
 import sys
 import pfio
 from Define_Watershed import DelinWatershed
-#import subprocess
-#import matplotlib.pyplot as plt
+
 
 def latlon2pixzone(xul, yul, dx, dy, lat0,lon0):
 	rl = abs((yul - lat0)/dy)

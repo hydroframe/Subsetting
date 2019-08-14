@@ -206,11 +206,11 @@ if __name__ == "__main__":
     conus_pf_1k_tifs = [conus_pf_1k_mask, conus_pf_1k_sinks, conus_pf_1k_lakes,
                         conus_pf_1k_lakes_border, conus_pf_1k_border_type]
 
-    # check if file exits, if not we need to login to avra and download.
+    # check if file exist, if not we need to login to avra and download.
     # This part requires icommand authorization
     if any([not os.path.isfile(x) for x in conus_pf_1k_tifs]):
         avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
-        print(conus_pf_1k_mask+' does not exits...downloading from avra')
+        print(conus_pf_1k_mask+' does not exist...downloading from avra')
         auth = os.system('iinit')
         if auth != 0:
             print('Authentication failed...exit')
@@ -236,7 +236,7 @@ if __name__ == "__main__":
         basin_id = args.id
         region_shp = args.shp_file
 
-        # check if shapefile exits locally
+        # check if shapefile exist locally
         avra_path_shp = '/iplant/home/shared/avra/CONUS_1.0/' + \
                         'SteadyState_Final/Subdomain_Extraction/' + \
                         'Shape_Files/Regions_shp/'
@@ -247,7 +247,7 @@ if __name__ == "__main__":
         region_raster = 'Regions.tif'
 
         if not os.path.isfile(region_shp):
-            print(region_shp+' does not exits...downloading from avra')
+            print(region_shp+' does not exist...downloading from avra')
             auth = os.system('iinit')
             if auth != 0:
                 print('Authentication failed...exit')
@@ -270,7 +270,7 @@ if __name__ == "__main__":
     elif args.type == 'mask':
         mask_file = args.mask_file
         if not os.path.isfile(mask_file):
-            print(mask_file+' does not exits...please create one')
+            print(mask_file+' does not exist...please create one')
             sys.exit()
 
         file_ext = os.path.splitext(os.path.basename(mask_file))[1]
@@ -290,7 +290,7 @@ if __name__ == "__main__":
     elif args.type == 'define_watershed':
         dir_file = args.dir_file
         if not os.path.isfile(dir_file):
-            print(dir_file+' does not exits...downloading from avra')
+            print(dir_file+' does not exist...downloading from avra')
             auth = os.system('iinit')
             if auth != 0:
                 print('Authentication failed...exit')
@@ -314,7 +314,7 @@ if __name__ == "__main__":
 
         outlet_file = args.outlet_file
         if not os.path.isfile(outlet_file):
-            print(outlet_file+' does not exits...please create one')
+            print(outlet_file+' does not exist...please create one')
             sys.exit()
 
         dir_arr = read_from_file(dir_file)

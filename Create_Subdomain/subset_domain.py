@@ -116,6 +116,17 @@ def subset(arr, mask_arr, ds_ref, ndata=0):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Create a solid file of'
                                                  'masked domain for ParFlow')
+    parser.add_argument('-out_name', type=str,
+                        help='name of output solidfile (optional)')
+    parser.add_argument('-dx', type=int,
+                        help='spatial resolution of solidfile (optional). '
+                             'Default is 1000')
+    parser.add_argument('-dz', type=int,
+                        help='lateral resolution of solidfile (optional). '
+                             'Default is 1000')
+    parser.add_argument('-printmask', type=int,
+                        help='print mask (optional). Default is 0')
+
     subparsers = parser.add_subparsers(dest='type',
                                        help='subset using three options:')
 
@@ -130,30 +141,10 @@ if __name__ == "__main__":
     parser_a.add_argument('-att', type=str, required=False, default='OBJECTID',
                           help='Column name of the shape attribute to use '
                                'during rasterize')
-    parser_a.add_argument('-out_name', type=str,
-                          help='name of output solidfile (optional)')
-    parser_a.add_argument('-dx', type=int,
-                          help='spatial resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_a.add_argument('-dz', type=int,
-                          help='lateral resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_a.add_argument('-printmask', type=int,
-                          help='print mask (optional). Default is 0')
 
     # group 2: using mask file
     parser_b = subparsers.add_parser('mask', help='subset using a mask file')
     parser_b.add_argument('-mask_file', type=str, help='input mask file')
-    parser_b.add_argument('-out_name', type=str,
-                          help='name of output solidfile (optional)')
-    parser_b.add_argument('-dx', type=int,
-                          help='spatial resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_b.add_argument('-dz', type=int,
-                          help='lateral resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_b.add_argument('-printmask', type=int,
-                          help='print mask (optional). Default is 0')
 
     # group 3: using custom watershed
     parser_c = subparsers.add_parser('define_watershed',
@@ -163,16 +154,6 @@ if __name__ == "__main__":
                           help='input direction file',)
     parser_c.add_argument('-outlet_file', type=str,
                           help='file contains coordinates of outlet points')
-    parser_c.add_argument('-out_name', type=str,
-                          help='name of output solidfile (required)')
-    parser_c.add_argument('-dx', type=int,
-                          help='spatial resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_c.add_argument('-dz', type=int,
-                          help='lateral resolution of solidfile (optional). '
-                               'Default is 1000')
-    parser_c.add_argument('-printmask', type=int,
-                          help='print mask (optional). Default is 0')
 
     # Download and install pf-mask-utilities
     if not os.path.isdir('pf-mask-utilities'):

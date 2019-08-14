@@ -116,15 +116,15 @@ def subset(arr, mask_arr, ds_ref, ndata=0):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Create a solid file of'
                                                  'masked domain for ParFlow')
-    parser.add_argument('-out_name', type=str,
+    parser.add_argument('-out_name', type=str, required=True,
                         help='name of output solidfile (optional)')
-    parser.add_argument('-dx', type=int,
+    parser.add_argument('-dx', type=int, default=1000,
                         help='spatial resolution of solidfile (optional). '
                              'Default is 1000')
-    parser.add_argument('-dz', type=int,
+    parser.add_argument('-dz', type=int, default=1000,
                         help='lateral resolution of solidfile (optional). '
                              'Default is 1000')
-    parser.add_argument('-printmask', type=int,
+    parser.add_argument('-printmask', type=int, default=0,
                         help='print mask (optional). Default is 0')
 
     subparsers = parser.add_subparsers(dest='type',
@@ -134,9 +134,9 @@ if __name__ == "__main__":
     parser_a = subparsers.add_parser('shapefile',
                                      help='subset using shapefile and the '
                                           'selected id of watershed')
-    parser_a.add_argument('-shp_file', type=str,
+    parser_a.add_argument('-shp_file', type=str, required=True,
                           help='input shapefile')
-    parser_a.add_argument('-id', type=int,
+    parser_a.add_argument('-id', type=int, required=True,
                           help='id of the selected watershed')
     parser_a.add_argument('-att', type=str, required=False, default='OBJECTID',
                           help='Column name of the shape attribute to use '
@@ -144,16 +144,20 @@ if __name__ == "__main__":
 
     # group 2: using mask file
     parser_b = subparsers.add_parser('mask', help='subset using a mask file')
-    parser_b.add_argument('-mask_file', type=str, help='input mask file')
+    parser_b.add_argument('-mask_file', type=str, required=True,
+                          help='input mask file')
 
     # group 3: using custom watershed
     parser_c = subparsers.add_parser('define_watershed',
                                      help='subset using a newly created'
                                           'watershed')
-    parser_c.add_argument('-dir_file', type=str,
+    parser_c.add_argument('-dir_file', type=str, required=True,
                           help='input direction file',)
-    parser_c.add_argument('-outlet_file', type=str,
+    parser_c.add_argument('-outlet_file', type=str, required=True,
                           help='file contains coordinates of outlet points')
+
+    # parsing arguments
+    args = parser.parse_args()
 
     # Download and install pf-mask-utilities
     if not os.path.isdir('pf-mask-utilities'):
@@ -200,24 +204,10 @@ if __name__ == "__main__":
     lakes_mat = gdal.Open(conus_pf_1k_lakes).ReadAsArray()
     sinks_mat = gdal.Open(conus_pf_1k_sinks).ReadAsArray()
 
-    # parsing arguments
-    args = parser.parse_args()
-
     # deal with optional arguments
-    if not args.dx:
-        dx = 1000
-    else:
-        dx = args.dx
-
-    if not args.dz:
-        dz = 1000
-    else:
-        dz = args.dz
-
-    if not args.printmask:
-        printmask = 0
-    else:
-        printmask = 1
+    dx = args.dx
+    dz = args.dz
+    printmask = args.printmask
 
     if args.type == 'shapefile':
         basin_id = args.id

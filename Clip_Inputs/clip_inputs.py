@@ -39,7 +39,8 @@ def rasterize(out_raster, in_shape, ds_ref,
     # Rasterize layer
     if gdal.RasterizeLayer(target_ds, [1],
                            shp_layer,
-                           options=[f"ATTRIBUTE={attribute_name}"]) != 0:
+                           options=[f"ATTRIBUTE={attribute_name}",
+                                    "ALL_TOUCHED=TRUE"]) != 0:
         raise Exception("error rasterizing layer: %s" % shp_layer)
     else:
         target_ds.FlushCache()

@@ -175,6 +175,11 @@ if __name__ == "__main__":
     # parsing arguments
     args = parser.parse_args()
 
+    # make sure that type is not None. Exit early if it is.
+    if args.type is None:
+        parser.print_usage()
+        sys.exit(1)
+
     # Download and install pf-mask-utilities
     if not os.path.isdir('pf-mask-utilities'):
         os.system('git clone https://github.com/smithsg84/pf-mask-utilities.git')

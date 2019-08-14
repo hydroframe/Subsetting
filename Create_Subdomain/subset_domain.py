@@ -116,7 +116,7 @@ def subset(arr, mask_arr, ds_ref, ndata=0):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Create a solid file of'
                                                  'masked domain for ParFlow')
-    parser.add_argument('-out_name', type=str, required=True,
+    parser.add_argument('-out_name', type=str,
                         help='name of output solidfile (optional)')
     parser.add_argument('-dx', type=int, default=1000,
                         help='spatial resolution of solidfile (optional). '
@@ -178,6 +178,8 @@ if __name__ == "__main__":
     # make sure that type is not None. Exit early if it is.
     if args.type is None:
         parser.print_usage()
+        print(f'{os.path.basename(__file__)}: error: No method specified. '
+              'Please choose either: shapefile, mask, or define_watershed')
         sys.exit(1)
 
     # Download and install pf-mask-utilities

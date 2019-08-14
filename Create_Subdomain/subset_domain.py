@@ -17,7 +17,9 @@ def latlon2pixzone(xul, yul, dx, dy, lat0, lon0):
     return int(round(rl)), int(round(cu))
 
 
-def rasterize(out_raster, in_shape, ds_ref, dtype=gdal.GDT_Int16, ndata=-99):
+def rasterize(out_raster, in_shape, ds_ref,
+              dtype=gdal.GDT_Int32, ndata=-99,
+              attribute_name='OBJECTID'):
 
     # target raster file
     geom_ref = ds_ref.GetGeoTransform()
@@ -36,7 +38,7 @@ def rasterize(out_raster, in_shape, ds_ref, dtype=gdal.GDT_Int16, ndata=-99):
     # Rasterize layer
     if gdal.RasterizeLayer(target_ds, [1],
                            shp_layer,
-                           options=["ATTRIBUTE=OBJECTID"]) != 0:
+                           options=[f"ATTRIBUTE={attribute_name}"]) != 0:
         raise Exception("error rasterizing layer: %s" % shp_layer)
     else:
         target_ds.FlushCache()
@@ -125,6 +127,9 @@ if __name__ == "__main__":
                           help='input shapefile')
     parser_a.add_argument('-id', type=int,
                           help='id of the selected watershed')
+    parser_a.add_argument('-att', type=str, required=False, default='OBJECTID',
+                          help='Column name of the shape attribute to use '
+                               'during rasterize')
     parser_a.add_argument('-out_name', type=str,
                           help='name of output solidfile (optional)')
     parser_a.add_argument('-dx', type=int,
@@ -261,7 +266,7 @@ if __name__ == "__main__":
         if os.path.isfile(region_raster):
             os.remove(region_raster)
 
-        rasterize(region_raster, region_shp, ds_ref)
+        rasterize(region_raster, region_shp, ds_ref, attribute_name=args.att)
 
         shp_raster_arr = gdal.Open(region_raster).ReadAsArray()
 

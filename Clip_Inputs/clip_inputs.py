@@ -183,6 +183,8 @@ if __name__ == "__main__":
     # parse arguments
     args = parser.parse_args()
 
+    outdir = abspath(dirname(args.out_name))
+
     # make sure that type is not None. Exit early if it is.
     if args.type is None:
         parser.print_usage()
@@ -249,7 +251,7 @@ if __name__ == "__main__":
         region_shps = [region_shp.split('.')[0]+x for x in
                        ['.shp', '.dbf', '.prj', '.shx', '.sbx', '.sbn']]
 
-        region_raster = join(abspath(dirname(args.out_name)), 'Regions.tif')
+        region_raster = f'{outdir}/Regions.tif'
 
         if not os.path.isfile(region_shp):
             print(region_shp+' does not exits...downloading from avra')

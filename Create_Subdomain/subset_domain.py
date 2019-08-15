@@ -179,6 +179,8 @@ if __name__ == "__main__":
     # parsing arguments
     args = parser.parse_args()
 
+    outdir = abspath(dirname(args.out_name))
+
     # make sure that type is not None. Exit early if it is.
     if args.type is None:
         parser.print_usage()
@@ -248,7 +250,7 @@ if __name__ == "__main__":
         region_shps = [region_shp.split('.')[0]+x for x in
                        ['.shp', '.dbf', '.prj', '.shx', '.sbx', '.sbn']]
 
-        region_raster = join(abspath(dirname(args.out_name)), 'Regions.tif')
+        region_raster = f'{outdir}/Regions.tif'
 
         if not os.path.isfile(region_shp):
             print(region_shp+' does not exist...downloading from avra')
@@ -410,12 +412,12 @@ if __name__ == "__main__":
     header += 'cellsize '+str(dx) + '\n'
     header += 'NODATA_value 0.0\n'
 
-    patches = {'Back_Border.asc': back_mat,
-               'Front_Border.asc': front_mat,
-               'Right_Border.asc': right_mat,
-               'Left_Border.asc': left_mat,
-               'Bottom_Border.asc': bottom_mat,
-               'Top_Border.asc': top_mat}
+    patches = {f'{outdir}/Back_Border.asc': back_mat,
+               f'{outdir}/Front_Border.asc': front_mat,
+               f'{outdir}/Right_Border.asc': right_mat,
+               f'{outdir}/Left_Border.asc': left_mat,
+               f'{outdir}/Bottom_Border.asc': bottom_mat,
+               f'{outdir}/Top_Border.asc': top_mat}
 
     list_patches = list(patches.keys())
 

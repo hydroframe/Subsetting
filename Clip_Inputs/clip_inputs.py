@@ -146,7 +146,7 @@ if __name__ == "__main__":
     parser.add_argument('-printmask', type=int, default=0,
                         help='Print mask (optional). Default is 0')
     parser.add_argument('-out_name', type=str,
-                          help='Name of output solidfile (optional)')
+                        help='Name of output solidfile (optional)')
 
     subparsers = parser.add_subparsers(dest='type',
                                        help='subset using three options:')
@@ -157,7 +157,7 @@ if __name__ == "__main__":
                                           'selected id of watershed')
     parser_a.add_argument('-shp_file', type=str, required=True,
                           help='input shapefile')
-    parser_a.add_argument('-id', type=int, required=True,
+    parser_a.add_argument('-id', type=int, nargs='+', required=True,
                           help='id of the selected watershed')
     parser_a.add_argument('-att', type=str, required=False, default='OBJECTID',
                           help='Column name of the shape attribute to use '
@@ -185,7 +185,7 @@ if __name__ == "__main__":
         parser.print_usage()
         sys.exit(1)
 
-    # Check if pfconus mask file exists, if not we need to login 
+    # Check if pfconus mask file exists, if not we need to login
     # to avra and download.
     conus_pf_1k_mask = args.pf_conus_mask_1km
 
@@ -235,7 +235,7 @@ if __name__ == "__main__":
 
     # main arguments
     if args.type == 'shapefile':
-        basin_id = args.id
+        basin_ids = args.id
         region_shp = args.shp_file
 
         # check if shapefile exits locally
@@ -266,8 +266,9 @@ if __name__ == "__main__":
 
         shp_raster_arr = gdal.Open(region_raster).ReadAsArray()
 
-        # mask array
-        mask_arr = (shp_raster_arr == basin_id).astype(np.int)
+        # select indices from rasterized arr where values
+        # is in basin_ids list
+        mask_arr = np.isin(shp_raster_arr, basin_ids).astype(np.int)
 
     elif args.type == 'mask':
         mask_file = args.mask_file

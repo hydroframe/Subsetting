@@ -154,7 +154,7 @@ if __name__ == "__main__":
                                           'selected id of watershed')
     parser_a.add_argument('-shp_file', type=str, required=True,
                           help='input shapefile')
-    parser_a.add_argument('-id', type=int, required=True,
+    parser_a.add_argument('-id', type=int, nargs='+', required=True,
                           help='id of the selected watershed')
     parser_a.add_argument('-att', type=str, required=False, default='OBJECTID',
                           help='Column name of the shape attribute to use '
@@ -235,7 +235,7 @@ if __name__ == "__main__":
     printmask = args.printmask
 
     if args.type == 'shapefile':
-        basin_id = args.id
+        basin_ids = args.id
         region_shp = args.shp_file
 
         # check if shapefile exist locally
@@ -267,7 +267,7 @@ if __name__ == "__main__":
         shp_raster_arr = gdal.Open(region_raster).ReadAsArray()
 
         # mask array
-        mask_arr = (shp_raster_arr == basin_id).astype(np.int)
+        mask_arr = np.isin(shp_raster_arr, basin_ids).astype(np.int)
 
     elif args.type == 'mask':
         mask_file = args.mask_file
@@ -429,7 +429,7 @@ if __name__ == "__main__":
         out_pfsol = args.out_name+'.pfsol'
     else:
         if args.type == 'shapefile':
-            out_name = str(basin_id)
+            out_name = '_'.join([str(s) for s in basin_ids])
         elif args.type == 'mask':
             out_name = os.path.splitext(os.path.basename(args.mask_file))[0]
         elif args.type == 'define_watershed':

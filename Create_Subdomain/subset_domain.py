@@ -9,7 +9,8 @@ import os
 import sys
 import pfio
 from Define_Watershed import DelinWatershed
-
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 def latlon2pixzone(xul, yul, dx, dy, lat0, lon0):
     rl = abs((yul - lat0)/dy)

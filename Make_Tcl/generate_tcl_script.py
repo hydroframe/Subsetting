@@ -1,13 +1,8 @@
-#!/usr/local/bin/python3
+#!/usr/bin/env python3
 
-#required libraries
-import gdal, ogr, osr
 import numpy as np
-#from glob import glob
 import os
 import sys
-#import subprocess
-#import matplotlib.pyplot as plt
 
 ###mask name
 mask_name = sys.argv[1]

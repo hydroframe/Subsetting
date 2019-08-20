@@ -103,10 +103,17 @@ yy,xx = np.where(shp_raster_arr==basin_id)
 
 ##find the extends
 new_arr = shp_raster_arr[min(yy):max(yy)+1,min(xx):max(xx)+1]
-###add n extra grid cells to every direction
-n = int(max(new_arr.shape)*0.02)
 
-min_x, min_y, max_x, max_y = max(min(xx)-n,0), max(min(yy)-n,0), max(xx)+n+1,  max(yy)+n+1
+###add grid cell to make dimensions as multiple of 32 (nicer PxQxR)
+len_y, len_x = new_arr.shape
+new_len_y = ((len_y//32)+1)*32
+n1 = (new_len_y-len_y)//2
+n2 = new_len_y-len_y-n1
+new_len_x = ((len_x//32)+1)*32
+n3 = (new_len_x-len_x)//2
+n4 = new_len_x-len_x-n3
+
+min_x, min_y, max_x, max_y = max(min(xx)-n3,0), max(min(yy)-n1,0), max(xx)+n4+1,  max(yy)+n2+1
 
 min_lat, min_lon = pixzone2latlon(np.round(geom_ref[0],5), np.round(geom_ref[3],5), 
 								geom_ref[1], geom_ref[1], min_x,max_y)

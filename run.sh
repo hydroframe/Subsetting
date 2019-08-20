@@ -19,7 +19,7 @@ alias py="/Users/castro/miniconda2/envs/parflow/bin/python"
 #    -att ID
 #
 ## clip slopey
-##echo clip slopey
+#echo clip slopey
 #py Clip_Inputs/clip_inputs.py \
 #    -i test/slopey.tif \
 #    -out_name output_slopey \
@@ -63,18 +63,25 @@ alias py="/Users/castro/miniconda2/envs/parflow/bin/python"
 #    -id 1 2 3 \
 #    -att ID
 #
-echo domain extract
-py CLM/domain_extract_latlon.py \
-    -shp_file shpfile/watershed.shp \
-    -id 1 2 3 \
-    -att ID \ 
-    -pfmask test/conus_1km_PFmask2.tif \
-    -out_name latlon.txt 
+#echo extract lat lon
+#py CLM/domain_extract_latlon.py \
+#    -shp_file test/shpfile/watershed.shp \
+#    -id 1 2 3 \
+#    -att ID \
+#    -pfmask test/conus_1km_PFmask2.tif \
+#    -out_name test/latlon.txt 
+#
+#echo create vsgm lat lon
+#py CLM/create_vegm_latlon.py \
+#    -input_igbp CLM/naigbpl20.tif \
+#    -input_latlon test/latlon.txt \
+#    -out_name test/drv_vegm.UC.dat
 
-
-
-
-
-
-
+echo create tcl script
+py Make_Tcl/generate_tcl_script.py \
+    -pfsol test/subset.pfsol.pfsol \
+    -s test/output_slope \
+    -t Make_Tcl/parking_lot_template.tcl \
+    -r test_subset \
+    -a test/
 

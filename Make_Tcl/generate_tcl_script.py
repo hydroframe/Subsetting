@@ -35,11 +35,11 @@ def generate_tcl(pfsol_file, slope_name, temp_file, run_name,
         print('template file is missing')
         sys.exit()
 
-    # If all the file exits, copy them to current folder
-    for req_file in [pfsol_file, pfb_slopex, pfb_slopey, top_asc_file,
-                     bottom_asc_file, front_asc_file, right_asc_file,
-                     left_asc_file, back_asc_file]:
-        os.system('cp '+req_file+' .')
+#    # If all the file exits, copy them to current folder
+#    for req_file in [pfsol_file, pfb_slopex, pfb_slopey, top_asc_file,
+#                     bottom_asc_file, front_asc_file, right_asc_file,
+#                     left_asc_file, back_asc_file]:
+#        os.system('cp '+req_file+' .')
 
     # Get dimensions of the files
     with open(top_asc_file, 'r') as fi:

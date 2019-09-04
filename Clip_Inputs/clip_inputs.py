@@ -1,6 +1,10 @@
 #!/usr/local/bin/python3
 
 #required libraries
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import gdal, ogr, osr
 import numpy as np
 import pandas as pd
@@ -12,6 +16,9 @@ import pfio
 from Define_Watershed import DelinWatershed
 #import subprocess
 #import matplotlib.pyplot as plt
+
+def isinteger(x):
+	return np.equal(np.mod(x, 1), 0)
 
 def latlon2pixzone(xul, yul, dx, dy, lat0,lon0):
 	rl = abs((yul - lat0)/dy)
@@ -77,6 +84,7 @@ def subset(arr,mask_arr,ds_ref, crop_to_domain, ndata=0):
 	new_x = old_geom[0] + old_geom[1]*(min(xx)+1)
 	new_y = old_geom[3] + old_geom[5]*(min(yy)+1)
 	new_geom = (new_x,old_geom[1],old_geom[2],new_y,old_geom[4],old_geom[5])
+	new_mask = mask_arr[min(yy)-n1:max(yy)+n2+1,min(xx)-n3:max(xx)+n4+1]
 	#start subsetting
 	if len(arr.shape) == 2:
 		if crop_to_domain:
@@ -93,7 +101,7 @@ def subset(arr,mask_arr,ds_ref, crop_to_domain, ndata=0):
 			return_arr[:,n1:-n2,n3:-n4] = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
 		else:
 			return_arr = arr1[:,min(yy)-n1:max(yy)+n2+1,min(xx)-n3:max(xx)+n4+1]
-	return return_arr, new_geom
+	return return_arr, new_geom, new_mask
 
 
 parser = argparse.ArgumentParser(description='Create a clipped input ParFlow binary files')
@@ -301,13 +309,8 @@ elif args.type == 'define_watershed':
 	#get the mask array from DelinWatershed function
 	mask_arr = DelinWatershed(queue, dir_arr,printflag=True)
 
-if printmask:
-	import matplotlib.pyplot as plt
-	plt.imshow(arr_ref+mask_arr*2)
-	plt.savefig('mask.png')
-
 ###crop to get a tighter mask
-clip_arr, new_geom = subset(arr_in,mask_arr,ds_ref,crop_to_domain)
+clip_arr, new_geom, new_mask_x = subset(arr_in,mask_arr,ds_ref,crop_to_domain)
 
 ###create clipped outputs
 if args.out_name:
@@ -331,5 +334,106 @@ if os.path.isfile(out_pfb):
 pfio.pfwrite(clip_arr,out_pfb,float(x0),float(y0),float(z0),
 								float(dx),float(dx),float(dz))
 
-
+if printmask:
+	from pyproj import Proj, transform
+		
+	ds_geom = ds_ref.GetGeoTransform()
+	
+	soil_idx = {1:'s1',2:'s2',3:'s3',4:'s4',5:'s5',6:'s6',7:'s7',8:'s8',
+				9:'s9',10:'s10',11:'s11',12:'s12',13:'s13',19:'b1',20:'b2',
+				21:'g1',22:'g2',23:'g3',24:'g4',25:'g5',26:'g6',27:'g7',28:'g8'}
+	
+	yy,xx = np.where(mask_arr==1)
+	len_y, len_x = max(yy)+1-min(yy),max(xx)+1-min(xx)
+	if len_y < 500 or len_x < 500:
+		new_len_y = 800
+		new_len_x = 1000
+	else:
+		new_len_y = len_y*3
+		new_len_x = len_x*3
+	n1 = (new_len_y-len_y)//2
+	n2 = new_len_y-len_y-n1
+	n3 = (new_len_x-len_x)//2
+	n4 = new_len_x-len_x-n3
+	new_mask = mask_arr[max(min(yy)-n1,0):min(mask_arr.shape[0],max(yy)+n2+1),
+						max(0,min(xx)-n3):min(mask_arr.shape[1],max(xx)+1+n4)]
+	yy1,xx1 = np.where(new_mask==1)
+	if clip_arr.shape[0] == 1:
+		new_mask[new_mask==1] = clip_arr[0,new_mask_x==1]
+		cmap = plt.get_cmap('RdBu')
+		norm = mpl.colors.Normalize(vmin = -0.5, vmax = 0.5)
+		show_arr = clip_arr[0,:,:]
+		pre_name = '_slope'
+		ticks = None
+		yticklabels = None
+	else:
+		new_mask[new_mask==1] = clip_arr[-1,new_mask_x==1]
+		show_arr = clip_arr[-1,:,:]
+		show_arr = np.ma.masked_where(show_arr<-50,show_arr)
+		vmin, vmax = np.min(show_arr), np.max(show_arr)
+		if isinteger(show_arr).all():
+			cmap = plt.get_cmap('tab10',vmax-vmin+1)
+			norm = mpl.colors.Normalize(vmin = vmin-0.5, vmax = vmax+0.5)
+			ticks = np.arange(vmin,vmax+1,1)
+			#print(ticks)
+			pre_name = '_indi'
+			yticklabels=[soil_idx[x] if int(x) in soil_idx else ' ' \
+							for x in ticks]
+		else:
+			cmap = plt.get_cmap('Blues')
+			norm = mpl.colors.LogNorm(vmin = vmin, vmax = vmax)
+			pre_name = '_press'
+			ticks = None
+			yticklabels = None
+		
+	#yis, xis = np.nonzero(mask_arr)
+	x_centroid, y_centroid = max(0,min(xx)-n3)+(new_mask.shape[1]//2), \
+						max(min(yy)-n1,0)+new_mask.shape[0]//2
+	
+	lon_centroid = ds_geom[0]+x_centroid*ds_geom[1]
+	lat_centroid = ds_geom[3]+y_centroid*ds_geom[5]
+	
+	lon_0, lat_0 = transform(ds_ref.GetProjection(),Proj(init='epsg:4326'),
+							lon_centroid,lat_centroid)
+	
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	
+	ax1 = inset_axes(ax,
+                    width="30%", # width = 30% of parent_bbox
+                    height=1., # height : 1 inch
+                    loc=2)
+	im1 = ax.imshow(show_arr,cmap=cmap,norm=norm)
+	cb = plt.colorbar(im1,fraction=0.046, pad=0.04, cmap=cmap,
+							norm=norm,ticks=ticks)
+	#cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap,
+	#						norm=mpl.colors.Normalize(vmin = -0.5, vmax = 6.5),
+	#						 ticks=np.arange(-0,7,1))
+	if ticks is not None:
+		cb.ax.set_yticklabels(yticklabels)
+	#print(new_mask.shape,lat_0,lon_0)
+	m = Basemap(projection='lcc',
+			resolution='l',
+			rsphere=(6378137.00,6356752.3142),
+			width=new_mask.shape[1]*1000,
+			height=new_mask.shape[0]*1000,
+			lat_1=30,lat_2=60,
+			lat_0=lat_0, lon_0=lon_0,ax=ax1
+			)
+	
+	m.drawcoastlines()
+	m.drawcountries()
+	m.drawstates()
+	
+	x = np.linspace(0, m.urcrnrx, new_mask.shape[1])
+	y = np.linspace(0, m.urcrnry, new_mask.shape[0])
+	
+	xx, yy = np.meshgrid(x, y)
+	
+	m.pcolormesh(xx, yy, np.ma.masked_where(new_mask[::-1,:]==0,new_mask[::-1,:]),
+				cmap=cmap,norm=norm)
+	#plt.show()
+	
+	plt.savefig(out_pfb.replace('.pfb',pre_name+'.png'),dpi=300)
+	
 

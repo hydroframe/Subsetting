@@ -392,8 +392,12 @@ if printmask:
 	
 	yy,xx = np.where(mask_arr==1)
 	len_y, len_x = max(yy)+1-min(yy),max(xx)+1-min(xx)
-	new_len_y = len_y*3
-	new_len_x = len_x*3
+	if len_y < 500 or len_x < 500:
+		new_len_y = 800
+		new_len_x = 1000
+	else:
+		new_len_y = len_y*3
+		new_len_x = len_x*3
 	n1 = (new_len_y-len_y)//2
 	n2 = new_len_y-len_y-n1
 	n3 = (new_len_x-len_x)//2
@@ -421,10 +425,12 @@ if printmask:
                     loc=2)
 	im1 = ax.imshow(np.ma.masked_where(top_mat==0,top_mat),cmap=cmap,
 					vmin = 0-.5, vmax = 6+.5)
-	ax2 = fig.add_axes([0.75, 0.1, 0.03, 0.8])
-	cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap,
+	cb = plt.colorbar(im1,fraction=0.046, pad=0.04, cmap=cmap,
 							norm=mpl.colors.Normalize(vmin = -0.5, vmax = 6.5),
 							 ticks=np.arange(-0,7,1))
+	#cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap,
+	#						norm=mpl.colors.Normalize(vmin = -0.5, vmax = 6.5),
+	#						 ticks=np.arange(-0,7,1))
 	cb.ax.set_yticklabels(['land','ocean',' ','top','lake','sink','bottom'])
 	#print(new_mask.shape,lat_0,lon_0)
 	m = Basemap(projection='lcc',
@@ -449,4 +455,4 @@ if printmask:
 				cmap=cmap,vmin = 0-.5, vmax = 6+.5)
 	#plt.show()
 	
-	fig.savefig(out_pfsol.replace('.pfsol','_mask.png')
+	plt.savefig(out_pfsol.replace('.pfsol','_mask.png'),dpi=300)

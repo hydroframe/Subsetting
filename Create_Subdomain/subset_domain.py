@@ -273,11 +273,6 @@ elif args.type == 'define_watershed':
 	#get the mask array from DelinWatershed function
 	mask_arr = DelinWatershed(queue, dir_arr,printflag=True)
 
-if printmask:
-	import matplotlib.pyplot as plt
-	plt.imshow(arr_ref+mask_arr*2)
-	plt.savefig('mask.png')
-
 ###crop to get a tighter mask
 mask_mat, new_geom = subset(arr_ref,mask_arr,ds_ref)
 bordt_mat, _ = subset(arr_border_type,mask_arr,ds_ref)
@@ -384,3 +379,51 @@ cmd_create_sol = 'pf-mask-utilities/mask-to-pfsol --mask-back '+list_patches[0]+
 					' --depth '+str(dz)
 
 os.system(cmd_create_sol)
+
+if printmask:
+	import matplotlib.pyplot as plt
+	from mpl_toolkits.basemap import Basemap
+	from pyproj import Proj, transform
+	
+	ds_geom = ds_ref.GetGeoTransform()
+	
+	yy,xx = np.where(mask_arr==1)
+	len_y, len_x = max(yy)+1-min(yy),max(xx)+1-min(xx)
+	new_len_y = len_y*5
+	new_len_x = len_x*5
+	n1 = (new_len_y-len_y)//2
+	n2 = new_len_y-len_y-n1
+	n3 = (new_len_x-len_x)//2
+	n4 = new_len_x-len_x-n3
+	new_mask = mask_arr[max(min(yy)-n1,0):min(mask_arr.shape[0],max(yy)+n2+1),
+						max(0,min(xx)-n3):min(mask_arr.shape[1],max(xx)+1+n4)]
+	
+	yis, xis = np.nonzero(mask_arr)
+	x_centroid, y_centroid = xis.mean(), yis.mean()
+	
+	lon_centroid = ds_geom[0]+x_centroid*ds_geom[1]
+	lat_centroid = ds_geom[3]+y_centroid*ds_geom[5]
+	
+	lon_0, lat_0 = transform(ds_ref.GetProjection(),Proj(init='epsg:4326'),
+							lon_centroid,lat_centroid)
+	print(new_mask.shape,lat_0,lon_0)
+	m = Basemap(projection='lcc',
+			resolution='l',
+			rsphere=(6378137.00,6356752.3142),
+			width=new_mask.shape[1]*10000,
+			height=new_mask.shape[0]*10000,
+			lat_1=30,lat_2=60,
+			lat_0=lat_0, lon_0=lon_0
+			)
+	
+	m.drawcoastlines()
+	m.drawcountries()
+	m.drawstates()
+	
+	x = np.linspace(0, m.urcrnrx, new_mask.shape[1])
+	y = np.linspace(0, m.urcrnry, new_mask.shape[0])
+	
+	xx, yy = np.meshgrid(x, y)
+	
+	m.pcolormesh(xx, yy, np.ma.masked_where(new_mask<-100,new_mask))
+	plt.savefig('mask.png')

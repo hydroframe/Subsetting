@@ -9,7 +9,7 @@ import gdal, ogr, osr
 import numpy as np
 import argparse
 import pandas as pd
-#from glob import glob
+from glob import glob
 import os
 import sys
 import shutil
@@ -144,7 +144,7 @@ if args.type == 'shapefile':
 	#create domain
 	os.chdir('Create_Subdomain')
 	os.system('python3 subset_domain.py shapefile -shp_file '+region_shp+\
-					' -id '+str(basin_id)+' -out_name '+out_name+' -printmask '+printmask)
+					' -id '+str(basin_id)+' -out_name '+out_name+' -printmask '+str(printmask))
 	os.chdir('..')
 	#subset input
 	os.chdir('Clip_Inputs')
@@ -163,7 +163,7 @@ elif args.type == 'mask':
 	#create domain
 	os.chdir('Create_Subdomain')
 	os.system('python3 subset_domain.py mask -mask_file '+mask_file+\
-					' -out_name '+out_name+' -printmask '+printmask)
+					' -out_name '+out_name+' -printmask '+str(printmask))
 	os.chdir('..')
 	#subset input
 	os.chdir('Clip_Inputs')
@@ -185,7 +185,7 @@ elif args.type == 'define_watershed':
 	os.chdir('Create_Subdomain')
 	os.system('python3 subset_domain.py define_watershed -dir_file '+dir_file+\
 					' -outlet_file '+outlet_file+\
-					' -out_name '+out_name+' -printmask '+printmask)
+					' -out_name '+out_name+' -printmask '+str(printmask))
 	os.chdir('..')
 	#subset input
 	os.chdir('Clip_Inputs')
@@ -212,10 +212,15 @@ os.system('python3 generate_tcl.py -o '+out_name+'.tcl '+\
 			'-i parking_lot_template.tcl --runname '+out_name+\
 			' -sl ../'+input_files[-1]+\
 			' -so ../'+input_files[0]+' -evap 1 '+
-			'--evap_file ../'+input_files[2]+' -e 10 --batches 0 3 6'
+			'--evap_file ../'+input_files[2]+' -e 10 --batches 0 3 6')
+
+os.chdir('..')
+
+if os.path.isdir('run_output/'):
+	shutil.rmtree('run_output/')
 
 os.mkdir('run_output')
-os.system('cp '+out_name+'.tcl run_output/')
+os.system('cp Make_Tcl/'+out_name+'.tcl run_output/')
 os.chdir('run_output')
 os.system('tclsh '+out_name+'.tcl')
 

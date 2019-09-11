@@ -6,6 +6,7 @@ from pyproj import Proj, transform
 import pfio
 import matplotlib.pyplot as plt
 import os
+import gzip
 import sys
 
 def project_array(grid_coor, inProj, outProj):
@@ -47,10 +48,11 @@ else:
 	print('does not support this file format..exit')
 	sys.exit()
 
-grid_coor_file = 'Grid_Centers_Short_Deg.format.txt'
-grid_coor = np.loadtxt(grid_coor_file,skiprows=1)
+#grid_coor_file = 'Grid_Centers_Short_Deg.format.txt'
+grid_coor_file = gzip.GzipFile('grid_coor.npy.gz', "r")
+grid_coor = np.load(grid_coor_file)
 
-mask_file = '../conus_1km_PFmask2.tif'
+mask_file = '../CONUS1_inputs/conus_1km_PFmask2.tif'
 
 #open mask file
 ds_mask = gdal.Open(mask_file)
@@ -85,7 +87,7 @@ arr_y = ((geom[3]-out_y)/geom[1]).astype(np.int)
 res_arr[:,arr_y,arr_x] = in_arr
 
 #write tif file
-fname = '../'+''.join(os.path.splitext(in_file)[:-1])+'.tif'
+fname = 'CONUS1_inputs/'+''.join(os.path.splitext(in_file)[:-1])+'.tif'
 if os.path.isfile(fname):
 	os.remove(fname)
 

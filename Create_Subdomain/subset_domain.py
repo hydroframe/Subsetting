@@ -144,11 +144,11 @@ if not os.path.isdir('pf-mask-utilities'):
 	os.chdir('..')
 
 ###required raster files
-conus_pf_1k_mask = 'conus_1km_PFmask2.tif'
-conus_pf_1k_sinks = 'conus_1km_PFmask_manualsinks.tif' #1 for cells inside domain, 0 for cells outside domain, 2 for sinks
-conus_pf_1k_lakes = 'conus_1km_PFmask_selectLakesmask.tif' #1 for lakes, 0 for everything else
-conus_pf_1k_lakes_border = 'conus_1km_PFmask_selectLakesborder.tif'
-conus_pf_1k_border_type = '1km_PF_BorderCellType.tif' # A mask marking with 1 for for cells with an ocean border and 2 for cells with a land border
+conus_pf_1k_mask = '../CONUS1_inputs/conus_1km_PFmask2.tif'
+conus_pf_1k_sinks = '../CONUS1_inputs/conus_1km_PFmask_manualsinks.tif' #1 for cells inside domain, 0 for cells outside domain, 2 for sinks
+conus_pf_1k_lakes = '../CONUS1_inputs/conus_1km_PFmask_selectLakesmask.tif' #1 for lakes, 0 for everything else
+conus_pf_1k_lakes_border = '../CONUS1_inputs/conus_1km_PFmask_selectLakesborder.tif'
+conus_pf_1k_border_type = '../CONUS1_inputs/1km_PF_BorderCellType.tif' # A mask marking with 1 for for cells with an ocean border and 2 for cells with a land border
 
 conus_pf_1k_tifs = [conus_pf_1k_mask,conus_pf_1k_sinks,conus_pf_1k_lakes,
 					conus_pf_1k_lakes_border,conus_pf_1k_border_type]
@@ -163,7 +163,7 @@ if any([not os.path.isfile(x) for x in conus_pf_1k_tifs]):
 		sys.exit()
 	
 	for tif_file in conus_pf_1k_tifs:
-		os.system('iget -K '+avra_path_tif+tif_file+' .')
+		os.system('iget -K '+avra_path_tif+tif_file+' ../CONUS1_inputs/')
 
 ###read domain raster
 ds_ref = gdal.Open(conus_pf_1k_mask)

@@ -67,7 +67,7 @@ parser.add_argument('-i','--temp_file',type=str, help='template file for modifyi
 parser.add_argument('--runname',type=str, help='run name of the simulation', required=True)
 parser.add_argument('-sl','--slope_file',type=str, help='name of the slope file, either in x or y direction', required=True)
 parser.add_argument('-so','--solid_file',type=str, help='name of the solid file', required=True)
-parser.add_argument('-evap',choices=[0,1], default=0, help='PME file for simulation (optional).Default is 0')
+parser.add_argument('-evap',type=int, default=0, help='PME file for simulation (optional).Default is 0')
 parser.add_argument('--evap_file',type=str, help='name of the PME file')
 
 #### PARAMETERS
@@ -212,7 +212,7 @@ else:
 	results['Patch.top.BCPressure.Cycle']['vals'][1][-1] = '\"constant\"'
 	results['Patch.top.BCPressure.alltime.Value']['vals'][0][-1] = str(0.0)
 	results['Solver.EvapTransFile']['vals'][0][-1] = 'True'
-	results['Solver.EvapTrans.FileName']['vals'][0][-1] = evap_file
+	results['Solver.EvapTrans.FileName']['vals'][0][-1] = os.path.basename(evap_file)
 
 ##### change initial pressure height
 results['Geom.domain.ICPressure.Value']['vals'][0][-1] = str(init)
@@ -232,7 +232,11 @@ results['TopoSlopesY.FileName']['vals'][0][-1] = os.path.basename(slope_file_y)
 
 results['pfdist']['vals'][0][-1] = os.path.basename(slope_file_x)
 results['pfdist']['vals'][1][-1] = os.path.basename(slope_file_y)
-results['pfdist']['vals'][2][0] = '#'+results['pfdist']['vals'][2][0]
+
+if evap_choice == 1:
+	results['pfdist']['vals'][2][-1] =  os.path.basename(evap_file)
+else:
+	results['pfdist']['vals'][2][0] = '#'+results['pfdist']['vals'][2][0]
 
 #read slope file x into array
 slope_x = pfio.pfread(slope_file_x)

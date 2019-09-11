@@ -145,7 +145,7 @@ parser_c.add_argument('-printmask',type=int, help = 'print mask (optional). Defa
 #parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
 ###required raster files
-conus_pf_1k_mask = 'conus_1km_PFmask2.tif'
+conus_pf_1k_mask = '../CONUS1_inputs/conus_1km_PFmask2.tif'
 
 avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
 
@@ -157,7 +157,7 @@ if not os.path.isfile(conus_pf_1k_mask):
 		print('Authentication failed...exit')
 		sys.exit()
 	
-	os.system('iget -K '+avra_path_tif+conus_pf_1k_mask+' .')
+	os.system('iget -K '+avra_path_tif+conus_pf_1k_mask+' ../CONUS1_inputs/')
 
 ###read domain raster
 ds_ref = gdal.Open(conus_pf_1k_mask)
@@ -315,8 +315,9 @@ clip_arr, new_geom, new_mask_x = subset(arr_in,mask_arr,ds_ref,crop_to_domain)
 ###create clipped outputs
 if args.out_name:
 	out_name = args.out_name
-	out_name = os.path.splitext(out_name)[0]
-	out_pfb = out_name+'.pfb'
+	out_name = os.path.basename(out_name).split('.')
+	out_name[-1] = 'pfb'
+	out_pfb = '.'.join(out_name)
 else:
 	if args.type == 'shapefile':
 		out_name = str(basin_id)

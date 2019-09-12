@@ -11,6 +11,7 @@ import argparse
 import pandas as pd
 from glob import glob
 import os
+import subprocess
 import sys
 import shutil
 import pfio
@@ -53,6 +54,10 @@ parser_c.add_argument('-printmask',type=int, help = 'print mask (optional). Defa
 #parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
 ###required raster files
+
+if not os.path.isdir('CONUS1_inputs/'):
+	os.mkdir('CONUS1_inputs/')
+
 conus_pf_1k_mask = 'CONUS1_inputs/conus_1km_PFmask2.tif'
 conus_pf_1k_sinks = 'CONUS1_inputs/conus_1km_PFmask_manualsinks.tif' #1 for cells inside domain, 0 for cells outside domain, 2 for sinks
 conus_pf_1k_lakes = 'CONUS1_inputs/conus_1km_PFmask_selectLakesmask.tif' #1 for lakes, 0 for everything else
@@ -72,7 +77,7 @@ if any([not os.path.isfile(x) for x in conus_pf_1k_tifs]):
 		sys.exit()
 	
 	for tif_file in conus_pf_1k_tifs:
-		os.system('iget -K '+avra_path_tif+tif_file+' .')
+		os.system('iget -K '+avra_path_tif+os.path.basename(tif_file)+' CONUS1_inputs/')
 
 ###required slope files
 slopex_tif = 'CONUS1_inputs/Str3Ep0_smth.rvth_1500.mx0.5.mn5.sec0.up_slopex.tif'
@@ -143,8 +148,19 @@ if args.type == 'shapefile':
 	region_shp = args.shp_file
 	#create domain
 	os.chdir('Create_Subdomain')
-	os.system('python3 subset_domain.py shapefile -shp_file '+region_shp+\
-					' -id '+str(basin_id)+' -out_name '+out_name+' -printmask '+str(printmask))
+	create_sub = subprocess.run(['python3', 'subset_domain.py',
+							'shapefile','-shp_file',region_shp,
+							'-id',str(basin_id),
+							'-out_name',out_name,
+							'-printmask',str(printmask)], stdout=subprocess.PIPE)
+	temp_list = create_sub.stdout.decode('utf-8').split('\n')
+	batches = ''
+	for line in temp_list:
+		if 'Number of triangles in patch' in line:
+			line = line.strip()
+			batches += line.split()[-3]+' '
+	#os.system('python3 subset_domain.py shapefile -shp_file '+region_shp+\
+	#				' -id '+str(basin_id)+' -out_name '+out_name+' -printmask '+str(printmask))
 	os.chdir('..')
 	#subset input
 	os.chdir('Clip_Inputs')
@@ -152,7 +168,7 @@ if args.type == 'shapefile':
 		os.system('python3 clip_inputs.py -i ../'+\
 					input+' shapefile -shp_file '+region_shp+\
 					' -id '+str(basin_id)+' -out_name '+out_name+'_'+\
-					os.path.basename(input))
+					os.path.basename(input)+' -printmask '+str(printmask))
 	os.chdir('..')
 
 elif args.type == 'mask':
@@ -162,8 +178,18 @@ elif args.type == 'mask':
 		sys.exit()
 	#create domain
 	os.chdir('Create_Subdomain')
-	os.system('python3 subset_domain.py mask -mask_file '+mask_file+\
-					' -out_name '+out_name+' -printmask '+str(printmask))
+	create_sub = subprocess.run(['python3', 'subset_domain.py',
+							'mask','-mask_file',mask_file,
+							'-out_name',out_name,
+							'-printmask',str(printmask)], stdout=subprocess.PIPE)
+	temp_list = create_sub.stdout.decode('utf-8').split('\n')
+	batches = ''
+	for line in temp_list:
+		if 'Number of triangles in patch' in line:
+			line = line.strip()
+			batches += line.split()[-3]+' '
+	#os.system('python3 subset_domain.py mask -mask_file '+mask_file+\
+	#				' -out_name '+out_name+' -printmask '+str(printmask))
 	os.chdir('..')
 	#subset input
 	os.chdir('Clip_Inputs')
@@ -171,7 +197,7 @@ elif args.type == 'mask':
 		os.system('python3 clip_inputs.py -i ../'+\
 					input+' mask -mask_file '+mask_file+\
 					' -out_name '+out_name+'_'+\
-					os.path.basename(input))
+					os.path.basename(input)+' -printmask '+str(printmask))
 	os.chdir('..')
 
 elif args.type == 'define_watershed':
@@ -183,9 +209,20 @@ elif args.type == 'define_watershed':
 	
 	#create domain
 	os.chdir('Create_Subdomain')
-	os.system('python3 subset_domain.py define_watershed -dir_file '+dir_file+\
-					' -outlet_file '+outlet_file+\
-					' -out_name '+out_name+' -printmask '+str(printmask))
+	create_sub = subprocess.run(['python3', 'subset_domain.py',
+							'define_watershed','-dir_file',dir_file,
+							'-outlet_file',outlet_file,
+							'-out_name',out_name,
+							'-printmask',str(printmask)], stdout=subprocess.PIPE)
+	temp_list = create_sub.stdout.decode('utf-8').split('\n')
+	batches = ''
+	for line in temp_list:
+		if 'Number of triangles in patch' in line:
+			line = line.strip()
+			batches += line.split()[-3]+' '
+	#os.system('python3 subset_domain.py define_watershed -dir_file '+dir_file+\
+	#				' -outlet_file '+outlet_file+\
+	#				' -out_name '+out_name+' -printmask '+str(printmask))
 	os.chdir('..')
 	#subset input
 	os.chdir('Clip_Inputs')
@@ -194,7 +231,7 @@ elif args.type == 'define_watershed':
 					input+' define_watershed -dir_file '+dir_file+\
 					' -outlet_file '+outlet_file+\
 					' -out_name '+out_name+'_'+\
-					os.path.basename(input))
+					os.path.basename(input)+' -printmask '+str(printmask))
 	os.chdir('..')
 #move newly created files to input_files folder
 if os.path.isdir('input_files/'):
@@ -212,7 +249,7 @@ os.system('python3 generate_tcl.py -o '+out_name+'.tcl '+\
 			'-i parking_lot_template.tcl --runname '+out_name+\
 			' -sl ../'+input_files[-1]+\
 			' -so ../'+input_files[0]+' -evap 1 '+
-			'--evap_file ../'+input_files[2]+' -e 10 --batches 0 3 6')
+			'--evap_file ../'+input_files[2]+' -e 10 --batches '+batches)
 
 os.chdir('..')
 

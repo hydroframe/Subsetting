@@ -402,12 +402,15 @@ if printmask:
 	n2 = new_len_y-len_y-n1
 	n3 = (new_len_x-len_x)//2
 	n4 = new_len_x-len_x-n3
-	new_mask = mask_arr[max(min(yy)-n1,0):min(mask_arr.shape[0],max(yy)+n2+1),
-						max(0,min(xx)-n3):min(mask_arr.shape[1],max(xx)+1+n4)]
-	new_mask[new_mask==1] = top_mat[top_mat!=0]
+	shape_1 = min(mask_arr.shape[1],max(xx)+1+n4)-max(0,min(xx)-n3)
+	shape_0 = min(mask_arr.shape[0],max(yy)+n2+1)-max(min(yy)-n1,0)
+	new_mask = np.zeros((shape_0,shape_1))
+	#new_mask[new_mask==1] = top_mat[top_mat!=0]
 	#yis, xis = np.nonzero(mask_arr)
-	x_centroid, y_centroid = max(0,min(xx)-n3)+(new_mask.shape[1]//2), \
-						max(min(yy)-n1,0)+new_mask.shape[0]//2
+	x_centroid, y_centroid = max(0,min(xx)-n3)+shape_1//2, \
+						max(min(yy)-n1,0)+shape_0//2
+	
+	new_mask[n1:n1+top_mat.shape[0],n3:n3+top_mat.shape[1]] = top_mat
 	
 	lon_centroid = ds_geom[0]+x_centroid*ds_geom[1]
 	lat_centroid = ds_geom[3]+y_centroid*ds_geom[5]

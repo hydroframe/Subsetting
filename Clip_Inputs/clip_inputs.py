@@ -204,7 +204,7 @@ if args.dz is None:
 else:
 	dz = args.dz
 
-if args.printmask is None:
+if not args.printmask:
 	printmask = 0
 else:
 	printmask = 1
@@ -359,20 +359,21 @@ if printmask:
 	new_mask = mask_arr[max(min(yy)-n1,0):min(mask_arr.shape[0],max(yy)+n2+1),
 						max(0,min(xx)-n3):min(mask_arr.shape[1],max(xx)+1+n4)]
 	yy1,xx1 = np.where(new_mask==1)
-	if clip_arr.shape[0] == 1:
+	if 'slope' in out_pfb:
 		new_mask[new_mask==1] = clip_arr[0,new_mask_x==1]
 		cmap = plt.get_cmap('RdBu')
-		norm = mpl.colors.Normalize(vmin = -0.5, vmax = 0.5)
+		norm = mpl.colors.Normalize(vmin = -0.25, vmax = 0.25)
 		show_arr = clip_arr[0,:,:]
 		pre_name = '_slope'
 		ticks = None
 		yticklabels = None
+
 	else:
 		new_mask[new_mask==1] = clip_arr[-1,new_mask_x==1]
 		show_arr = clip_arr[-1,:,:]
-		show_arr = np.ma.masked_where(show_arr<-50,show_arr)
-		vmin, vmax = np.min(show_arr), np.max(show_arr)
 		if isinteger(show_arr).all():
+			show_arr = np.ma.masked_where(show_arr==0,show_arr)
+			vmin, vmax = np.min(show_arr), np.max(show_arr)
 			cmap = plt.get_cmap('tab10',vmax-vmin+1)
 			norm = mpl.colors.Normalize(vmin = vmin-0.5, vmax = vmax+0.5)
 			ticks = np.arange(vmin,vmax+1,1)
@@ -381,8 +382,10 @@ if printmask:
 			yticklabels=[soil_idx[x] if int(x) in soil_idx else ' ' \
 							for x in ticks]
 		else:
+			show_arr = np.ma.masked_where(show_arr==0,show_arr)
+			vmin, vmax = np.min(show_arr), np.max(show_arr)
 			cmap = plt.get_cmap('Blues')
-			norm = mpl.colors.LogNorm(vmin = vmin, vmax = vmax)
+			norm = mpl.colors.SymLogNorm(vmin = vmin, vmax = vmax,linthresh=0.03)
 			pre_name = '_press'
 			ticks = None
 			yticklabels = None
@@ -404,7 +407,7 @@ if printmask:
                     width="30%", # width = 30% of parent_bbox
                     height=1., # height : 1 inch
                     loc=2)
-	im1 = ax.imshow(show_arr,cmap=cmap,norm=norm)
+	im1 = ax.imshow(show_arr[:,:],cmap=cmap,norm=norm)
 	cb = plt.colorbar(im1,fraction=0.046, pad=0.04, cmap=cmap,
 							norm=norm,ticks=ticks)
 	#cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap,

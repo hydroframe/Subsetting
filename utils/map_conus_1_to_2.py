@@ -87,7 +87,7 @@ arr_y = ((geom[3]-out_y)/geom[1]).astype(np.int)
 res_arr[:,arr_y,arr_x] = in_arr
 
 #write tif file
-fname = 'CONUS1_inputs/'+''.join(os.path.splitext(in_file)[:-1])+'.tif'
+fname = ''.join(os.path.splitext(in_file)[:-1])+'.tif'
 if os.path.isfile(fname):
 	os.remove(fname)
 

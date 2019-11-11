@@ -415,10 +415,5 @@ pfset Solver.WriteSiloCLM                             False
 
 pfrun $runname
 pfundist $runname
-#pfundist Upper_CO.slopex.rivth1500.pfb
-#pfundist Upper_CO.slopey.rivth1500.pfb
-#pfundist UC_PME.1layer.flux.pfb
 
 puts "ParFlow run Complete"
-
-pfwritedb $runname

@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-
+#required libraries
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import gdal
 import ogr
 from os.path import join, abspath, dirname
 import numpy as np
-import pandas as pd
 import argparse
+import pandas as pd
+#from glob import glob
 import os
 import sys
 import pfio
@@ -50,7 +55,6 @@ def rasterize(out_raster, in_shape, ds_ref,
 
 
 def read_from_file(infile):
-
     # get extension
     ext = os.path.splitext(os.path.basename(infile))[1]
     if ext in ['.tif', '.tiff']:
@@ -460,3 +464,79 @@ if __name__ == "__main__":
                      ' --depth '+str(dz)
 
     os.system(cmd_create_sol)
+
+if printmask:
+	from pyproj import Proj, transform
+		
+	ds_geom = ds_ref.GetGeoTransform()
+	
+	yy,xx = np.where(mask_arr==1)
+	len_y, len_x = max(yy)+1-min(yy),max(xx)+1-min(xx)
+	if len_y < 500 or len_x < 500:
+		new_len_y = 800
+		new_len_x = 1000
+	else:
+		new_len_y = len_y*3
+		new_len_x = len_x*3
+	n1 = (new_len_y-len_y)//2
+	n2 = new_len_y-len_y-n1
+	n3 = (new_len_x-len_x)//2
+	n4 = new_len_x-len_x-n3
+	shape_1 = min(mask_arr.shape[1],max(xx)+1+n4)-max(0,min(xx)-n3)
+	shape_0 = min(mask_arr.shape[0],max(yy)+n2+1)-max(min(yy)-n1,0)
+	new_mask = np.zeros((shape_0,shape_1))
+	#new_mask[new_mask==1] = top_mat[top_mat!=0]
+	#yis, xis = np.nonzero(mask_arr)
+	x_centroid, y_centroid = max(0,min(xx)-n3)+shape_1//2, \
+						max(min(yy)-n1,0)+shape_0//2
+	
+	new_mask[n1:n1+top_mat.shape[0],n3:n3+top_mat.shape[1]] = top_mat
+	
+	lon_centroid = ds_geom[0]+x_centroid*ds_geom[1]
+	lat_centroid = ds_geom[3]+y_centroid*ds_geom[5]
+	
+	lon_0, lat_0 = transform(ds_ref.GetProjection(),Proj(init='epsg:4326'),
+							lon_centroid,lat_centroid)
+	cmap = plt.get_cmap('tab10', 7)
+	
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	
+	ax1 = inset_axes(ax,
+                    width="30%", # width = 30% of parent_bbox
+                    height=1., # height : 1 inch
+                    loc=2)
+	im1 = ax.imshow(np.ma.masked_where(top_mat==0,top_mat),cmap=cmap,
+					vmin = 0-.5, vmax = 6+.5)
+	cb = plt.colorbar(im1,fraction=0.046, pad=0.04, cmap=cmap,
+							norm=mpl.colors.Normalize(vmin = -0.5, vmax = 6.5),
+							 ticks=np.arange(-0,7,1))
+	#cb = mpl.colorbar.ColorbarBase(ax2, cmap=cmap,
+	#						norm=mpl.colors.Normalize(vmin = -0.5, vmax = 6.5),
+	#						 ticks=np.arange(-0,7,1))
+	cb.ax.set_yticklabels(['land','ocean',' ','top','lake','sink','bottom'])
+	#print(new_mask.shape,lat_0,lon_0)
+	m = Basemap(projection='lcc',
+			resolution='l',
+			rsphere=(6378137.00,6356752.3142),
+			width=new_mask.shape[1]*1000,
+			height=new_mask.shape[0]*1000,
+			lat_1=30,lat_2=60,
+			lat_0=lat_0, lon_0=lon_0,ax=ax1
+			)
+	
+	m.drawcoastlines()
+	m.drawcountries()
+	m.drawstates()
+	
+	x = np.linspace(0, m.urcrnrx, new_mask.shape[1])
+	y = np.linspace(0, m.urcrnry, new_mask.shape[0])
+	
+	xx, yy = np.meshgrid(x, y)
+	
+	m.pcolormesh(xx, yy, np.ma.masked_where(new_mask[::-1,:]==0,new_mask[::-1,:]),
+				cmap=cmap,vmin = 0-.5, vmax = 6+.5)
+	#plt.show()
+	
+	plt.savefig(out_pfsol.replace('.pfsol','_mask.png'),dpi=300)
+

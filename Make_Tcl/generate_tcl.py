@@ -266,7 +266,7 @@ else:
     results['Patch.top.BCPressure.Cycle']['vals'][1][-1] = '\"constant\"'
     results['Patch.top.BCPressure.alltime.Value']['vals'][0][-1] = str(0.0)
     results['Solver.EvapTransFile']['vals'][0][-1] = 'True'
-    results['Solver.EvapTrans.FileName']['vals'][0][-1] = evap_file
+    results['Solver.EvapTrans.FileName']['vals'][0][-1] = os.path.basename(evap_file)
 
 # change initial pressure height
 results['Geom.domain.ICPressure.Value']['vals'][0][-1] = str(init)
@@ -286,7 +286,11 @@ results['TopoSlopesY.FileName']['vals'][0][-1] = os.path.basename(slope_file_y)
 
 results['pfdist']['vals'][0][-1] = os.path.basename(slope_file_x)
 results['pfdist']['vals'][1][-1] = os.path.basename(slope_file_y)
-results['pfdist']['vals'][2][0] = '#'+results['pfdist']['vals'][2][0]
+
+if evap_choice == 1:
+    results['pfdist']['vals'][2][-1] = os.path.basename(evap_file)
+else:
+    results['pfdist']['vals'][2][0] = '#'+results['pfdist']['vals'][2][0]
 
 # read slope file x into array
 slope_x = pfio.pfread(slope_file_x)

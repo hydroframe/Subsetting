@@ -101,7 +101,8 @@ def subset(arr,mask_arr,ds_ref, crop_to_domain, ndata=0):
 			return_arr[:,n1:-n2,n3:-n4] = arr1[:,min(yy):max(yy)+1,min(xx):max(xx)+1]
 		else:
 			return_arr = arr1[:,min(yy)-n1:max(yy)+n2+1,min(xx)-n3:max(xx)+n4+1]
-	return return_arr, new_geom, new_mask
+	bbox = (min(yy)-n1,max(yy)+n2+1,min(xx)-n3,max(xx)+n4+1)
+	return return_arr, new_geom, new_mask, bbox
 
 
 parser = argparse.ArgumentParser(description='Create a clipped input ParFlow binary files')
@@ -120,6 +121,7 @@ parser_a.add_argument('-out_name',type=str, help = 'name of output solidfile (op
 parser_a.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_a.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
 parser_a.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
+parser_a.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
 #parser_a.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -130,6 +132,7 @@ parser_b.add_argument('-out_name',type=str, help = 'name of output solidfile (op
 parser_b.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_b.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
 parser_b.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
+parser_b.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
 #parser_b.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -141,6 +144,7 @@ parser_c.add_argument('-out_name',type=str, help = 'name of output solidfile (re
 parser_c.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_c.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
 parser_c.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
+parser_c.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
 #parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -208,6 +212,11 @@ if not args.printmask:
 	printmask = 0
 else:
 	printmask = 1
+
+if not args.printbbox:
+	printbbox = 0
+else:
+	printbbox = 1
 
 if args.x0 is None:
 	x0 = 0.
@@ -311,7 +320,7 @@ elif args.type == 'define_watershed':
 	mask_arr = DelinWatershed(queue, dir_arr,printflag=True)
 
 ###crop to get a tighter mask
-clip_arr, new_geom, new_mask_x = subset(arr_in,mask_arr,ds_ref,crop_to_domain)
+clip_arr, new_geom, new_mask_x, bbox = subset(arr_in,mask_arr,ds_ref,crop_to_domain)
 
 ###create clipped outputs
 if args.out_name:
@@ -335,6 +344,13 @@ if os.path.isfile(out_pfb):
 
 pfio.pfwrite(clip_arr,out_pfb,float(x0),float(y0),float(z0),
 								float(dx),float(dx),float(dz))
+
+if printbbox:
+	out_bbox = out_pfb.replace('.pfb','.txt')
+	with open(out_bbox,'w') as fo:
+		fo.write('y1\ty2\tx1\tx2\n')
+		fo.write('\t'.join('%d' % x for x in bbox))
+
 
 if printmask:
 	from pyproj import Proj, transform

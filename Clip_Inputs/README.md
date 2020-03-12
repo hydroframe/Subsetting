@@ -20,7 +20,7 @@ To run this project on your local machine, you will need:
 ### Synopsis
 
 ```
-python3 clip_inputs.py [-i | --input_file] [--crop_to_domain] [-x0] [-y0] [-z0] {shapefile|mask|define_watershed} [-shp_file] [-id] [-out_name] [-dx] [-dz] [-printmask] [-mask_file] [-dir_file] [-outlet_file]
+python3 clip_inputs.py [-i | --input_file] [--crop_to_domain] [-x0] [-y0] [-z0] {shapefile|mask|define_watershed} [-shp_file] [-id] [-out_name] [-dx] [-dz] [-printmask] [-printbbox] [-mask_file] [-dir_file] [-outlet_file]
 ```
 
 ### Description
@@ -51,6 +51,8 @@ python3 clip_inputs.py [-i | --input_file] [--crop_to_domain] [-x0] [-y0] [-z0] 
 **-dz** (Optional) Vertical resolution of the subset file. Default value is 1000. 
 
 **-printmask** (Optional) Output an image of domain position. Default value is 0.
+
+**-printbbox** (Optional) Output a file which contains the bounding box of the domain. Default value is 0.
 
 **-mask_file** (Used conjunctionally with *mask*) Name of the mask file. Please note that the mask file must have same extent and projection with the *input_file*.
 

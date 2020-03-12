@@ -29,6 +29,7 @@ parser_a.add_argument('-out_name',type=str, help = 'name of output solidfile (re
 parser_a.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_a.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
 parser_a.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
+parser_a.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
 #parser_a.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -39,6 +40,7 @@ parser_b.add_argument('-out_name',type=str, help = 'name of output solidfile (re
 parser_b.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_b.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
 parser_b.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
+parser_b.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
 #parser_b.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -50,6 +52,7 @@ parser_c.add_argument('-out_name',type=str, help = 'name of output solidfile (re
 parser_c.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
 parser_c.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
 parser_c.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
+parser_c.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
 #parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
@@ -135,6 +138,11 @@ if not args.printmask:
 else:
 	printmask = 1
 
+if not args.printbbox:
+	printbbox = 0
+else:
+	printbbox = 1
+
 if not args.out_name:
 	print ('need to specified out_name')
 	sys.exit()
@@ -152,7 +160,8 @@ if args.type == 'shapefile':
 							'shapefile','-shp_file',region_shp,
 							'-id',str(basin_id),
 							'-out_name',out_name,
-							'-printmask',str(printmask)], stdout=subprocess.PIPE)
+							'-printmask',str(printmask),
+							'-printbbox', str(printbbox)], stdout=subprocess.PIPE)
 	temp_list = create_sub.stdout.decode('utf-8').split('\n')
 	batches = ''
 	for line in temp_list:
@@ -168,7 +177,8 @@ if args.type == 'shapefile':
 		os.system('python3 clip_inputs.py -i ../'+\
 					input+' shapefile -shp_file '+region_shp+\
 					' -id '+str(basin_id)+' -out_name '+out_name+'_'+\
-					os.path.basename(input)+' -printmask '+str(printmask))
+					os.path.basename(input)+' -printmask '+str(printmask)+\
+					' -printbbox '+str(printbbox))
 	os.chdir('..')
 
 elif args.type == 'mask':
@@ -181,7 +191,8 @@ elif args.type == 'mask':
 	create_sub = subprocess.run(['python3', 'subset_domain.py',
 							'mask','-mask_file',mask_file,
 							'-out_name',out_name,
-							'-printmask',str(printmask)], stdout=subprocess.PIPE)
+							'-printmask',str(printmask),
+							'-printbbox', str(printbbox)], stdout=subprocess.PIPE)
 	temp_list = create_sub.stdout.decode('utf-8').split('\n')
 	batches = ''
 	for line in temp_list:
@@ -197,7 +208,8 @@ elif args.type == 'mask':
 		os.system('python3 clip_inputs.py -i ../'+\
 					input+' mask -mask_file '+mask_file+\
 					' -out_name '+out_name+'_'+\
-					os.path.basename(input)+' -printmask '+str(printmask))
+					os.path.basename(input)+' -printmask '+str(printmask)+\
+					' -printbbox '+str(printbbox))
 	os.chdir('..')
 
 elif args.type == 'define_watershed':
@@ -213,7 +225,8 @@ elif args.type == 'define_watershed':
 							'define_watershed','-dir_file',dir_file,
 							'-outlet_file',outlet_file,
 							'-out_name',out_name,
-							'-printmask',str(printmask)], stdout=subprocess.PIPE)
+							'-printmask',str(printmask),
+							'-printbbox', str(printbbox)], stdout=subprocess.PIPE)
 	temp_list = create_sub.stdout.decode('utf-8').split('\n')
 	batches = ''
 	for line in temp_list:
@@ -231,7 +244,8 @@ elif args.type == 'define_watershed':
 					input+' define_watershed -dir_file '+dir_file+\
 					' -outlet_file '+outlet_file+\
 					' -out_name '+out_name+'_'+\
-					os.path.basename(input)+' -printmask '+str(printmask))
+					os.path.basename(input)+' -printmask '+str(printmask)+\
+					' -printbbox '+str(printbbox))
 	os.chdir('..')
 #move newly created files to input_files folder
 if os.path.isdir('input_files/'):

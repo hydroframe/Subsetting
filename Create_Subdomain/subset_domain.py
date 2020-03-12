@@ -14,6 +14,7 @@ import os
 import sys
 import pfio
 from Define_Watershed import DelinWatershed
+import scipy.ndimage as ndimage
 #import subprocess
 #import matplotlib.pyplot as plt
 
@@ -149,6 +150,8 @@ conus_pf_1k_sinks = '../CONUS1_inputs/conus_1km_PFmask_manualsinks.tif' #1 for c
 conus_pf_1k_lakes = '../CONUS1_inputs/conus_1km_PFmask_selectLakesmask.tif' #1 for lakes, 0 for everything else
 conus_pf_1k_lakes_border = '../CONUS1_inputs/conus_1km_PFmask_selectLakesborder.tif'
 conus_pf_1k_border_type = '../CONUS1_inputs/1km_PF_BorderCellType.tif' # A mask marking with 1 for for cells with an ocean border and 2 for cells with a land border
+conus_pf_1k_stream5 = '../CONUS1_inputs/1km_upscaledNWM_ChannelOrder5_mod2.tif'
+conus_pf_1k_reservoir = '../CONUS1_inputs/conus_1km_PFmask_reservoirs.tif'
 
 conus_pf_1k_tifs = [conus_pf_1k_mask,conus_pf_1k_sinks,conus_pf_1k_lakes,
 					conus_pf_1k_lakes_border,conus_pf_1k_border_type]
@@ -167,12 +170,22 @@ if any([not os.path.isfile(x) for x in conus_pf_1k_tifs]):
 
 ###read domain raster
 ds_ref = gdal.Open(conus_pf_1k_mask)
+ds_ref_geom = ds_ref.GetGeoTransform()
 arr_ref = ds_ref.ReadAsArray()
 
 arr_border_type = gdal.Open(conus_pf_1k_border_type).ReadAsArray()
 lakes_mat = gdal.Open(conus_pf_1k_lakes).ReadAsArray()
 sinks_mat = gdal.Open(conus_pf_1k_sinks).ReadAsArray()
 
+ds_stream = gdal.Open(conus_pf_1k_stream5)
+ds_stream_geom = ds_stream.GetGeoTransform()
+stream_raw_mat = ds_stream.ReadAsArray()
+new_starting_y = int((ds_stream_geom[3]-ds_ref_geom[3])/1000.)
+new_starting_x = int((ds_ref_geom[0]-ds_stream_geom[0])/1000.)
+stream_mat = stream_raw_mat[new_starting_y:new_starting_y+lakes_mat.shape[0],
+							new_starting_x:new_starting_x+lakes_mat.shape[1]]
+
+reservoirs_mat = gdal.Open(conus_pf_1k_reservoir).ReadAsArray()
 
 #parsing arguments
 args = parser.parse_args()
@@ -237,7 +250,8 @@ elif args.type == 'mask':
 	
 		#check if mask file has the same projection and extent with the domain mask file
 		if any([ds_ref.GetProjection() != ds_mask.GetProjection(),
-				sorted(ds_ref.GetGeoTransform()) != sorted(ds_mask.GetGeoTransform())]):
+				np.allclose(np.array(ds_ref.GetGeoTransform()),
+							np.array(ds_mask.GetGeoTransform()),atol=1e-5)==False]):
 			print ('mask and domain do not match...exit')
 			sys.exit()
 	
@@ -283,6 +297,14 @@ mask_mat, new_geom = subset(arr_ref,mask_arr,ds_ref)
 bordt_mat, _ = subset(arr_border_type,mask_arr,ds_ref)
 lakes_mat_crop, _ = subset(lakes_mat,mask_arr,ds_ref)
 sinks_mat_crop, _ = subset(sinks_mat,mask_arr,ds_ref)
+stream_mat_crop, _ = subset(stream_mat,mask_arr,ds_ref)
+reservoir_mat_crop, _ = subset(reservoirs_mat,mask_arr,ds_ref)
+
+struct = ndimage.generate_binary_structure(2, 2)
+erode = ndimage.binary_erosion(mask_mat, struct)
+edges = (mask_mat==1) ^ erode
+
+bordt_mat[np.where(np.logical_and(edges,stream_mat_crop==1))] = 1
 
 ###create back borders
 ##Back borders occure where mask[y+1]-mask[y] is negative (i.e. the cell above is a zero and the cell is inside the mask, i.e. a 1)
@@ -321,11 +343,15 @@ right_mat=-1*right_mat*bordt_mat #changing the valuse to the border types
 # 4 = Lake
 # 5 = Sink
 # 6 = bottom
+# 8 = Stream
+# 9 = Reservoir
 
 top_mat=sinks_mat_crop.copy()
 top_mat[top_mat==1]=3
 top_mat[lakes_mat_crop>0]=4
 top_mat[top_mat==2]=5
+top_mat[stream_mat_crop==1]=8
+top_mat[reservoir_mat_crop==1]=9
 
 bottom_mat=mask_mat*6
 

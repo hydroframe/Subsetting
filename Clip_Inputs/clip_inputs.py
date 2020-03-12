@@ -269,7 +269,8 @@ elif args.type == 'mask':
 	
 		#check if mask file has the same projection and extent with the domain mask file
 		if any([ds_ref.GetProjection() != ds_mask.GetProjection(),
-				sorted(ds_ref.GetGeoTransform()) != sorted(ds_mask.GetGeoTransform())]):
+				np.allclose(np.array(ds_ref.GetGeoTransform()),
+							np.array(ds_mask.GetGeoTransform()),atol=1e-5)==False]):
 			print ('mask and domain do not match...exit')
 			sys.exit()
 	

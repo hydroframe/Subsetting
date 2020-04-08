@@ -13,7 +13,6 @@ import pandas as pd
 import os
 import sys
 import pfio
-from Define_Watershed import DelinWatershed
 import scipy.ndimage as ndimage
 #import subprocess
 #import matplotlib.pyplot as plt
@@ -118,29 +117,6 @@ parser_a.add_argument('-printbbox',type=int, help = 'print bounding box (optiona
 #parser_a.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
-#group 2: using mask file
-parser_b = subparsers.add_parser('mask', help='subset using a mask file')
-parser_b.add_argument('-mask_file',type=str, help = 'input mask file')
-parser_b.add_argument('-out_name',type=str, help = 'name of output solidfile (optional)')
-parser_b.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
-parser_b.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
-parser_b.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
-parser_b.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
-#parser_b.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
-#parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
-
-#group 3: using custom watershed
-parser_c = subparsers.add_parser('define_watershed', help='subset using a newly created watershed')
-parser_c.add_argument('-dir_file',type=str, help = 'input direction file',)
-parser_c.add_argument('-outlet_file',type=str, help = 'file contains coordinates of outlet points')
-parser_c.add_argument('-out_name',type=str, help = 'name of output solidfile (required)')
-parser_c.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
-parser_c.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
-parser_c.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
-parser_c.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
-#parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
-#parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
-
 ###Download and install pf-mask-utilities
 if not os.path.isdir('pf-mask-utilities'):
 	os.system('git clone https://github.com/smithsg84/pf-mask-utilities.git')
@@ -149,47 +125,24 @@ if not os.path.isdir('pf-mask-utilities'):
 	os.chdir('..')
 
 ###required raster files
-conus_pf_1k_mask = '../CONUS1_inputs/conus_1km_PFmask2.tif'
-conus_pf_1k_sinks = '../CONUS1_inputs/conus_1km_PFmask_manualsinks.tif' #1 for cells inside domain, 0 for cells outside domain, 2 for sinks
-conus_pf_1k_lakes = '../CONUS1_inputs/conus_1km_PFmask_selectLakesmask.tif' #1 for lakes, 0 for everything else
-conus_pf_1k_lakes_border = '../CONUS1_inputs/conus_1km_PFmask_selectLakesborder.tif'
-conus_pf_1k_border_type = '../CONUS1_inputs/1km_PF_BorderCellType.tif' # A mask marking with 1 for for cells with an ocean border and 2 for cells with a land border
-conus_pf_1k_stream5 = '../CONUS1_inputs/1km_upscaledNWM_ChannelOrder5_mod2.tif'
-conus_pf_1k_reservoir = '../CONUS1_inputs/conus_1km_PFmask_reservoirs.tif'
+conus_pf_1k_mask = '../CONUS1_inputs/Domain_Blank_Mask.tif'
 
-conus_pf_1k_tifs = [conus_pf_1k_mask,conus_pf_1k_sinks,conus_pf_1k_lakes,
-					conus_pf_1k_lakes_border,conus_pf_1k_border_type]
-avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
+avra_path_tif = '/iplant/home/shared/avra/CONUS_1.0/SteadyState_Final/Other_Domain_Files/'
 
 ###check if file exits, if not we need to login to avra and download. This part requires icommand authorization
-if any([not os.path.isfile(x) for x in conus_pf_1k_tifs]):	
+if not os.path.isfile(conus_pf_1k_mask):	
 	print(conus_pf_1k_mask+' does not exits...downloading from avra')
 	auth = os.system('iinit')
 	if auth != 0:
 		print('Authentication failed...exit')
 		sys.exit()
-	
-	for tif_file in conus_pf_1k_tifs:
-		os.system('iget -K '+avra_path_tif+tif_file+' ../CONUS1_inputs/')
+	os.system('iget -vK '+avra_path_tif+tif_file+' ../CONUS1_inputs/')
 
 ###read domain raster
 ds_ref = gdal.Open(conus_pf_1k_mask)
 ds_ref_geom = ds_ref.GetGeoTransform()
 arr_ref = ds_ref.ReadAsArray()
-
-arr_border_type = gdal.Open(conus_pf_1k_border_type).ReadAsArray()
-lakes_mat = gdal.Open(conus_pf_1k_lakes).ReadAsArray()
-sinks_mat = gdal.Open(conus_pf_1k_sinks).ReadAsArray()
-
-ds_stream = gdal.Open(conus_pf_1k_stream5)
-ds_stream_geom = ds_stream.GetGeoTransform()
-stream_raw_mat = ds_stream.ReadAsArray()
-new_starting_y = int((ds_stream_geom[3]-ds_ref_geom[3])/1000.)
-new_starting_x = int((ds_ref_geom[0]-ds_stream_geom[0])/1000.)
-stream_mat = stream_raw_mat[new_starting_y:new_starting_y+lakes_mat.shape[0],
-							new_starting_x:new_starting_x+lakes_mat.shape[1]]
-
-reservoirs_mat = gdal.Open(conus_pf_1k_reservoir).ReadAsArray()
+arr_ref += 1
 
 #parsing arguments
 args = parser.parse_args()
@@ -247,105 +200,25 @@ if args.type == 'shapefile':
 	###mask array
 	mask_arr = (shp_raster_arr == basin_id).astype(np.int)
 
-elif args.type == 'mask':
-	mask_file = args.mask_file
-	if not os.path.isfile(mask_file):
-		print (mask_file+' does not exits...please create one')
-		sys.exit()
-	
-	file_ext = os.path.splitext(os.path.basename(mask_file))[1]
-	if file_ext == '.tif':
-		ds_mask = gdal.Open(mask_file)
-	
-		#check if mask file has the same projection and extent with the domain mask file
-		if any([ds_ref.GetProjection() != ds_mask.GetProjection(),
-				np.allclose(np.array(ds_ref.GetGeoTransform()),
-							np.array(ds_mask.GetGeoTransform()),atol=1e-5)==False]):
-			print ('mask and domain do not match...exit')
-			sys.exit()
-	
-	
-	mask_arr = read_from_file(mask_file)
-
-elif args.type == 'define_watershed':
-	dir_file = args.dir_file
-	if not os.path.isfile(dir_file):
-		print(dir_file+' does not exits...downloading from avra')
-		auth = os.system('iinit')
-		if auth != 0:
-			print('Authentication failed...exit')
-			sys.exit()
-		
-		avra_path_direction = '/iplant/home/shared/avra/CONUS2.0/Inputs/Topography/Str5Ep0/'
-		os.system('iget -K '+avra_path_direction+dir_file+' .')
-	
-	file_ext = os.path.splitext(os.path.basename(dir_file))[1]
-	if file_ext == '.tif':
-		ds_dir = gdal.Open(dir_file)
-	
-		#check if direction file has the same projection and extent with the domain mask file
-		if any([ds_ref.GetProjection() != ds_dir.GetProjection(),
-				sorted(ds_ref.GetGeoTransform()) != sorted(ds_dir.GetGeoTransform())]):
-			print ('direction and domain do not match...exit')
-			sys.exit()
-	
-	outlet_file = args.outlet_file
-	if not os.path.isfile(outlet_file):
-		print (outlet_file+' does not exits...please create one')
-		sys.exit()
-	
-	dir_arr = read_from_file(dir_file)
-	queue = np.loadtxt(outlet_file)
-	queue = queue.reshape(-1,2)
-	
-	#get the mask array from DelinWatershed function
-	mask_arr = DelinWatershed(queue, dir_arr,printflag=True)
 
 ###crop to get a tighter mask
 mask_mat, new_geom, bbox = subset(arr_ref,mask_arr,ds_ref)
-bordt_mat, _, _ = subset(arr_border_type,mask_arr,ds_ref)
-lakes_mat_crop, _, _ = subset(lakes_mat,mask_arr,ds_ref)
-sinks_mat_crop, _, _ = subset(sinks_mat,mask_arr,ds_ref)
-stream_mat_crop, _, _ = subset(stream_mat,mask_arr,ds_ref)
-reservoir_mat_crop, _, _ = subset(reservoirs_mat,mask_arr,ds_ref)
-
-struct = ndimage.generate_binary_structure(2, 2)
-erode = ndimage.binary_erosion(mask_mat, struct)
-edges = (mask_mat==1) ^ erode
-
-bordt_mat[np.where(np.logical_and(edges,stream_mat_crop==1))] = 1
 
 ###create back borders
 ##Back borders occure where mask[y+1]-mask[y] is negative (i.e. the cell above is a zero and the cell is inside the mask, i.e. a 1)
 back_mat=np.zeros(mask_mat.shape)
-back_mat[1:,:]=mask_mat[:-1,:] - mask_mat[1:,:]
-back_mat[0,:]=-1*mask_mat[0,:] #the upper boundary of the top row
-back_mat[back_mat>0]=0
-back_mat=-1*back_mat*bordt_mat #changing the valuse to the border types 
 
 ###create front borders
 ##Front borders occure where mask[y-1]-mask[y] is negative (i.e. the cell above is a zero and the cell is inside the mask, i.e. a 1)
 front_mat=np.zeros(mask_mat.shape)
-front_mat[:-1,:]=mask_mat[1:,:] - mask_mat[:-1,:]
-front_mat[-1,:]=-1*mask_mat[-1,:] #the lower boundary of the bottom row
-front_mat[front_mat>0]=0
-front_mat=-1*front_mat*bordt_mat #changing the valuse to the border types 
 
 ###create left borders
 ##Left borders occure where mask[x-1]-mask[x] is negative 
 left_mat=np.zeros(mask_mat.shape)
-left_mat[:,1:]=mask_mat[:,:-1] - mask_mat[:,1:]
-left_mat[:,0]=-1*mask_mat[:,0] #the left boundary of the first column
-left_mat[left_mat>0]=0
-left_mat=-1*left_mat*bordt_mat #changing the valuse to the border types 
 
 ###create right borders
 ##Right borders occure where mask[x+1]-mask[x] is negative 
 right_mat=np.zeros(mask_mat.shape)
-right_mat[:,:-1]=mask_mat[:,1:] - mask_mat[:,:-1]
-right_mat[:,-1]=-1*mask_mat[:,-1] #the right boundary of the last column
-right_mat[right_mat>0]=0
-right_mat=-1*right_mat*bordt_mat #changing the valuse to the border types 
 
 ###deal with top and bottom patches
 # 3 = regular overland boundary
@@ -355,12 +228,7 @@ right_mat=-1*right_mat*bordt_mat #changing the valuse to the border types
 # 8 = Stream
 # 9 = Reservoir
 
-top_mat=sinks_mat_crop.copy()
-top_mat[top_mat==1]=3
-top_mat[lakes_mat_crop>0]=4
-top_mat[top_mat==2]=5
-top_mat[stream_mat_crop==1]=8
-top_mat[reservoir_mat_crop==1]=9
+top_mat=mask_mat*3
 
 bottom_mat=mask_mat*6
 

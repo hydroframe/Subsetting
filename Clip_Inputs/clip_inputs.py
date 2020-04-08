@@ -125,33 +125,10 @@ parser_a.add_argument('-printbbox',type=int, help = 'print bounding box (optiona
 #parser_a.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
 #parser_a.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
 
-#group 2: using mask file
-parser_b = subparsers.add_parser('mask', help='subset using a mask file')
-parser_b.add_argument('-mask_file',type=str, help = 'input mask file')
-parser_b.add_argument('-out_name',type=str, help = 'name of output solidfile (optional)')
-parser_b.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
-parser_b.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
-parser_b.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
-parser_b.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
-#parser_b.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
-#parser_b.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
-
-#group 3: using custom watershed
-parser_c = subparsers.add_parser('define_watershed', help='subset using a newly created watershed')
-parser_c.add_argument('-dir_file',type=str, help = 'input direction file',)
-parser_c.add_argument('-outlet_file',type=str, help = 'file contains coordinates of outlet points')
-parser_c.add_argument('-out_name',type=str, help = 'name of output solidfile (required)')
-parser_c.add_argument('-dx',type=int, help = 'spatial resolution of solidfile (optional). Default is 1000')
-parser_c.add_argument('-dz',type=int, help = 'lateral resolution of solidfile (optional). Default is 1000')
-parser_c.add_argument('-printmask',type=int, help = 'print mask (optional). Default is 0')
-parser_c.add_argument('-printbbox',type=int, help = 'print bounding box (optional). Default is 0')
-#parser_c.add_argument('-z_bottom',type=int, help = 'bottom of domain (optional). Default is 0')
-#parser_c.add_argument('-z_top',type=int, help = 'top of domain (optional). Default is 1000')
-
 ###required raster files
-conus_pf_1k_mask = '../CONUS1_inputs/conus_1km_PFmask2.tif'
+conus_pf_1k_mask = '../CONUS1_inputs/Domain_Blank_Mask.tif'
 
-avra_path_tif = '/iplant/home/shared/avra/CONUS2.0/Inputs/domain/'
+avra_path_tif = '/iplant/home/shared/avra/CONUS_1.0/SteadyState_Final/Other_Domain_Files/'
 
 ###check if file exits, if not we need to login to avra and download. This part requires icommand authorization
 if not os.path.isfile(conus_pf_1k_mask):	
@@ -160,8 +137,7 @@ if not os.path.isfile(conus_pf_1k_mask):
 	if auth != 0:
 		print('Authentication failed...exit')
 		sys.exit()
-	
-	os.system('iget -K '+avra_path_tif+conus_pf_1k_mask+' ../CONUS1_inputs/')
+	os.system('iget -vK '+avra_path_tif+tif_file+' ../CONUS1_inputs/')
 
 ###read domain raster
 ds_ref = gdal.Open(conus_pf_1k_mask)
@@ -265,59 +241,6 @@ if args.type == 'shapefile':
 	
 	###mask array
 	mask_arr = (shp_raster_arr == basin_id).astype(np.int)
-
-elif args.type == 'mask':
-	mask_file = args.mask_file
-	if not os.path.isfile(mask_file):
-		print (mask_file+' does not exits...please create one')
-		sys.exit()
-	
-	file_ext = os.path.splitext(os.path.basename(mask_file))[1]
-	if file_ext == '.tif':
-		ds_mask = gdal.Open(mask_file)
-	
-		#check if mask file has the same projection and extent with the domain mask file
-		if any([ds_ref.GetProjection() != ds_mask.GetProjection(),
-				np.allclose(np.array(ds_ref.GetGeoTransform()),
-							np.array(ds_mask.GetGeoTransform()),atol=1e-5)==False]):
-			print ('mask and domain do not match...exit')
-			sys.exit()
-	
-	mask_arr = read_from_file(mask_file)
-
-elif args.type == 'define_watershed':
-	dir_file = args.dir_file
-	if not os.path.isfile(dir_file):
-		print(dir_file+' does not exits...downloading from avra')
-		auth = os.system('iinit')
-		if auth != 0:
-			print('Authentication failed...exit')
-			sys.exit()
-		
-		avra_path_direction = '/iplant/home/shared/avra/CONUS2.0/Inputs/Topography/Str5Ep0/'
-		os.system('iget -K '+avra_path_direction+dir_file+' .')
-	
-	file_ext = os.path.splitext(os.path.basename(dir_file))[1]
-	if file_ext == '.tif':
-		ds_dir = gdal.Open(dir_file)
-	
-		#check if direction file has the same projection and extent with the domain mask file
-		if any([ds_ref.GetProjection() != ds_dir.GetProjection(),
-				sorted(ds_ref.GetGeoTransform()) != sorted(ds_dir.GetGeoTransform())]):
-			print ('direction and domain do not match...exit')
-			sys.exit()
-	
-	outlet_file = args.outlet_file
-	if not os.path.isfile(outlet_file):
-		print (outlet_file+' does not exits...please create one')
-		sys.exit()
-	
-	dir_arr = read_from_file(dir_file)
-	queue = np.loadtxt(outlet_file)
-	queue = queue.reshape(-1,2)
-	
-	#get the mask array from DelinWatershed function
-	mask_arr = DelinWatershed(queue, dir_arr,printflag=True)
 
 ###crop to get a tighter mask
 clip_arr, new_geom, new_mask_x, bbox = subset(arr_in,mask_arr,ds_ref,crop_to_domain)

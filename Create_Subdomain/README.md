@@ -1,80 +1,95 @@
-# Create Subdomain
+# ParFlow Mask Utilities
 
-Create a solid file of masked domain for ParFlow
+These utilities have been moved to the main Parflow repository and built when parflow is built.
 
-### Development Team
+## Building
 
-See the list of [contributors](https://github.com/orgs/hydroframe/people) who participated in this project.
+Requires C++ compiler.
 
-## Usage
+make
 
-### Prerequisites
+## Testing
 
-To run this project on your local machine, you will need:
-1. Since the code will download all the pre-processed files for the CONUS2.0 domain from Cyverse, you will need to:
-	* Sign up for Cyverse account
-	* Setting up icommands, more detail can be found [here](https://wiki.cyverse.org/wiki/display/DS/Setting+Up+iCommands) 
-2. Python3 installed with these specificed packages: numpy, gdal, ogr, osr, and shapely
-3. *pfio* tool for reading and writing .pfb files. To download and install this tool please use this [link](https://github.com/hydroframe/tools/tree/master/pfio)
+make test
 
-### Synopsis
+## mask-to-pfsol
 
-```
-python3 subset_domain.py {shapefile|mask|define_watershed} [-shp_file] [-id] [-out_name] [-dx] [-dz] [-printmask] [-printbbox] [-mask_file] [-dir_file] [-outlet_file]
-```
+Utitility to build 3D PFSOL domain from 2D mask file(s).
 
-### Description
+### Usage
 
-**{shapefile|mask|define_watershed}** (Required) You need to choose one of the three subsetting methods:
-	1. Using a shapefile with an ID of the selected feature.
-	2. Using a mask file of the domain with value 1 inside the domain and value 0 elsewhere.
-	3. Using an output mask file from *Define_Watershed.py*. *Define_Watershed.py* defines define the watershed for a point or set of outlet points based on the flow direction file.
+There are two modes of running.  In the first case a single mask file
+is supplied, enabling a top surface to have multiple patches with the
+sides/bottom labeled as one patch.  In the second mode, a mask file is
+provived for each direction to enable labeling of each cell surface.
+The values in the mask file are used to label the patches.
 
-**-shp_file** (Used conjunctionally with *shapefile*) Name of the shapefile in *.shp* format. Please note that the function also requires other files in *.dbf* and *.prj* along with *.shp* file.   
+mask-to-pfsol 
+	      --mask <top mask input filename> 
+	      --vtk <VTK output filename> 
+	      --pfsol <PFSOL output filename> 
+	      --bottom-patch-label <bottom patch id> 
+	      --side-patch-label <side_patch id>
 
-**-id** (Used conjunctionally with *shapefile*) ID of the selected feature within the shapefile.
+Creates a PFSOL file based on 2D mask input that defines the domain
+and patches on the top surface.  The domain is extruded in Z to form a
+3D domain.  The mask input file can be many of the standard file types
+supported by ParFlow, such as ParFlow binary or simple ASCI. The ASC
+file format is also supported.
 
-**-out_name** (Optional for *shapefile* and *mask*, required for *define_watershed*) Name of the output from the function. If not defined when using *shapefile* or *mask*, *out_name* will be given from selected *id* (for *shapefile*) or from *mask name* (for *mask*). When using *define_watershed*, *out_name* needed to be defined.
+The mask input must be 2D with number of points in Z = 1;
 
-**-dx** (Optional) Spatial resolution of the subset file. Default value is 1000. 
+The bottom and side patches are labeled with the supplied patch id's.
+The top mask file is used to label patches on the top surface based on
+the values in the mask file.
 
-**-dz** (Optional) Vertical resolution of the subset file. Default value is 1000. 
+mask-to-pfsol 
+	--mask-top <top mask filename>
+	--mask-bottom <bottom mask filename>
+	--mask-left <left mask filename>
+	--mask-right <right mask filename>
+	--mask-front <front mask filename>
+	--mask-back <back mask filename>
+        --vtk <VTK output filename> --pfsol <PFSOL output filename>
 
-**-printmask** (Optional) Output an image of domain position. Default value is 0.
+Each of the mask values is used to label the external boundary patches
+based on the value.  This enables the sides and bottom to have a more
+complex patch labeling.   Faces are along each axis:
 
-**-printbbox** (Optional) Output a file which contains the bounding box of the domain. Default value is 0.
+Top    +Z
+Bottom -Z
 
-**-mask_file** (Used conjunctionally with *mask*) Name of the mask file. Please note that the mask file must have same extent and projection with the *input_file*.
+Right  +X
+Left   -X
 
-**-dir_file** (Used conjunctionally with *define_watershed*) Name of the direction file. Please note that the mask file must have same extent and projection with the *input_file*.
+Front  -Y
+Back   +Y
 
-**-outlet_file** (Used conjunctionally with *define_watershed*) Name of the outlet file. The file contains coordinates of each point (y x) by each line.
+Each mask file should be the same dimensions in X and Y and have
+number of points in Z = 1.
 
-### Examples
-Subsetting by mask
+### ASC file format
 
-```
-python3 subset_domain.py mask -mask_file ../../mask/Coast1_mask.tif
-```
+The input mask is an ASC file format with the following format:
+
+ncols        4
+nrows        4
+xllcorner    0.0
+yllcorner    0.0
+cellsize     1.0
+NODATA_value  0.0
+<ncols * nrows values>
+
+A 0 value is outside the domain, any other value is inside the domain.
+
+## pfsol-to-vtk
+
+This utility is used to convert a PFSOL file to a VTK for easier visualization.
+
+### Usage
+
+pfsol-to-vtk <PFSOL input filename> <VTK output filename>
 
 
-Subsetting by shapefile
-```
-python3 subset_domain.py shapefile -shp_file ../../shp/Regions.shp -id 14
-```
 
-Subsetting by a delineated watershed
-```
-python3 subset_domain.py define_watershed -dir_file ../../mask/Str5Ep0_direction.tif -outlet_file outlet.txt -out_name Lake2 -printmask 1
-```
-
-
-### Python workflow
-
-A note about workflow for the python file (subset_domain.py):
-1. Download all the required domain rasters from Cyverse
-2. Read the mask file
-3. Crop all the rasters to extents which only contain the target basin
-4. Create borders (back, front, left, right, top, bottom) ascii files. **Notes:** this part adopted from Prof. Condon R codes.
-5. Create a solid domain file by calling mask-to-pfsol function
 

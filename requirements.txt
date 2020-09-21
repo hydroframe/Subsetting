@@ -1,0 +1,5 @@
+numpy
+pandas
+gdal~=2.4.2
+pyyaml
+parflowio

@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.subset.tools.subset_conus API documentation</title>
+<meta name="description" content="Convenience wrapper for clipping inputs for the CONUS1 or CONUS2 models …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.subset.tools.subset_conus</code></h1>
+</header>
+<section id="section-intro">
+<p>Convenience wrapper for clipping inputs for the CONUS1 or CONUS2 models</p>
+<p>Everything here can be customized using the classes in the subset package</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Convenience wrapper for clipping inputs for the CONUS1 or CONUS2 models
+
+Everything here can be customized using the classes in the subset package
+&#34;&#34;&#34;
+
+import argparse
+import logging
+import os
+import sys
+from pathlib import Path
+from parflow.subset.utils.arguments import is_valid_path, is_positive_integer, is_valid_file
+from parflow.subset.clipper import MaskClipper
+from parflow.subset.domain import Conus
+from parflow.subset.rasterizer import ShapefileRasterizer
+from datetime import datetime
+import parflow.subset.tools.bulk_clipper as bulk_clipper
+import parflow.subset.builders.solidfile as solidfile_generator
+from parflow.subset.builders.tcl import build_tcl
+from parflow.subset.clipper import ClmClipper
+from parflow.subset.data import parkinglot_template, conus_manifest
+
+
+def parse_args(args):
+    &#34;&#34;&#34;Parse the command line arguments
+
+    Parameters
+    ----------
+    args : list
+        list of arguments from sys.argv
+
+    Returns
+    -------
+    Namespace
+        populated Namespace object from the parsed command line options
+
+    &#34;&#34;&#34;
+    parser = argparse.ArgumentParser(&#39;Subset a ParFlow CONUS domain&#39;)
+
+    &#34;&#34;&#34;
+    Required Arguments
+    &#34;&#34;&#34;
+    parser.add_argument(&#34;--input_path&#34;, &#34;-i&#34;, dest=&#34;input_path&#34;, required=True,
+                        type=lambda x: is_valid_path(parser, x),
+                        help=&#34;the input path to the shapefile file set&#34;)
+
+    parser.add_argument(&#34;--shapefile&#34;, &#34;-s&#34;, dest=&#34;shapefile&#34;, required=True,
+                        help=&#34;the name of the shapefile file set&#34;)
+
+    parser.add_argument(&#34;--conus_files&#34;, &#34;-f&#34;, dest=&#34;conus_files&#34;, required=True,
+                        help=&#34;local path to the CONUS inputs to subset&#34;,
+                        type=lambda x: is_valid_path(parser, x))
+    &#34;&#34;&#34;
+    Optional Arguments
+    &#34;&#34;&#34;
+    parser.add_argument(&#34;--manifest&#34;, &#34;-m&#34;, dest=&#34;manifest_file&#34;, required=False,
+                        default=conus_manifest,
+                        type=lambda x: is_valid_file(parser, x),
+                        help=&#34;the manifest of CONUS filenames to build the domain from&#34;)
+
+    parser.add_argument(&#34;--version&#34;, &#34;-v&#34;, dest=&#34;conus_version&#34;, required=False,
+                        default=1, choices=[1, 2],
+                        type=lambda x: is_positive_integer(parser, x),
+                        help=&#34;the version of CONUS to subset from&#34;)
+
+    parser.add_argument(&#34;--out_dir&#34;, &#34;-o&#34;, dest=&#34;out_dir&#34;, required=False,
+                        default=&#39;.&#39;,
+                        help=&#34;the directory to write outputs to&#34;,
+                        type=lambda x: is_valid_path(parser, x))
+
+    parser.add_argument(&#34;--out_name&#34;, &#34;-n&#34;, dest=&#34;out_name&#34;, required=False,
+                        default=None,
+                        help=&#34;the name to give the outputs&#34;)
+
+    parser.add_argument(&#34;--clip_clm&#34;, &#34;-c&#34;, dest=&#34;clip_clm&#34;, required=False,
+                        action=&#39;store_true&#39;,
+                        help=&#34;also clip inputs for CLM&#34;)
+
+    parser.add_argument(&#34;--write_tcl&#34;, &#34;-w&#34;, dest=&#34;write_tcl&#34;, required=False,
+                        action=&#39;store_true&#39;,
+                        help=&#34;generate the .tcl script for this subset&#34;)
+
+    parser.add_argument(&#34;--padding&#34;, &#34;-p&#34;, dest=&#34;padding&#34;, nargs=4, metavar=(&#39;Top&#39;, &#39;Right&#39;, &#39;Bottom&#39;, &#39;Left&#39;),
+                        required=False, default=(0, 0, 0, 0), type=int,
+                        help=&#34;integer padding value for bounding box on x-sides&#34;
+                        )
+
+    parser.add_argument(&#34;--attribute_ids&#34;, &#34;-a&#34;, dest=&#34;attribute_ids&#34;, required=False,
+                        default=[1], nargs=&#39;+&#39;,
+                        help=&#34;list of attribute ID&#39;s to clip&#34;,
+                        type=lambda x: is_positive_integer(parser, x))
+
+    parser.add_argument(&#34;--attribute_name&#34;, &#34;-e&#34;, dest=&#34;attribute_name&#34;, required=False,
+                        default=&#34;OBJECTID&#34;,
+                        help=&#34;name of the attribute field to query for attribute ids&#34;,
+                        type=str)
+
+    parser.add_argument(&#34;--tif_outs&#34;, &#34;-t&#34;, dest=&#34;write_tifs&#34;, required=False,
+                        action=&#39;store_true&#39;, help=&#34;write tif output files&#34;)
+
+    return parser.parse_args(args)
+
+
+def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;, out_dir=&#39;.&#39;, out_name=None, clip_clm=False,
+                 write_tcl=False, padding=(0, 0, 0, 0), attribute_name=&#39;OBJECTID&#39;, attribute_ids=None, write_tifs=False,
+                 manifest_file=conus_manifest):
+    &#34;&#34;&#34;subset a conus domain inputs for running a regional model
+
+    Parameters
+    ----------
+    input_path : str
+        path to input shapefile parts to use as mask
+    shapefile : str
+        name of shapefile to use as mask
+    conus_version : int, optional
+        version of the CONUS domain to use (1 or 2) (Default value = 1)
+    conus_files : str, optional
+        path to the CONUS source input files listed in conus_manifest.yaml (Default value = &#39;.&#39;)
+    out_dir : str, optional
+        directory to write the outputs (default .)
+    out_name : str, optional
+        name to give the outputs (default shapefile name)
+    clip_clm : int, optional
+        whether or not to clip the CLM input files too (default no)
+    write_tcl : int, optional
+        whether or not to write a TCL file for the subset (default no)
+    padding : tuple, optional
+        grid cells of no_data to add around domain mask. CSS Style (top, right, bottom, left) default 0
+    attribute_name : str, optional
+        attribute name defined in shapefile to select as mask default &#39;OBJECTID&#39;
+    attribute_ids : list, optional
+        list of attribute ID&#39;s defined in shapefile to use as mask input. default [1]
+    write_tifs : int, optional
+        whether or not to write outputs as TIF&#39;s in addition to PFB&#39;s. (default no)
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    if out_name is None:
+        out_name = shapefile
+    conus = Conus(version=conus_version, local_path=conus_files, manifest_file=manifest_file)
+
+    if attribute_ids is None:
+        attribute_ids = [1]
+    # Step 1, rasterize shapefile
+
+    rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
+                                     no_data=-999, output_path=out_dir, )
+    rasterizer.rasterize_shapefile_to_disk(out_name=f&#39;{out_name}_raster_from_shapefile.tif&#39;,
+                                           padding=padding,
+                                           attribute_name=attribute_name,
+                                           attribute_ids=attribute_ids)
+
+    subset_mask = rasterizer.subset_mask
+
+    # Step 2, Generate solid file
+    clip = MaskClipper(subset_mask, no_data_threshold=-1)
+    batches = solidfile_generator.make_solid_file(clipped_mask=clip.clipped_mask,
+                                                  out_name=os.path.join(out_dir, out_name))
+    if len(batches) == 0:
+        raise Exception(&#34;Did not make solid file correctly&#34;)
+
+    # Step 3. Clip all the domain data inputs
+    bulk_clipper.clip_inputs(clip,
+                             [os.path.join(conus.local_path, value) for key, value in conus.required_files.items()
+                              if key not in [&#39;DOMAIN_MASK&#39;, &#39;CHANNELS&#39;]],
+                             out_dir=out_dir, tif_outs=write_tifs)
+
+    # Step 4. Clip CLM inputs
+    if clip_clm == 1:
+        clm_clipper = ClmClipper(subset_mask)
+        latlon_formatted, latlon_data = clm_clipper.clip_latlon(os.path.join(conus.local_path,
+                                                                             conus.optional_files.get(&#39;LAT_LON&#39;)))
+
+        clm_clipper.write_lat_lon(latlon_formatted, os.path.join(out_dir, f&#39;{out_name}_latlon.sa&#39;),
+                                  x=latlon_data.shape[2], y=latlon_data.shape[1], z=latlon_data.shape[0])
+
+        land_cover_data, vegm_data = clm_clipper.clip_land_cover(lat_lon_array=latlon_formatted,
+                                                                 land_cover_file=os.path.join(conus.local_path,
+                                                                                              conus.optional_files.get(
+                                                                                                  &#39;LAND_COVER&#39;)))
+
+        clm_clipper.write_land_cover(vegm_data, os.path.join(out_dir, f&#39;{out_name}_vegm.dat&#39;))
+
+    # Step 5. Generate TCL File
+    if write_tcl == 1:
+        build_tcl(os.path.join(out_dir, f&#39;{out_name}.tcl&#39;),
+                  parkinglot_template,
+                  out_name,
+                  os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_X&#34;)).stem}_clip.pfb&#39;),
+                  os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;),
+                  os.path.join(out_dir, &#39;pme.pfb&#39;), end_time=10, batches=batches,
+                  p=2, q=1, r=1, timestep=1, constant=1)
+
+
+def main():
+    # setup logging
+    start_date = datetime.utcnow()
+    # parse the command line arguments
+    cmd_line_args = sys.argv
+    args = parse_args(cmd_line_args[1:])
+    logging.basicConfig(filename=os.path.join(args.out_dir, &#39;subset_conus.log&#39;), filemode=&#39;w&#39;, level=logging.INFO)
+    logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(cmd_line_args[:])}&#39;)
+    subset_conus(input_path=args.input_path, shapefile=args.shapefile, conus_version=args.conus_version,
+                 conus_files=args.conus_files, out_dir=args.out_dir, out_name=args.out_name, clip_clm=args.clip_clm,
+                 write_tcl=args.write_tcl, padding=args.padding, attribute_ids=args.attribute_ids,
+                 attribute_name=args.attribute_name, write_tifs=args.write_tifs, manifest_file=args.manifest_file)
+
+    end_date = datetime.utcnow()
+    logging.info(f&#39;completed process at {end_date} for a runtime of {end_date - start_date}&#39;)
+
+
+if __name__ == &#39;__main__&#39;:
+    main()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="parflow.subset.tools.subset_conus.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    # setup logging
+    start_date = datetime.utcnow()
+    # parse the command line arguments
+    cmd_line_args = sys.argv
+    args = parse_args(cmd_line_args[1:])
+    logging.basicConfig(filename=os.path.join(args.out_dir, &#39;subset_conus.log&#39;), filemode=&#39;w&#39;, level=logging.INFO)
+    logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(cmd_line_args[:])}&#39;)
+    subset_conus(input_path=args.input_path, shapefile=args.shapefile, conus_version=args.conus_version,
+                 conus_files=args.conus_files, out_dir=args.out_dir, out_name=args.out_name, clip_clm=args.clip_clm,
+                 write_tcl=args.write_tcl, padding=args.padding, attribute_ids=args.attribute_ids,
+                 attribute_name=args.attribute_name, write_tifs=args.write_tifs, manifest_file=args.manifest_file)
+
+    end_date = datetime.utcnow()
+    logging.info(f&#39;completed process at {end_date} for a runtime of {end_date - start_date}&#39;)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.tools.subset_conus.parse_args"><code class="name flex">
+<span>def <span class="ident">parse_args</span></span>(<span>args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse the command line arguments</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>args</code></strong> :&ensp;<code>list</code></dt>
+<dd>list of arguments from sys.argv</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Namespace</code></dt>
+<dd>populated Namespace object from the parsed command line options</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_args(args):
+    &#34;&#34;&#34;Parse the command line arguments
+
+    Parameters
+    ----------
+    args : list
+        list of arguments from sys.argv
+
+    Returns
+    -------
+    Namespace
+        populated Namespace object from the parsed command line options
+
+    &#34;&#34;&#34;
+    parser = argparse.ArgumentParser(&#39;Subset a ParFlow CONUS domain&#39;)
+
+    &#34;&#34;&#34;
+    Required Arguments
+    &#34;&#34;&#34;
+    parser.add_argument(&#34;--input_path&#34;, &#34;-i&#34;, dest=&#34;input_path&#34;, required=True,
+                        type=lambda x: is_valid_path(parser, x),
+                        help=&#34;the input path to the shapefile file set&#34;)
+
+    parser.add_argument(&#34;--shapefile&#34;, &#34;-s&#34;, dest=&#34;shapefile&#34;, required=True,
+                        help=&#34;the name of the shapefile file set&#34;)
+
+    parser.add_argument(&#34;--conus_files&#34;, &#34;-f&#34;, dest=&#34;conus_files&#34;, required=True,
+                        help=&#34;local path to the CONUS inputs to subset&#34;,
+                        type=lambda x: is_valid_path(parser, x))
+    &#34;&#34;&#34;
+    Optional Arguments
+    &#34;&#34;&#34;
+    parser.add_argument(&#34;--manifest&#34;, &#34;-m&#34;, dest=&#34;manifest_file&#34;, required=False,
+                        default=conus_manifest,
+                        type=lambda x: is_valid_file(parser, x),
+                        help=&#34;the manifest of CONUS filenames to build the domain from&#34;)
+
+    parser.add_argument(&#34;--version&#34;, &#34;-v&#34;, dest=&#34;conus_version&#34;, required=False,
+                        default=1, choices=[1, 2],
+                        type=lambda x: is_positive_integer(parser, x),
+                        help=&#34;the version of CONUS to subset from&#34;)
+
+    parser.add_argument(&#34;--out_dir&#34;, &#34;-o&#34;, dest=&#34;out_dir&#34;, required=False,
+                        default=&#39;.&#39;,
+                        help=&#34;the directory to write outputs to&#34;,
+                        type=lambda x: is_valid_path(parser, x))
+
+    parser.add_argument(&#34;--out_name&#34;, &#34;-n&#34;, dest=&#34;out_name&#34;, required=False,
+                        default=None,
+                        help=&#34;the name to give the outputs&#34;)
+
+    parser.add_argument(&#34;--clip_clm&#34;, &#34;-c&#34;, dest=&#34;clip_clm&#34;, required=False,
+                        action=&#39;store_true&#39;,
+                        help=&#34;also clip inputs for CLM&#34;)
+
+    parser.add_argument(&#34;--write_tcl&#34;, &#34;-w&#34;, dest=&#34;write_tcl&#34;, required=False,
+                        action=&#39;store_true&#39;,
+                        help=&#34;generate the .tcl script for this subset&#34;)
+
+    parser.add_argument(&#34;--padding&#34;, &#34;-p&#34;, dest=&#34;padding&#34;, nargs=4, metavar=(&#39;Top&#39;, &#39;Right&#39;, &#39;Bottom&#39;, &#39;Left&#39;),
+                        required=False, default=(0, 0, 0, 0), type=int,
+                        help=&#34;integer padding value for bounding box on x-sides&#34;
+                        )
+
+    parser.add_argument(&#34;--attribute_ids&#34;, &#34;-a&#34;, dest=&#34;attribute_ids&#34;, required=False,
+                        default=[1], nargs=&#39;+&#39;,
+                        help=&#34;list of attribute ID&#39;s to clip&#34;,
+                        type=lambda x: is_positive_integer(parser, x))
+
+    parser.add_argument(&#34;--attribute_name&#34;, &#34;-e&#34;, dest=&#34;attribute_name&#34;, required=False,
+                        default=&#34;OBJECTID&#34;,
+                        help=&#34;name of the attribute field to query for attribute ids&#34;,
+                        type=str)
+
+    parser.add_argument(&#34;--tif_outs&#34;, &#34;-t&#34;, dest=&#34;write_tifs&#34;, required=False,
+                        action=&#39;store_true&#39;, help=&#34;write tif output files&#34;)
+
+    return parser.parse_args(args)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.tools.subset_conus.subset_conus"><code class="name flex">
+<span>def <span class="ident">subset_conus</span></span>(<span>input_path, shapefile, conus_version=1, conus_files='.', out_dir='.', out_name=None, clip_clm=False, write_tcl=False, padding=(0, 0, 0, 0), attribute_name='OBJECTID', attribute_ids=None, write_tifs=False, manifest_file=PosixPath('/home/arezaii/git/pf_subsetter/parflow/subset/data/conus_manifest.yaml'))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>subset a conus domain inputs for running a regional model</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>input_path</code></strong> :&ensp;<code>str</code></dt>
+<dd>path to input shapefile parts to use as mask</dd>
+<dt><strong><code>shapefile</code></strong> :&ensp;<code>str</code></dt>
+<dd>name of shapefile to use as mask</dd>
+<dt><strong><code>conus_version</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>version of the CONUS domain to use (1 or 2) (Default value = 1)</dd>
+<dt><strong><code>conus_files</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>path to the CONUS source input files listed in conus_manifest.yaml (Default value = '.')</dd>
+<dt><strong><code>out_dir</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>directory to write the outputs (default .)</dd>
+<dt><strong><code>out_name</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>name to give the outputs (default shapefile name)</dd>
+<dt><strong><code>clip_clm</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>whether or not to clip the CLM input files too (default no)</dd>
+<dt><strong><code>write_tcl</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>whether or not to write a TCL file for the subset (default no)</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>grid cells of no_data to add around domain mask. CSS Style (top, right, bottom, left) default 0</dd>
+<dt><strong><code>attribute_name</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>attribute name defined in shapefile to select as mask default 'OBJECTID'</dd>
+<dt><strong><code>attribute_ids</code></strong> :&ensp;<code>list</code>, optional</dt>
+<dd>list of attribute ID's defined in shapefile to use as mask input. default [1]</dd>
+<dt><strong><code>write_tifs</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>whether or not to write outputs as TIF's in addition to PFB's. (default no)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;, out_dir=&#39;.&#39;, out_name=None, clip_clm=False,
+                 write_tcl=False, padding=(0, 0, 0, 0), attribute_name=&#39;OBJECTID&#39;, attribute_ids=None, write_tifs=False,
+                 manifest_file=conus_manifest):
+    &#34;&#34;&#34;subset a conus domain inputs for running a regional model
+
+    Parameters
+    ----------
+    input_path : str
+        path to input shapefile parts to use as mask
+    shapefile : str
+        name of shapefile to use as mask
+    conus_version : int, optional
+        version of the CONUS domain to use (1 or 2) (Default value = 1)
+    conus_files : str, optional
+        path to the CONUS source input files listed in conus_manifest.yaml (Default value = &#39;.&#39;)
+    out_dir : str, optional
+        directory to write the outputs (default .)
+    out_name : str, optional
+        name to give the outputs (default shapefile name)
+    clip_clm : int, optional
+        whether or not to clip the CLM input files too (default no)
+    write_tcl : int, optional
+        whether or not to write a TCL file for the subset (default no)
+    padding : tuple, optional
+        grid cells of no_data to add around domain mask. CSS Style (top, right, bottom, left) default 0
+    attribute_name : str, optional
+        attribute name defined in shapefile to select as mask default &#39;OBJECTID&#39;
+    attribute_ids : list, optional
+        list of attribute ID&#39;s defined in shapefile to use as mask input. default [1]
+    write_tifs : int, optional
+        whether or not to write outputs as TIF&#39;s in addition to PFB&#39;s. (default no)
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    if out_name is None:
+        out_name = shapefile
+    conus = Conus(version=conus_version, local_path=conus_files, manifest_file=manifest_file)
+
+    if attribute_ids is None:
+        attribute_ids = [1]
+    # Step 1, rasterize shapefile
+
+    rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
+                                     no_data=-999, output_path=out_dir, )
+    rasterizer.rasterize_shapefile_to_disk(out_name=f&#39;{out_name}_raster_from_shapefile.tif&#39;,
+                                           padding=padding,
+                                           attribute_name=attribute_name,
+                                           attribute_ids=attribute_ids)
+
+    subset_mask = rasterizer.subset_mask
+
+    # Step 2, Generate solid file
+    clip = MaskClipper(subset_mask, no_data_threshold=-1)
+    batches = solidfile_generator.make_solid_file(clipped_mask=clip.clipped_mask,
+                                                  out_name=os.path.join(out_dir, out_name))
+    if len(batches) == 0:
+        raise Exception(&#34;Did not make solid file correctly&#34;)
+
+    # Step 3. Clip all the domain data inputs
+    bulk_clipper.clip_inputs(clip,
+                             [os.path.join(conus.local_path, value) for key, value in conus.required_files.items()
+                              if key not in [&#39;DOMAIN_MASK&#39;, &#39;CHANNELS&#39;]],
+                             out_dir=out_dir, tif_outs=write_tifs)
+
+    # Step 4. Clip CLM inputs
+    if clip_clm == 1:
+        clm_clipper = ClmClipper(subset_mask)
+        latlon_formatted, latlon_data = clm_clipper.clip_latlon(os.path.join(conus.local_path,
+                                                                             conus.optional_files.get(&#39;LAT_LON&#39;)))
+
+        clm_clipper.write_lat_lon(latlon_formatted, os.path.join(out_dir, f&#39;{out_name}_latlon.sa&#39;),
+                                  x=latlon_data.shape[2], y=latlon_data.shape[1], z=latlon_data.shape[0])
+
+        land_cover_data, vegm_data = clm_clipper.clip_land_cover(lat_lon_array=latlon_formatted,
+                                                                 land_cover_file=os.path.join(conus.local_path,
+                                                                                              conus.optional_files.get(
+                                                                                                  &#39;LAND_COVER&#39;)))
+
+        clm_clipper.write_land_cover(vegm_data, os.path.join(out_dir, f&#39;{out_name}_vegm.dat&#39;))
+
+    # Step 5. Generate TCL File
+    if write_tcl == 1:
+        build_tcl(os.path.join(out_dir, f&#39;{out_name}.tcl&#39;),
+                  parkinglot_template,
+                  out_name,
+                  os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_X&#34;)).stem}_clip.pfb&#39;),
+                  os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;),
+                  os.path.join(out_dir, &#39;pme.pfb&#39;), end_time=10, batches=batches,
+                  p=2, q=1, r=1, timestep=1, constant=1)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.subset.tools" href="index.html">parflow.subset.tools</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="parflow.subset.tools.subset_conus.main" href="#parflow.subset.tools.subset_conus.main">main</a></code></li>
+<li><code><a title="parflow.subset.tools.subset_conus.parse_args" href="#parflow.subset.tools.subset_conus.parse_args">parse_args</a></code></li>
+<li><code><a title="parflow.subset.tools.subset_conus.subset_conus" href="#parflow.subset.tools.subset_conus.subset_conus">subset_conus</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

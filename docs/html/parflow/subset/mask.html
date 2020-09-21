@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.subset.mask API documentation</title>
+<meta name="description" content="Represent an irregular mask for clipping" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.subset.mask</code></h1>
+</header>
+<section id="section-intro">
+<p>Represent an irregular mask for clipping</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Represent an irregular mask for clipping
+
+&#34;&#34;&#34;
+import logging
+import numpy as np
+import numpy.ma as ma
+from parflow.subset.utils.io import read_geotiff, write_array_to_geotiff, write_bbox, read_file, write_pfb
+from parflow.subset.bbox import BBox
+
+
+class SubsetMask:
+    &#34;&#34;&#34;A full-sized mask with a bounding box and irregular bordered mask inside
+    &#34;&#34;&#34;
+
+    def __repr__(self):
+        return f&#34;{self.__class__.__name__}(mask_tif:{self.mask_tif!r}, mask_array:{self.mask_array!r}, &#34; \
+               f&#34;bbox_val:{self.bbox_val!r}, inner_mask:{self.inner_mask!r}, bbox_mask:{self.bbox_mask!r}, &#34; \
+               f&#34;no_data_value:{self.no_data_value!r}, inner_mask_edges:{self.inner_mask_edges!r}, &#34; \
+               f&#34;bbox_edges:{self.bbox_edges!r}&#34;
+
+    def __init__(self, tif_file, bbox_val=0):
+        &#34;&#34;&#34;Create a new instance of SubsetMask
+
+        Parameters
+        ----------
+        tif_file : str
+            path to tiff file containing mask
+        bbox_val : int, optional
+            integer value specifying the data value for bounding box cells
+        Returns
+        -------
+        SubsetMask
+        &#34;&#34;&#34;
+        self.mask_tif = read_geotiff(tif_file)
+        self.mask_array = read_file(tif_file)
+        self.bbox_val = bbox_val
+        self.inner_mask = self._find_inner_object()  # tight crop
+        self.bbox_mask = self._find_bbox()  # bbox crop
+        self.no_data_value = self.mask_tif.GetRasterBand(1).GetNoDataValue()
+        self.inner_mask_edges = self.find_mask_edges(self.inner_mask)  # edges
+        self.bbox_edges = self.find_mask_edges(self.bbox_mask)  # edges
+
+    def _find_bbox(self):
+        &#34;&#34;&#34;locate the outer bbox area and return the masked array
+
+        Returns
+        -------
+        mx : numpy.ma.MaskedArray
+            masked numpy array with full_dim_mask edges at outer area
+
+        &#34;&#34;&#34;
+        mx = ma.masked_where(self.mask_array &lt; self.bbox_val, self.mask_array)
+        logging.info(f&#39;SubsetMask located outer bbox in full_dim_mask array&#39;)
+        return mx
+
+    def _find_inner_object(self):
+        &#34;&#34;&#34;locate the inner, irregular shaped object
+
+        Returns
+        -------
+        mx : numpy.ma.MaskedArray
+            masked numpy array with tight full_dim_mask along shape border
+
+        &#34;&#34;&#34;
+        mx = ma.masked_where(self.mask_array &lt;= self.bbox_val, self.mask_array)
+        logging.info(f&#39;SubsetMask located inner full_dim_mask in full_dim_mask array&#39;)
+        return mx
+
+    @property
+    def bbox_shape(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return tuple([(self.bbox_edges[1] - self.bbox_edges[0]) + 1, (self.bbox_edges[3] - self.bbox_edges[2]) + 1])
+
+    @property
+    def inner_mask_shape(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return tuple([(self.inner_mask_edges[1] - self.inner_mask_edges[0]) + 1,
+                      (self.inner_mask_edges[3] - self.inner_mask_edges[2]) + 1])
+
+    @property
+    def mask_shape(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return self.mask_array.shape
+
+    def add_bbox_to_mask(self, padding=(0, 0, 0, 0)):
+        &#34;&#34;&#34;add the inner bounding box of 0&#39;s to the reprojected full_dim_mask. This will expand the bounding box of the
+        clip so that the full_dim_mask is centered in the bbox and the bbox edges expand proportionally in each
+        direction to make the final bbox edges a multiple of the side_length_multiple argument
+
+        Parameters
+        ----------
+        padding : tuple
+            optional padding to add as 0&#39;s around full_dim_mask. (Default value = (0,0,0,0))
+            CSS style (top,right,bottom,left)
+
+        Returns
+        -------
+        new_mask : ndarray
+            3d array with no data outside the bbox, 0 inside bbox, and 1 in full_dim_mask area, bounding box values
+
+        new_edges : list
+            the bounds of the new bbox, including padding
+        &#34;&#34;&#34;
+
+        min_y, max_y, min_x, max_x = self.inner_mask_edges
+
+        new_mask = self.inner_mask.filled(fill_value=self.no_data_value)
+
+        new_edges = [max(min_y - padding[2], 0), min(max_y + padding[0] + 1, self.mask_array.shape[1]),
+                     max(min_x - padding[3], 0), min(max_x + padding[1] + 1, self.mask_array.shape[2])]
+        bottom_edge, top_edge, left_edge, right_edge = new_edges
+        new_mask[:, bottom_edge: top_edge, left_edge: right_edge] = \
+            self.inner_mask[:, bottom_edge: top_edge, left_edge: right_edge].filled(fill_value=0.0)
+        # Check if shape bbox aligns with any of our reference dataset edges
+        # if 0 in new_edges or new_mask.shape[1] - 1 == [bottom_edge] or new_mask.shape[2] - 1 == right_edge:
+        #     logging.warning(f&#39;edge of bounding box aligns with edge of reference dataset! Check extents!&#39;)
+        # # logging.info(f&#39;added bbox to mask: mask_va=1, bbox_val=0, no_data_val={self.no_data_value}, &#39;
+        # #              f&#39;slice_data(top,bot,left,right)=&#39;
+        # #              f&#39;{&#34;,&#34;.join([str(i) for i in get_human_bbox(new_edges, new_mask.shape)])}&#39;)
+        self.mask_array = new_mask
+        self.bbox_mask = self._find_bbox()
+        self.bbox_edges = self.find_mask_edges(self.bbox_mask)
+        return new_mask, new_edges
+
+    def find_mask_edges(self, full_dim_mask, mask_val=1):
+        &#34;&#34;&#34;Identify the edges of the mask
+
+        Parameters
+        ----------
+        full_dim_mask : ndarray
+            numpy mask array representing full domain mask
+        mask_val : int, optional
+            value to match in the mask (Default value = 1)
+
+        Returns
+        -------
+        min_y : int
+            minimum y location of data value in mask
+        max_y : int
+            maximum y location of data value in mask
+        min_x : int
+            minimum x location of data value in mask
+        max_x : int
+            maximum x location of data value in mask
+        &#34;&#34;&#34;
+        _, yy, xx = np.where(~full_dim_mask.mask == mask_val)
+        min_x = min(xx)
+        min_y = min(yy)
+        max_x = max(xx)
+        max_y = max(yy)
+        # logging.info(
+        #     f&#39;located full_dim_mask edges at (top,bot,left,right)=&#39;
+        #     f&#39;{&#34;,&#34;.join([str(i) for i in self.get_human_bbox([min_y, max_y, min_x, max_x], full_dim_mask.shape)])}&#39;)
+        return min_y, max_y, min_x, max_x
+
+    def get_bbox(self):
+        &#34;&#34;&#34;get a BBox object describing the data location in the domain
+
+        Returns
+        -------
+        BBox
+            A bounding box describing the mask location and size in the domain
+        &#34;&#34;&#34;
+        return BBox(self.inner_mask_edges[2] + 1, self.inner_mask_edges[0] + 1,
+                    self.inner_mask_shape[1], self.inner_mask_shape[0])
+
+    def get_human_bbox(self):
+        &#34;&#34;&#34;
+        return the x1, y1, nx, ny as you would see in bbox.txt
+        Returns
+        -------
+        list
+            array of edges [x1, y1, nx, ny]
+
+        &#34;&#34;&#34;
+        return self.get_bbox().get_human_bbox()
+
+    def calculate_new_geom(self, min_x, min_y, old_geom):
+        &#34;&#34;&#34;calculate a new geometry based on an old geometry and new minimum point
+
+        Parameters
+        ----------
+        min_x : int
+            the minimum x value of the new geometry
+        min_y : int
+            the minimum y value of the new geometry
+        old_geom : list
+            array formatted for gdal geometry definitions
+
+        Returns
+        -------
+        new_geom : list
+            array formatted for gdal geometry with new extents
+
+        &#34;&#34;&#34;
+        # TODO: Why old code had (min_x +1) ? Seemed to shift the tif geo location by 1 in each direction?
+        new_x = old_geom[0] + (old_geom[1] * min_x)
+        new_y = old_geom[3] + (old_geom[5] * min_y)
+        new_geom = (new_x, old_geom[1], old_geom[2], new_y, old_geom[4], old_geom[5])
+        logging.info(f&#39;created new geometry from edge position and old geometry:&#39;
+                     f&#39;old_geom={old_geom}, x_edge={min_x}, y_edge={min_y},&#39;
+                     f&#39;new_geom={new_geom}&#39;)
+        return new_geom
+
+    def write_mask_to_tif(self, filename):
+        &#34;&#34;&#34;write the mask to a tif file on disk
+
+        Parameters
+        ----------
+        filename : str
+            path and filename to store geotif output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        write_array_to_geotiff(filename, self.mask_array, self.mask_tif.GetGeoTransform(),
+                               self.mask_tif.GetProjection(), no_data=self.no_data_value)
+
+    def write_mask_to_pfb(self, filename):
+        &#34;&#34;&#34;write the mask to a pfb file on disk
+
+        Parameters
+        ----------
+        filename : str
+            path and filename to store pfb output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+
+        write_pfb(data=self.mask_array, outfile=filename)
+
+    def write_bbox(self, filename):
+        &#34;&#34;&#34;write the bbox to a txt file on disk
+
+        Parameters
+        ----------
+        filename : str
+            path and filename to store txt output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        write_bbox(self.get_human_bbox(), filename)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="parflow.subset.mask.SubsetMask"><code class="flex name class">
+<span>class <span class="ident">SubsetMask</span></span>
+<span>(</span><span>tif_file, bbox_val=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A full-sized mask with a bounding box and irregular bordered mask inside</p>
+<p>Create a new instance of SubsetMask</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>tif_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>path to tiff file containing mask</dd>
+<dt><strong><code>bbox_val</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>integer value specifying the data value for bounding box cells</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="parflow.subset.mask.SubsetMask" href="#parflow.subset.mask.SubsetMask">SubsetMask</a></code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubsetMask:
+    &#34;&#34;&#34;A full-sized mask with a bounding box and irregular bordered mask inside
+    &#34;&#34;&#34;
+
+    def __repr__(self):
+        return f&#34;{self.__class__.__name__}(mask_tif:{self.mask_tif!r}, mask_array:{self.mask_array!r}, &#34; \
+               f&#34;bbox_val:{self.bbox_val!r}, inner_mask:{self.inner_mask!r}, bbox_mask:{self.bbox_mask!r}, &#34; \
+               f&#34;no_data_value:{self.no_data_value!r}, inner_mask_edges:{self.inner_mask_edges!r}, &#34; \
+               f&#34;bbox_edges:{self.bbox_edges!r}&#34;
+
+    def __init__(self, tif_file, bbox_val=0):
+        &#34;&#34;&#34;Create a new instance of SubsetMask
+
+        Parameters
+        ----------
+        tif_file : str
+            path to tiff file containing mask
+        bbox_val : int, optional
+            integer value specifying the data value for bounding box cells
+        Returns
+        -------
+        SubsetMask
+        &#34;&#34;&#34;
+        self.mask_tif = read_geotiff(tif_file)
+        self.mask_array = read_file(tif_file)
+        self.bbox_val = bbox_val
+        self.inner_mask = self._find_inner_object()  # tight crop
+        self.bbox_mask = self._find_bbox()  # bbox crop
+        self.no_data_value = self.mask_tif.GetRasterBand(1).GetNoDataValue()
+        self.inner_mask_edges = self.find_mask_edges(self.inner_mask)  # edges
+        self.bbox_edges = self.find_mask_edges(self.bbox_mask)  # edges
+
+    def _find_bbox(self):
+        &#34;&#34;&#34;locate the outer bbox area and return the masked array
+
+        Returns
+        -------
+        mx : numpy.ma.MaskedArray
+            masked numpy array with full_dim_mask edges at outer area
+
+        &#34;&#34;&#34;
+        mx = ma.masked_where(self.mask_array &lt; self.bbox_val, self.mask_array)
+        logging.info(f&#39;SubsetMask located outer bbox in full_dim_mask array&#39;)
+        return mx
+
+    def _find_inner_object(self):
+        &#34;&#34;&#34;locate the inner, irregular shaped object
+
+        Returns
+        -------
+        mx : numpy.ma.MaskedArray
+            masked numpy array with tight full_dim_mask along shape border
+
+        &#34;&#34;&#34;
+        mx = ma.masked_where(self.mask_array &lt;= self.bbox_val, self.mask_array)
+        logging.info(f&#39;SubsetMask located inner full_dim_mask in full_dim_mask array&#39;)
+        return mx
+
+    @property
+    def bbox_shape(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return tuple([(self.bbox_edges[1] - self.bbox_edges[0]) + 1, (self.bbox_edges[3] - self.bbox_edges[2]) + 1])
+
+    @property
+    def inner_mask_shape(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return tuple([(self.inner_mask_edges[1] - self.inner_mask_edges[0]) + 1,
+                      (self.inner_mask_edges[3] - self.inner_mask_edges[2]) + 1])
+
+    @property
+    def mask_shape(self):
+        &#34;&#34;&#34; &#34;&#34;&#34;
+        return self.mask_array.shape
+
+    def add_bbox_to_mask(self, padding=(0, 0, 0, 0)):
+        &#34;&#34;&#34;add the inner bounding box of 0&#39;s to the reprojected full_dim_mask. This will expand the bounding box of the
+        clip so that the full_dim_mask is centered in the bbox and the bbox edges expand proportionally in each
+        direction to make the final bbox edges a multiple of the side_length_multiple argument
+
+        Parameters
+        ----------
+        padding : tuple
+            optional padding to add as 0&#39;s around full_dim_mask. (Default value = (0,0,0,0))
+            CSS style (top,right,bottom,left)
+
+        Returns
+        -------
+        new_mask : ndarray
+            3d array with no data outside the bbox, 0 inside bbox, and 1 in full_dim_mask area, bounding box values
+
+        new_edges : list
+            the bounds of the new bbox, including padding
+        &#34;&#34;&#34;
+
+        min_y, max_y, min_x, max_x = self.inner_mask_edges
+
+        new_mask = self.inner_mask.filled(fill_value=self.no_data_value)
+
+        new_edges = [max(min_y - padding[2], 0), min(max_y + padding[0] + 1, self.mask_array.shape[1]),
+                     max(min_x - padding[3], 0), min(max_x + padding[1] + 1, self.mask_array.shape[2])]
+        bottom_edge, top_edge, left_edge, right_edge = new_edges
+        new_mask[:, bottom_edge: top_edge, left_edge: right_edge] = \
+            self.inner_mask[:, bottom_edge: top_edge, left_edge: right_edge].filled(fill_value=0.0)
+        # Check if shape bbox aligns with any of our reference dataset edges
+        # if 0 in new_edges or new_mask.shape[1] - 1 == [bottom_edge] or new_mask.shape[2] - 1 == right_edge:
+        #     logging.warning(f&#39;edge of bounding box aligns with edge of reference dataset! Check extents!&#39;)
+        # # logging.info(f&#39;added bbox to mask: mask_va=1, bbox_val=0, no_data_val={self.no_data_value}, &#39;
+        # #              f&#39;slice_data(top,bot,left,right)=&#39;
+        # #              f&#39;{&#34;,&#34;.join([str(i) for i in get_human_bbox(new_edges, new_mask.shape)])}&#39;)
+        self.mask_array = new_mask
+        self.bbox_mask = self._find_bbox()
+        self.bbox_edges = self.find_mask_edges(self.bbox_mask)
+        return new_mask, new_edges
+
+    def find_mask_edges(self, full_dim_mask, mask_val=1):
+        &#34;&#34;&#34;Identify the edges of the mask
+
+        Parameters
+        ----------
+        full_dim_mask : ndarray
+            numpy mask array representing full domain mask
+        mask_val : int, optional
+            value to match in the mask (Default value = 1)
+
+        Returns
+        -------
+        min_y : int
+            minimum y location of data value in mask
+        max_y : int
+            maximum y location of data value in mask
+        min_x : int
+            minimum x location of data value in mask
+        max_x : int
+            maximum x location of data value in mask
+        &#34;&#34;&#34;
+        _, yy, xx = np.where(~full_dim_mask.mask == mask_val)
+        min_x = min(xx)
+        min_y = min(yy)
+        max_x = max(xx)
+        max_y = max(yy)
+        # logging.info(
+        #     f&#39;located full_dim_mask edges at (top,bot,left,right)=&#39;
+        #     f&#39;{&#34;,&#34;.join([str(i) for i in self.get_human_bbox([min_y, max_y, min_x, max_x], full_dim_mask.shape)])}&#39;)
+        return min_y, max_y, min_x, max_x
+
+    def get_bbox(self):
+        &#34;&#34;&#34;get a BBox object describing the data location in the domain
+
+        Returns
+        -------
+        BBox
+            A bounding box describing the mask location and size in the domain
+        &#34;&#34;&#34;
+        return BBox(self.inner_mask_edges[2] + 1, self.inner_mask_edges[0] + 1,
+                    self.inner_mask_shape[1], self.inner_mask_shape[0])
+
+    def get_human_bbox(self):
+        &#34;&#34;&#34;
+        return the x1, y1, nx, ny as you would see in bbox.txt
+        Returns
+        -------
+        list
+            array of edges [x1, y1, nx, ny]
+
+        &#34;&#34;&#34;
+        return self.get_bbox().get_human_bbox()
+
+    def calculate_new_geom(self, min_x, min_y, old_geom):
+        &#34;&#34;&#34;calculate a new geometry based on an old geometry and new minimum point
+
+        Parameters
+        ----------
+        min_x : int
+            the minimum x value of the new geometry
+        min_y : int
+            the minimum y value of the new geometry
+        old_geom : list
+            array formatted for gdal geometry definitions
+
+        Returns
+        -------
+        new_geom : list
+            array formatted for gdal geometry with new extents
+
+        &#34;&#34;&#34;
+        # TODO: Why old code had (min_x +1) ? Seemed to shift the tif geo location by 1 in each direction?
+        new_x = old_geom[0] + (old_geom[1] * min_x)
+        new_y = old_geom[3] + (old_geom[5] * min_y)
+        new_geom = (new_x, old_geom[1], old_geom[2], new_y, old_geom[4], old_geom[5])
+        logging.info(f&#39;created new geometry from edge position and old geometry:&#39;
+                     f&#39;old_geom={old_geom}, x_edge={min_x}, y_edge={min_y},&#39;
+                     f&#39;new_geom={new_geom}&#39;)
+        return new_geom
+
+    def write_mask_to_tif(self, filename):
+        &#34;&#34;&#34;write the mask to a tif file on disk
+
+        Parameters
+        ----------
+        filename : str
+            path and filename to store geotif output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        write_array_to_geotiff(filename, self.mask_array, self.mask_tif.GetGeoTransform(),
+                               self.mask_tif.GetProjection(), no_data=self.no_data_value)
+
+    def write_mask_to_pfb(self, filename):
+        &#34;&#34;&#34;write the mask to a pfb file on disk
+
+        Parameters
+        ----------
+        filename : str
+            path and filename to store pfb output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+
+        write_pfb(data=self.mask_array, outfile=filename)
+
+    def write_bbox(self, filename):
+        &#34;&#34;&#34;write the bbox to a txt file on disk
+
+        Parameters
+        ----------
+        filename : str
+            path and filename to store txt output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        write_bbox(self.get_human_bbox(), filename)</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="parflow.subset.mask.SubsetMask.bbox_shape"><code class="name">var <span class="ident">bbox_shape</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def bbox_shape(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return tuple([(self.bbox_edges[1] - self.bbox_edges[0]) + 1, (self.bbox_edges[3] - self.bbox_edges[2]) + 1])</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.inner_mask_shape"><code class="name">var <span class="ident">inner_mask_shape</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def inner_mask_shape(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return tuple([(self.inner_mask_edges[1] - self.inner_mask_edges[0]) + 1,
+                  (self.inner_mask_edges[3] - self.inner_mask_edges[2]) + 1])</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.mask_shape"><code class="name">var <span class="ident">mask_shape</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def mask_shape(self):
+    &#34;&#34;&#34; &#34;&#34;&#34;
+    return self.mask_array.shape</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.subset.mask.SubsetMask.add_bbox_to_mask"><code class="name flex">
+<span>def <span class="ident">add_bbox_to_mask</span></span>(<span>self, padding=(0, 0, 0, 0))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>add the inner bounding box of 0's to the reprojected full_dim_mask. This will expand the bounding box of the
+clip so that the full_dim_mask is centered in the bbox and the bbox edges expand proportionally in each
+direction to make the final bbox edges a multiple of the side_length_multiple argument</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>padding</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>optional padding to add as 0's around full_dim_mask. (Default value = (0,0,0,0))
+CSS style (top,right,bottom,left)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>new_mask</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>3d array with no data outside the bbox, 0 inside bbox, and 1 in full_dim_mask area, bounding box values</dd>
+<dt><strong><code>new_edges</code></strong> :&ensp;<code>list</code></dt>
+<dd>the bounds of the new bbox, including padding</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_bbox_to_mask(self, padding=(0, 0, 0, 0)):
+    &#34;&#34;&#34;add the inner bounding box of 0&#39;s to the reprojected full_dim_mask. This will expand the bounding box of the
+    clip so that the full_dim_mask is centered in the bbox and the bbox edges expand proportionally in each
+    direction to make the final bbox edges a multiple of the side_length_multiple argument
+
+    Parameters
+    ----------
+    padding : tuple
+        optional padding to add as 0&#39;s around full_dim_mask. (Default value = (0,0,0,0))
+        CSS style (top,right,bottom,left)
+
+    Returns
+    -------
+    new_mask : ndarray
+        3d array with no data outside the bbox, 0 inside bbox, and 1 in full_dim_mask area, bounding box values
+
+    new_edges : list
+        the bounds of the new bbox, including padding
+    &#34;&#34;&#34;
+
+    min_y, max_y, min_x, max_x = self.inner_mask_edges
+
+    new_mask = self.inner_mask.filled(fill_value=self.no_data_value)
+
+    new_edges = [max(min_y - padding[2], 0), min(max_y + padding[0] + 1, self.mask_array.shape[1]),
+                 max(min_x - padding[3], 0), min(max_x + padding[1] + 1, self.mask_array.shape[2])]
+    bottom_edge, top_edge, left_edge, right_edge = new_edges
+    new_mask[:, bottom_edge: top_edge, left_edge: right_edge] = \
+        self.inner_mask[:, bottom_edge: top_edge, left_edge: right_edge].filled(fill_value=0.0)
+    # Check if shape bbox aligns with any of our reference dataset edges
+    # if 0 in new_edges or new_mask.shape[1] - 1 == [bottom_edge] or new_mask.shape[2] - 1 == right_edge:
+    #     logging.warning(f&#39;edge of bounding box aligns with edge of reference dataset! Check extents!&#39;)
+    # # logging.info(f&#39;added bbox to mask: mask_va=1, bbox_val=0, no_data_val={self.no_data_value}, &#39;
+    # #              f&#39;slice_data(top,bot,left,right)=&#39;
+    # #              f&#39;{&#34;,&#34;.join([str(i) for i in get_human_bbox(new_edges, new_mask.shape)])}&#39;)
+    self.mask_array = new_mask
+    self.bbox_mask = self._find_bbox()
+    self.bbox_edges = self.find_mask_edges(self.bbox_mask)
+    return new_mask, new_edges</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.calculate_new_geom"><code class="name flex">
+<span>def <span class="ident">calculate_new_geom</span></span>(<span>self, min_x, min_y, old_geom)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>calculate a new geometry based on an old geometry and new minimum point</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>min_x</code></strong> :&ensp;<code>int</code></dt>
+<dd>the minimum x value of the new geometry</dd>
+<dt><strong><code>min_y</code></strong> :&ensp;<code>int</code></dt>
+<dd>the minimum y value of the new geometry</dd>
+<dt><strong><code>old_geom</code></strong> :&ensp;<code>list</code></dt>
+<dd>array formatted for gdal geometry definitions</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>new_geom</code></strong> :&ensp;<code>list</code></dt>
+<dd>array formatted for gdal geometry with new extents</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def calculate_new_geom(self, min_x, min_y, old_geom):
+    &#34;&#34;&#34;calculate a new geometry based on an old geometry and new minimum point
+
+    Parameters
+    ----------
+    min_x : int
+        the minimum x value of the new geometry
+    min_y : int
+        the minimum y value of the new geometry
+    old_geom : list
+        array formatted for gdal geometry definitions
+
+    Returns
+    -------
+    new_geom : list
+        array formatted for gdal geometry with new extents
+
+    &#34;&#34;&#34;
+    # TODO: Why old code had (min_x +1) ? Seemed to shift the tif geo location by 1 in each direction?
+    new_x = old_geom[0] + (old_geom[1] * min_x)
+    new_y = old_geom[3] + (old_geom[5] * min_y)
+    new_geom = (new_x, old_geom[1], old_geom[2], new_y, old_geom[4], old_geom[5])
+    logging.info(f&#39;created new geometry from edge position and old geometry:&#39;
+                 f&#39;old_geom={old_geom}, x_edge={min_x}, y_edge={min_y},&#39;
+                 f&#39;new_geom={new_geom}&#39;)
+    return new_geom</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.find_mask_edges"><code class="name flex">
+<span>def <span class="ident">find_mask_edges</span></span>(<span>self, full_dim_mask, mask_val=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Identify the edges of the mask</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>full_dim_mask</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>numpy mask array representing full domain mask</dd>
+<dt><strong><code>mask_val</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>value to match in the mask (Default value = 1)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>min_y</code></strong> :&ensp;<code>int</code></dt>
+<dd>minimum y location of data value in mask</dd>
+<dt><strong><code>max_y</code></strong> :&ensp;<code>int</code></dt>
+<dd>maximum y location of data value in mask</dd>
+<dt><strong><code>min_x</code></strong> :&ensp;<code>int</code></dt>
+<dd>minimum x location of data value in mask</dd>
+<dt><strong><code>max_x</code></strong> :&ensp;<code>int</code></dt>
+<dd>maximum x location of data value in mask</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_mask_edges(self, full_dim_mask, mask_val=1):
+    &#34;&#34;&#34;Identify the edges of the mask
+
+    Parameters
+    ----------
+    full_dim_mask : ndarray
+        numpy mask array representing full domain mask
+    mask_val : int, optional
+        value to match in the mask (Default value = 1)
+
+    Returns
+    -------
+    min_y : int
+        minimum y location of data value in mask
+    max_y : int
+        maximum y location of data value in mask
+    min_x : int
+        minimum x location of data value in mask
+    max_x : int
+        maximum x location of data value in mask
+    &#34;&#34;&#34;
+    _, yy, xx = np.where(~full_dim_mask.mask == mask_val)
+    min_x = min(xx)
+    min_y = min(yy)
+    max_x = max(xx)
+    max_y = max(yy)
+    # logging.info(
+    #     f&#39;located full_dim_mask edges at (top,bot,left,right)=&#39;
+    #     f&#39;{&#34;,&#34;.join([str(i) for i in self.get_human_bbox([min_y, max_y, min_x, max_x], full_dim_mask.shape)])}&#39;)
+    return min_y, max_y, min_x, max_x</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.get_bbox"><code class="name flex">
+<span>def <span class="ident">get_bbox</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get a BBox object describing the data location in the domain</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>BBox</code></dt>
+<dd>A bounding box describing the mask location and size in the domain</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_bbox(self):
+    &#34;&#34;&#34;get a BBox object describing the data location in the domain
+
+    Returns
+    -------
+    BBox
+        A bounding box describing the mask location and size in the domain
+    &#34;&#34;&#34;
+    return BBox(self.inner_mask_edges[2] + 1, self.inner_mask_edges[0] + 1,
+                self.inner_mask_shape[1], self.inner_mask_shape[0])</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.get_human_bbox"><code class="name flex">
+<span>def <span class="ident">get_human_bbox</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>return the x1, y1, nx, ny as you would see in bbox.txt
+Returns</p>
+<hr>
+<dl>
+<dt><code>list</code></dt>
+<dd>array of edges [x1, y1, nx, ny]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_human_bbox(self):
+    &#34;&#34;&#34;
+    return the x1, y1, nx, ny as you would see in bbox.txt
+    Returns
+    -------
+    list
+        array of edges [x1, y1, nx, ny]
+
+    &#34;&#34;&#34;
+    return self.get_bbox().get_human_bbox()</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.write_bbox"><code class="name flex">
+<span>def <span class="ident">write_bbox</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>write the bbox to a txt file on disk</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>path and filename to store txt output</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_bbox(self, filename):
+    &#34;&#34;&#34;write the bbox to a txt file on disk
+
+    Parameters
+    ----------
+    filename : str
+        path and filename to store txt output
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    write_bbox(self.get_human_bbox(), filename)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.write_mask_to_pfb"><code class="name flex">
+<span>def <span class="ident">write_mask_to_pfb</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>write the mask to a pfb file on disk</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>path and filename to store pfb output</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_mask_to_pfb(self, filename):
+    &#34;&#34;&#34;write the mask to a pfb file on disk
+
+    Parameters
+    ----------
+    filename : str
+        path and filename to store pfb output
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+
+    write_pfb(data=self.mask_array, outfile=filename)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.write_mask_to_tif"><code class="name flex">
+<span>def <span class="ident">write_mask_to_tif</span></span>(<span>self, filename)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>write the mask to a tif file on disk</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
+<dd>path and filename to store geotif output</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_mask_to_tif(self, filename):
+    &#34;&#34;&#34;write the mask to a tif file on disk
+
+    Parameters
+    ----------
+    filename : str
+        path and filename to store geotif output
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    write_array_to_geotiff(filename, self.mask_array, self.mask_tif.GetGeoTransform(),
+                           self.mask_tif.GetProjection(), no_data=self.no_data_value)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.subset" href="index.html">parflow.subset</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="parflow.subset.mask.SubsetMask" href="#parflow.subset.mask.SubsetMask">SubsetMask</a></code></h4>
+<ul class="two-column">
+<li><code><a title="parflow.subset.mask.SubsetMask.add_bbox_to_mask" href="#parflow.subset.mask.SubsetMask.add_bbox_to_mask">add_bbox_to_mask</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.bbox_shape" href="#parflow.subset.mask.SubsetMask.bbox_shape">bbox_shape</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.calculate_new_geom" href="#parflow.subset.mask.SubsetMask.calculate_new_geom">calculate_new_geom</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.find_mask_edges" href="#parflow.subset.mask.SubsetMask.find_mask_edges">find_mask_edges</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.get_bbox" href="#parflow.subset.mask.SubsetMask.get_bbox">get_bbox</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.get_human_bbox" href="#parflow.subset.mask.SubsetMask.get_human_bbox">get_human_bbox</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.inner_mask_shape" href="#parflow.subset.mask.SubsetMask.inner_mask_shape">inner_mask_shape</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.mask_shape" href="#parflow.subset.mask.SubsetMask.mask_shape">mask_shape</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.write_bbox" href="#parflow.subset.mask.SubsetMask.write_bbox">write_bbox</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.write_mask_to_pfb" href="#parflow.subset.mask.SubsetMask.write_mask_to_pfb">write_mask_to_pfb</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.write_mask_to_tif" href="#parflow.subset.mask.SubsetMask.write_mask_to_tif">write_mask_to_tif</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

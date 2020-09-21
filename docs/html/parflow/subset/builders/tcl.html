@@ -1,0 +1,1049 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.subset.builders.tcl API documentation</title>
+<meta name="description" content="Build a .tcl file for running a ParFlow model" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.subset.builders.tcl</code></h1>
+</header>
+<section id="section-intro">
+<p>Build a .tcl file for running a ParFlow model</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Build a .tcl file for running a ParFlow model
+
+&#34;&#34;&#34;
+import argparse
+import os
+import sys
+from datetime import datetime
+import logging
+import parflow.subset.utils.io as file_io_tools
+
+
+
+def read_infile(infile):
+    &#34;&#34;&#34;
+
+    Parameters
+    ----------
+    infile : str
+        template input file to build from
+
+    Returns
+    -------
+    results : dictionary
+        key values for ParFlow keys
+    content : list
+        list of `infile` contents
+    &#34;&#34;&#34;
+    # critical information
+    crit_info = [&#39;runname&#39;, &#39;Process.Topology.P&#39;, &#39;Process.Topology.Q&#39;, &#39;Process.Topology.R&#39;,
+                 &#39;file copy -force&#39;, &#39;ComputationalGrid.NX&#39;, &#39;ComputationalGrid.NY&#39;,
+                 &#39;ComputationalGrid.NZ&#39;, &#39;ComputationalGrid.DX&#39;, &#39;ComputationalGrid.DY&#39;,
+                 &#39;ComputationalGrid.DZ&#39;, &#39;GeomInput.domaininput.FileName&#39;, &#39;Geom.domain.Patches&#39;,
+                 &#39;dzScale.nzListNumber&#39;, &#39;Cell.0.dzScale.Value&#39;, &#39;Cell.1.dzScale.Value&#39;,
+                 &#39;Cell.2.dzScale.Value&#39;, &#39;Cell.3.dzScale.Value&#39;, &#39;Cell.4.dzScale.Value&#39;,
+                 &#39;Geom.domain.Perm.Value&#39;, &#39;TimingInfo.BaseUnit&#39;, &#39;TimingInfo.StartTime&#39;,
+                 &#39;TimingInfo.StopTime&#39;, &#39;TimingInfo.DumpInterval&#39;, &#39;TimeStep.Value&#39;,
+                 &#39;Geom.domain.Porosity.Value&#39;, &#39;BCPressure.PatchNames&#39;,
+                 &#39;Patch.top.BCPressure.Type&#39;, &#39;Patch.top.BCPressure.Cycle&#39;,
+                 &#39;Patch.top.BCPressure.rain.Value&#39;, &#39;Patch.top.BCPressure.rec.Value&#39;,
+                 &#39;Patch.top.BCPressure.alltime.Value&#39;, &#39;Solver.EvapTransFile&#39;,
+                 &#39;Solver.EvapTrans.FileName&#39;, &#39;TopoSlopesX.FileName&#39;, &#39;TopoSlopesY.FileName&#39;,
+                 &#39;pfdist&#39;, &#39;Geom.domain.ICPressure.Value&#39;, &#39;Geom.domain.ICPressure.RefPatch&#39;]
+
+    with open(infile, &#39;r&#39;) as fi:
+        content = fi.read()
+
+    results = {}
+
+    content = content.split(&#39;\n&#39;)
+    # filter out commented, empty lines
+    for ii, line in enumerate(content):
+        if line:
+            if line[0] != &#39;#&#39;:
+                for info in crit_info:
+                    if info in line:
+                        if info not in results.keys():
+                            results[info] = {}
+                            results[info][&#39;locs&#39;] = []
+                            results[info][&#39;vals&#39;] = []
+                        line = [x.strip() for x in line.split(&#39; &#39;) if x]
+                        results[info][&#39;locs&#39;].append(ii)
+                        results[info][&#39;vals&#39;].append(line)
+
+    return results, content
+
+
+def parse_args(args):
+    &#34;&#34;&#34;Parse the command line arguments
+
+    Parameters
+    ----------
+    args : list
+        list of arguments from sys.argv
+
+    Returns
+    -------
+    Namespace
+        populated Namespace object from the parsed command line options
+    &#34;&#34;&#34;
+    parser = argparse.ArgumentParser(description=&#39;Generate .tcl script from parkinglot template&#39;)
+
+    # CORES
+    parser.add_argument(&#39;-P&#39;, type=int, default=2, help=&#39;Processor in P(optional). Default is 2&#39;, required=False)
+    parser.add_argument(&#39;-Q&#39;, type=int, default=1, help=&#39;Processor in Q(optional). Default is 1&#39;, required=False)
+    parser.add_argument(&#39;-R&#39;, type=int, default=1, help=&#39;Processor in R(optional). Default is 1&#39;, required=False)
+
+    # OUT FILE
+    parser.add_argument(&#39;-o&#39;, &#39;--out_file&#39;, type=str, help=&#39;output file&#39;, required=True)
+
+    # INPUT FILES
+    parser.add_argument(&#39;-i&#39;, &#39;--temp_file&#39;, type=str, help=&#39;template file for modifying&#39;, required=True)
+    parser.add_argument(&#39;--runname&#39;, type=str, help=&#39;run name of the simulation&#39;, required=True)
+    parser.add_argument(&#39;-sl&#39;, &#39;--slope_file&#39;, type=str, help=&#39;name of the slope file, either in x or y direction&#39;,
+                        required=True)
+    parser.add_argument(&#39;-so&#39;, &#39;--solid_file&#39;, type=str, help=&#39;name of the solid file&#39;, required=True)
+    parser.add_argument(&#39;-evap&#39;, type=int, default=0, help=&#39;PME file for simulation (optional).Default is 0&#39;)
+    parser.add_argument(&#39;--evap_file&#39;, type=str, help=&#39;name of the PME file&#39;)
+
+    # PARAMETERS
+    parser.add_argument(&#39;-K&#39;, &#39;--perm&#39;, type=float, default=0.02849,
+                        help=&#39;Permeability (optional). Default is 0.02849 (i.e. average K of the Upper Colorado basin)&#39;,
+                        required=False)
+    parser.add_argument(&#39;--porosity&#39;, type=float, default=0.39738,
+                        help=&#39;Porosity (optional). &#39;
+                             &#39;Default is 0.39738 (i.e. average porosity of the Upper Colorado basin)&#39;,
+                        required=False)
+    parser.add_argument(&#39;--rain&#39;, type=float, default=-0.05, help=&#39;Rain value (optional). Default is -0.05&#39;,
+                        required=False)
+    parser.add_argument(&#39;--rec&#39;, type=float, default=0.0, help=&#39;Recession value (optional). Default is 0.0&#39;,
+                        required=False)
+    parser.add_argument(&#39;--flow&#39;, type=str, default=&#39;OverlandFlow&#39;,
+                        help=&#39;Flow type for top layer (optional). Default is OverlandFlow&#39;, required=False)
+    parser.add_argument(&#39;--constant&#39;, type=int, default=0,
+                        help=&#39;Constant boundary condition for top layer (optional). Default is No (0)&#39;, required=False)
+    parser.add_argument(&#39;--initw&#39;, choices=[&#39;top&#39;, &#39;bottom&#39;], default=&#39;bottom&#39;,
+                        help=&#39;Where to set initial pressure (optional). Default is bottom&#39;, required=False)
+    parser.add_argument(&#39;--init&#39;, type=float, default=0.0,
+                        help=&#39;Initial pressure for bottom layer (optional). Default is 0.0&#39;, required=False)
+
+    # TIMING INFO
+    parser.add_argument(&#39;-s&#39;, &#39;--start&#39;, type=float, default=0.0, help=&#39;Start time(optional). Default is 0.0&#39;,
+                        required=False)
+    parser.add_argument(&#39;-e&#39;, &#39;--end&#39;, type=float, help=&#39;End time (required)&#39;, required=True)
+    parser.add_argument(&#39;--baseu&#39;, type=float, default=1, help=&#39;Base unit(optional). Default is 1&#39;, required=False)
+    parser.add_argument(&#39;-ts&#39;, &#39;--timestep&#39;, type=float, default=1,
+                        help=&#39;Constant time step (optional). Default is 1&#39;,
+                        required=False)
+    parser.add_argument(&#39;--dump&#39;, type=float, default=-1.0, help=&#39;Dump interval (optional). Default is -1&#39;,
+                        required=False)
+
+    # DOMAIN RESOLUTIONS
+    parser.add_argument(&#39;-dx&#39;, type=float, default=1000., help=&#39;dx resolution (optional). Default is 1000.&#39;)
+    parser.add_argument(&#39;-dy&#39;, type=float, default=1000., help=&#39;dy resolution (optional). Default is 1000.&#39;)
+    parser.add_argument(&#39;-dz&#39;, type=float, default=1000., help=&#39;dz resolution (optional). Default is 1000.&#39;)
+    parser.add_argument(&#39;-nz&#39;, type=int, default=1, help=&#39;Number of z layers (optional). Default is 1.&#39;)
+    parser.add_argument(&#39;--dz_scales&#39;, nargs=&#39;+&#39;, help=&#39;dz scale to be multiplied with dz (optional). Default is 0.5&#39;,
+                        required=False)
+    parser.add_argument(&#39;--batches&#39;, nargs=&#39;+&#39;, help=&#39;batches in domain (required)&#39;, required=True)
+
+    return parser.parse_args(args)
+
+
+def build_tcl(out_file, temp_file, runname, slope_file, solid_file, evap_file, end_time, batches, p=2, q=1, r=1,
+              evap_choice=0, k=0.02849, poros=0.39738, rain=-0.05,
+              rec=0.0, constant=0, init=0.0, initw=&#39;bottom&#39;, flow=&#39;OverlandFlow&#39;, start_time=0.0, baseu=1, timestep=1,
+              dump=1, dx=1000., dy=1000., dz=1000., nz=1,
+              dz_scales=None):
+    &#34;&#34;&#34;Build a tcl control file based on a template
+
+    Parameters
+    ----------
+    out_file : str
+        name for output file
+    temp_file : str
+        dict of ParFlow keys and template .tcl lines
+    runname : str
+        name to give domain
+    slope_file : str
+        input slope file name pattern for domain
+    solid_file : str
+        input solid file for domain
+    evap_file : str
+        input PME file for domain
+    end_time : int
+        stop time for simulation
+    batches : list
+        patch numbers in domain
+    p : int, optional
+        (Default value = 2)
+    q : int, optional
+        (Default value = 1)
+    r : int, optional
+        (Default value = 1)
+    evap_choice : int, optional
+        (Default value = 0)
+    k : double, optional
+        (Default value = 0.02849)
+    poros : double, optional
+        (Default value = 0.39738)
+    rain : double, optional
+        (Default value = -0.05)
+    rec : double, optional
+        (Default value = 0.0)
+    constant : double, optional
+        (Default value = 0)
+    init : double, optional
+        (Default value = 0.0)
+    initw : str, optional
+        (Default value = &#39;bottom&#39;)
+    flow : str, optional
+        (Default value = &#39;OverlandFlow&#39;)
+    start_time : double, optional
+        (Default value = 0.0)
+    baseu : int, optional
+        (Default value = 1)
+    timestep : int, optional
+        (Default value = 1)
+    dump : int, optional
+        (Default value = 1)
+    dx : int, optional
+        (Default value = 1000.)
+    dy : int, optional
+        (Default value = 1000.)
+    dz : int, optional
+        (Default value = 1000.)
+    nz : int, optional
+        (Default value = 1)
+    dz_scales : int, optional
+        (Default value = None)
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    # read input file
+    if dz_scales is None:
+        dz_scales = [.5]
+    results, content = read_infile(temp_file)
+
+    # change the content step by step
+    # change runname
+    results[&#39;runname&#39;][&#39;vals&#39;][0][-1] = runname
+
+    # change processors
+    results[&#39;Process.Topology.P&#39;][&#39;vals&#39;][0][-1] = str(p)
+    results[&#39;Process.Topology.Q&#39;][&#39;vals&#39;][0][-1] = str(q)
+    results[&#39;Process.Topology.R&#39;][&#39;vals&#39;][0][-1] = str(r)
+
+    # change input files
+    if &#39;slope_x&#39; in slope_file:
+        slope_file_y = slope_file.replace(&#39;slope_x&#39;, &#39;slope_y&#39;)
+        slope_file_x = slope_file
+    elif &#39;slopex&#39; in slope_file:
+        slope_file_y = slope_file.replace(&#39;slopex&#39;, &#39;slopey&#39;)
+        slope_file_x = slope_file
+    elif &#39;slope_y&#39; in slope_file:
+        slope_file_x = slope_file.replace(&#39;slope_y&#39;, &#39;slope_x&#39;)
+        slope_file_y = slope_file
+    elif &#39;slopey&#39; in slope_file:
+        slope_file_x = slope_file.replace(&#39;slopey&#39;, &#39;slopex&#39;)
+        slope_file_y = slope_file
+    else:
+        print(&#39;please check slopefile names&#39;)
+        sys.exit()
+
+    results[&#39;file copy -force&#39;][&#39;vals&#39;][0][-2] = slope_file_x
+    results[&#39;file copy -force&#39;][&#39;vals&#39;][1][-2] = slope_file_y
+    results[&#39;file copy -force&#39;][&#39;vals&#39;][2][-2] = solid_file
+    if evap_choice == 0:
+        results[&#39;file copy -force&#39;][&#39;vals&#39;][3][0] = &#39;#&#39; + results[&#39;file copy -force&#39;][&#39;vals&#39;][3][0]
+    else:
+        results[&#39;file copy -force&#39;][&#39;vals&#39;][3][-2] = evap_file
+
+    # change parameters
+    results[&#39;Geom.domain.Perm.Value&#39;][&#39;vals&#39;][0][-1] = str(k)
+    results[&#39;Geom.domain.Porosity.Value&#39;][&#39;vals&#39;][0][-1] = str(poros)
+    # change boundary pressure of top layer
+    if evap_choice == 0:
+        # Comment out evap file
+        results[&#39;Solver.EvapTransFile&#39;][&#39;vals&#39;][0][-1] = &#39;False&#39;
+        results[&#39;Solver.EvapTrans.FileName&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + results[&#39;Solver.EvapTrans.FileName&#39;][&#39;vals&#39;][0][0]
+        if constant == 1:
+            # Comment out rain rec
+            results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                  results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][0][0]
+            results[&#39;Patch.top.BCPressure.rain.Value&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                       results[&#39;Patch.top.BCPressure.rain.Value&#39;][
+                                                                           &#39;vals&#39;][
+                                                                           0][0]
+            results[&#39;Patch.top.BCPressure.rec.Value&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                      results[&#39;Patch.top.BCPressure.rec.Value&#39;][&#39;vals&#39;][
+                                                                          0][
+                                                                          0]
+            # set constant input
+            results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][-1] = &#39;\&#34;constant\&#34;&#39;
+            results[&#39;Patch.top.BCPressure.alltime.Value&#39;][&#39;vals&#39;][0][-1] = str(rain)
+            # set flow type for top layer
+            results[&#39;Patch.top.BCPressure.Type&#39;][&#39;vals&#39;][0][-1] = flow
+        else:
+            # Change rain and rec values
+            results[&#39;Patch.top.BCPressure.rain.Value&#39;][&#39;vals&#39;][0][-1] = str(rain)
+            results[&#39;Patch.top.BCPressure.rec.Value&#39;][&#39;vals&#39;][0][-1] = str(rec)
+            # comment out constant input
+            results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][0] = &#39;#&#39; + \
+                                                                  results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][0]
+            results[&#39;Patch.top.BCPressure.alltime.Value&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                          results[&#39;Patch.top.BCPressure.alltime.Value&#39;][
+                                                                              &#39;vals&#39;][0][0]
+    else:
+        # Change evap files
+        results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][-1] = &#39;\&#34;constant\&#34;&#39;
+        results[&#39;Patch.top.BCPressure.alltime.Value&#39;][&#39;vals&#39;][0][-1] = str(0.0)
+        results[&#39;Solver.EvapTransFile&#39;][&#39;vals&#39;][0][-1] = &#39;True&#39;
+        results[&#39;Solver.EvapTrans.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(evap_file)
+
+    # change initial pressure height
+    results[&#39;Geom.domain.ICPressure.Value&#39;][&#39;vals&#39;][0][-1] = str(init)
+    results[&#39;Geom.domain.ICPressure.RefPatch&#39;][&#39;vals&#39;][0][-1] = str(initw)
+
+    # change timing info
+    results[&#39;TimingInfo.BaseUnit&#39;][&#39;vals&#39;][0][-1] = str(baseu)
+    results[&#39;TimingInfo.StartTime&#39;][&#39;vals&#39;][0][-1] = str(start_time)
+    results[&#39;TimingInfo.StopTime&#39;][&#39;vals&#39;][0][-1] = str(end_time)
+    results[&#39;TimingInfo.DumpInterval&#39;][&#39;vals&#39;][0][-1] = str(dump)
+    results[&#39;TimeStep.Value&#39;][&#39;vals&#39;][0][-1] = str(timestep)
+
+    # finally change domain info
+    results[&#39;GeomInput.domaininput.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(solid_file)
+    results[&#39;TopoSlopesX.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(slope_file_x)
+    results[&#39;TopoSlopesY.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(slope_file_y)
+
+    results[&#39;pfdist&#39;][&#39;vals&#39;][0][-1] = os.path.basename(slope_file_x)
+    results[&#39;pfdist&#39;][&#39;vals&#39;][1][-1] = os.path.basename(slope_file_y)
+
+    if evap_choice == 1:
+        results[&#39;pfdist&#39;][&#39;vals&#39;][2][-1] = os.path.basename(evap_file)
+    else:
+        results[&#39;pfdist&#39;][&#39;vals&#39;][2][0] = &#39;#&#39; + results[&#39;pfdist&#39;][&#39;vals&#39;][2][0]
+
+    # read slope file x into array
+    slope_x = file_io_tools.read_file(slope_file_x)
+    nz0, ny0, nx0 = slope_x.shape
+
+    results[&#39;ComputationalGrid.NX&#39;][&#39;vals&#39;][0][-1] = str(nx0)
+    results[&#39;ComputationalGrid.NY&#39;][&#39;vals&#39;][0][-1] = str(ny0)
+    results[&#39;ComputationalGrid.NZ&#39;][&#39;vals&#39;][0][-1] = str(nz)
+
+    results[&#39;ComputationalGrid.DX&#39;][&#39;vals&#39;][0][-1] = str(dx)
+    results[&#39;ComputationalGrid.DY&#39;][&#39;vals&#39;][0][-1] = str(dy)
+    results[&#39;ComputationalGrid.DZ&#39;][&#39;vals&#39;][0][-1] = str(dz)
+
+    results[&#39;dzScale.nzListNumber&#39;][&#39;vals&#39;][0][-1] = str(nz)
+
+    for ni in range(nz):
+        results[&#39;Cell.&#39; + str(ni) + &#39;.dzScale.Value&#39;][&#39;vals&#39;][0][-1] = str(dz_scales[ni])
+
+    # get batch name
+    batch_dict = {0: &#39;land&#39;, 1: &#39;ocean&#39;, 2: &#39;land&#39;, 3: &#39;top&#39;, 4: &#39;lake&#39;,
+                  5: &#39;sink&#39;, 6: &#39;bottom&#39;, 8: &#39;stream&#39;, 9: &#39;reservoir&#39;}
+
+    patch_str = &#39;\&#34;&#39;
+    for batch in batches.rstrip(&#39; &#39;).split(&#39; &#39;):
+        patch_str += batch_dict.get(int(batch), &#39;&#39;) + &#39; &#39;
+
+    patch_str += &#39;\&#34;&#39;
+    results[&#39;Geom.domain.Patches&#39;][&#39;vals&#39;][0] = results[&#39;Geom.domain.Patches&#39;][&#39;vals&#39;][0][:2] + [patch_str]
+
+    results[&#39;BCPressure.PatchNames&#39;][&#39;vals&#39;][0] = results[&#39;BCPressure.PatchNames&#39;][&#39;vals&#39;][0][:2] + [patch_str]
+
+    # write new file
+    for k in results.keys():
+        locs = results[k][&#39;locs&#39;]
+        vals = results[k][&#39;vals&#39;]
+        for ix, loci in enumerate(locs):
+            content[loci] = &#39; &#39;.join(vals[ix])
+
+    with open(out_file, &#39;w&#39;) as fo:
+        for line in content:
+            fo.write(line + &#39;\n&#39;)
+
+
+def main():
+    # parsing arguments
+
+    # setup logging
+    start_date = datetime.utcnow()
+    logging.basicConfig(filename=&#39;tcl_builder.log&#39;, filemode=&#39;w&#39;, level=logging.INFO)
+    logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(sys.argv[:])}&#39;)
+
+    args = parse_args(sys.argv[1:])
+    out_file = args.out_file
+
+    # parsing processor info
+    p = args.P
+    q = args.Q
+    r = args.R
+
+    # parsing input files
+    temp_file = args.temp_file
+    runname = args.runname
+    slope_file = args.slope_file
+    solid_file = args.solid_file
+    evap_choice = args.evap
+    evap_file = args.evap_file
+
+    # TODO: move to parse_args
+    # if evap_choice == 0 and evap_file:
+    #     parser.error(&#39;--evap_file can only be set when -evap=1.&#39;)
+    # elif evap_choice == 1 and evap_file is None:
+    #     parser.error(&#39;--evap_file must be set when -evap=1&#39;)
+
+    # parsing parameters
+    k = args.perm
+    poros = args.porosity
+    rain = args.rain
+    rec = args.rec
+    constant = args.constant
+    init = args.init
+    initw = args.initw
+    flow = args.flow
+
+    # TODO: move to parse_args
+    # if constant == 1 and flow == &#39;OverlandFlow&#39;:
+    #     parser.error(&#39;--flow should be set to FluxConst when --constant==1.&#39;)
+
+    # parsing timing info
+    start_time = args.start
+    end_time = args.end
+    baseu = args.baseu
+    timestep = args.timestep
+    dump = args.dump
+
+    # parsing domain info
+    dx = args.dx
+    dy = args.dy
+    dz = args.dz
+    nz = args.nz
+    batches = sorted([int(x) for x in args.batches])
+
+    if args.dz_scales is None:
+        dz_scales = [0.5]
+    else:
+        dz_scales = args.dz_scales
+
+    build_tcl(out_file, temp_file, runname, slope_file, solid_file, evap_file, end_time, batches, p, q, r, evap_choice,
+              k, poros, rain,
+              rec, constant, init, initw, flow, start_time, baseu, timestep, dump, dx, dy, dz, nz,
+              dz_scales)
+
+    end_date = datetime.utcnow()
+    logging.info(f&#39;completed process at {end_date} for a runtime of {end_date-start_date}&#39;)
+
+
+if __name__ == &#39;__main__&#39;:
+    main()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="parflow.subset.builders.tcl.build_tcl"><code class="name flex">
+<span>def <span class="ident">build_tcl</span></span>(<span>out_file, temp_file, runname, slope_file, solid_file, evap_file, end_time, batches, p=2, q=1, r=1, evap_choice=0, k=0.02849, poros=0.39738, rain=-0.05, rec=0.0, constant=0, init=0.0, initw='bottom', flow='OverlandFlow', start_time=0.0, baseu=1, timestep=1, dump=1, dx=1000.0, dy=1000.0, dz=1000.0, nz=1, dz_scales=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Build a tcl control file based on a template</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>out_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>name for output file</dd>
+<dt><strong><code>temp_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>dict of ParFlow keys and template .tcl lines</dd>
+<dt><strong><code>runname</code></strong> :&ensp;<code>str</code></dt>
+<dd>name to give domain</dd>
+<dt><strong><code>slope_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>input slope file name pattern for domain</dd>
+<dt><strong><code>solid_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>input solid file for domain</dd>
+<dt><strong><code>evap_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>input PME file for domain</dd>
+<dt><strong><code>end_time</code></strong> :&ensp;<code>int</code></dt>
+<dd>stop time for simulation</dd>
+<dt><strong><code>batches</code></strong> :&ensp;<code>list</code></dt>
+<dd>patch numbers in domain</dd>
+<dt><strong><code>p</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 2)</dd>
+<dt><strong><code>q</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1)</dd>
+<dt><strong><code>r</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1)</dd>
+<dt><strong><code>evap_choice</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 0)</dd>
+<dt><strong><code>k</code></strong> :&ensp;<code>double</code>, optional</dt>
+<dd>(Default value = 0.02849)</dd>
+<dt><strong><code>poros</code></strong> :&ensp;<code>double</code>, optional</dt>
+<dd>(Default value = 0.39738)</dd>
+<dt><strong><code>rain</code></strong> :&ensp;<code>double</code>, optional</dt>
+<dd>(Default value = -0.05)</dd>
+<dt><strong><code>rec</code></strong> :&ensp;<code>double</code>, optional</dt>
+<dd>(Default value = 0.0)</dd>
+<dt><strong><code>constant</code></strong> :&ensp;<code>double</code>, optional</dt>
+<dd>(Default value = 0)</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>double</code>, optional</dt>
+<dd>(Default value = 0.0)</dd>
+<dt><strong><code>initw</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>(Default value = 'bottom')</dd>
+<dt><strong><code>flow</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>(Default value = 'OverlandFlow')</dd>
+<dt><strong><code>start_time</code></strong> :&ensp;<code>double</code>, optional</dt>
+<dd>(Default value = 0.0)</dd>
+<dt><strong><code>baseu</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1)</dd>
+<dt><strong><code>timestep</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1)</dd>
+<dt><strong><code>dump</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1)</dd>
+<dt><strong><code>dx</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1000.)</dd>
+<dt><strong><code>dy</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1000.)</dd>
+<dt><strong><code>dz</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1000.)</dd>
+<dt><strong><code>nz</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = 1)</dd>
+<dt><strong><code>dz_scales</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>(Default value = None)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_tcl(out_file, temp_file, runname, slope_file, solid_file, evap_file, end_time, batches, p=2, q=1, r=1,
+              evap_choice=0, k=0.02849, poros=0.39738, rain=-0.05,
+              rec=0.0, constant=0, init=0.0, initw=&#39;bottom&#39;, flow=&#39;OverlandFlow&#39;, start_time=0.0, baseu=1, timestep=1,
+              dump=1, dx=1000., dy=1000., dz=1000., nz=1,
+              dz_scales=None):
+    &#34;&#34;&#34;Build a tcl control file based on a template
+
+    Parameters
+    ----------
+    out_file : str
+        name for output file
+    temp_file : str
+        dict of ParFlow keys and template .tcl lines
+    runname : str
+        name to give domain
+    slope_file : str
+        input slope file name pattern for domain
+    solid_file : str
+        input solid file for domain
+    evap_file : str
+        input PME file for domain
+    end_time : int
+        stop time for simulation
+    batches : list
+        patch numbers in domain
+    p : int, optional
+        (Default value = 2)
+    q : int, optional
+        (Default value = 1)
+    r : int, optional
+        (Default value = 1)
+    evap_choice : int, optional
+        (Default value = 0)
+    k : double, optional
+        (Default value = 0.02849)
+    poros : double, optional
+        (Default value = 0.39738)
+    rain : double, optional
+        (Default value = -0.05)
+    rec : double, optional
+        (Default value = 0.0)
+    constant : double, optional
+        (Default value = 0)
+    init : double, optional
+        (Default value = 0.0)
+    initw : str, optional
+        (Default value = &#39;bottom&#39;)
+    flow : str, optional
+        (Default value = &#39;OverlandFlow&#39;)
+    start_time : double, optional
+        (Default value = 0.0)
+    baseu : int, optional
+        (Default value = 1)
+    timestep : int, optional
+        (Default value = 1)
+    dump : int, optional
+        (Default value = 1)
+    dx : int, optional
+        (Default value = 1000.)
+    dy : int, optional
+        (Default value = 1000.)
+    dz : int, optional
+        (Default value = 1000.)
+    nz : int, optional
+        (Default value = 1)
+    dz_scales : int, optional
+        (Default value = None)
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    # read input file
+    if dz_scales is None:
+        dz_scales = [.5]
+    results, content = read_infile(temp_file)
+
+    # change the content step by step
+    # change runname
+    results[&#39;runname&#39;][&#39;vals&#39;][0][-1] = runname
+
+    # change processors
+    results[&#39;Process.Topology.P&#39;][&#39;vals&#39;][0][-1] = str(p)
+    results[&#39;Process.Topology.Q&#39;][&#39;vals&#39;][0][-1] = str(q)
+    results[&#39;Process.Topology.R&#39;][&#39;vals&#39;][0][-1] = str(r)
+
+    # change input files
+    if &#39;slope_x&#39; in slope_file:
+        slope_file_y = slope_file.replace(&#39;slope_x&#39;, &#39;slope_y&#39;)
+        slope_file_x = slope_file
+    elif &#39;slopex&#39; in slope_file:
+        slope_file_y = slope_file.replace(&#39;slopex&#39;, &#39;slopey&#39;)
+        slope_file_x = slope_file
+    elif &#39;slope_y&#39; in slope_file:
+        slope_file_x = slope_file.replace(&#39;slope_y&#39;, &#39;slope_x&#39;)
+        slope_file_y = slope_file
+    elif &#39;slopey&#39; in slope_file:
+        slope_file_x = slope_file.replace(&#39;slopey&#39;, &#39;slopex&#39;)
+        slope_file_y = slope_file
+    else:
+        print(&#39;please check slopefile names&#39;)
+        sys.exit()
+
+    results[&#39;file copy -force&#39;][&#39;vals&#39;][0][-2] = slope_file_x
+    results[&#39;file copy -force&#39;][&#39;vals&#39;][1][-2] = slope_file_y
+    results[&#39;file copy -force&#39;][&#39;vals&#39;][2][-2] = solid_file
+    if evap_choice == 0:
+        results[&#39;file copy -force&#39;][&#39;vals&#39;][3][0] = &#39;#&#39; + results[&#39;file copy -force&#39;][&#39;vals&#39;][3][0]
+    else:
+        results[&#39;file copy -force&#39;][&#39;vals&#39;][3][-2] = evap_file
+
+    # change parameters
+    results[&#39;Geom.domain.Perm.Value&#39;][&#39;vals&#39;][0][-1] = str(k)
+    results[&#39;Geom.domain.Porosity.Value&#39;][&#39;vals&#39;][0][-1] = str(poros)
+    # change boundary pressure of top layer
+    if evap_choice == 0:
+        # Comment out evap file
+        results[&#39;Solver.EvapTransFile&#39;][&#39;vals&#39;][0][-1] = &#39;False&#39;
+        results[&#39;Solver.EvapTrans.FileName&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + results[&#39;Solver.EvapTrans.FileName&#39;][&#39;vals&#39;][0][0]
+        if constant == 1:
+            # Comment out rain rec
+            results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                  results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][0][0]
+            results[&#39;Patch.top.BCPressure.rain.Value&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                       results[&#39;Patch.top.BCPressure.rain.Value&#39;][
+                                                                           &#39;vals&#39;][
+                                                                           0][0]
+            results[&#39;Patch.top.BCPressure.rec.Value&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                      results[&#39;Patch.top.BCPressure.rec.Value&#39;][&#39;vals&#39;][
+                                                                          0][
+                                                                          0]
+            # set constant input
+            results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][-1] = &#39;\&#34;constant\&#34;&#39;
+            results[&#39;Patch.top.BCPressure.alltime.Value&#39;][&#39;vals&#39;][0][-1] = str(rain)
+            # set flow type for top layer
+            results[&#39;Patch.top.BCPressure.Type&#39;][&#39;vals&#39;][0][-1] = flow
+        else:
+            # Change rain and rec values
+            results[&#39;Patch.top.BCPressure.rain.Value&#39;][&#39;vals&#39;][0][-1] = str(rain)
+            results[&#39;Patch.top.BCPressure.rec.Value&#39;][&#39;vals&#39;][0][-1] = str(rec)
+            # comment out constant input
+            results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][0] = &#39;#&#39; + \
+                                                                  results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][0]
+            results[&#39;Patch.top.BCPressure.alltime.Value&#39;][&#39;vals&#39;][0][0] = &#39;#&#39; + \
+                                                                          results[&#39;Patch.top.BCPressure.alltime.Value&#39;][
+                                                                              &#39;vals&#39;][0][0]
+    else:
+        # Change evap files
+        results[&#39;Patch.top.BCPressure.Cycle&#39;][&#39;vals&#39;][1][-1] = &#39;\&#34;constant\&#34;&#39;
+        results[&#39;Patch.top.BCPressure.alltime.Value&#39;][&#39;vals&#39;][0][-1] = str(0.0)
+        results[&#39;Solver.EvapTransFile&#39;][&#39;vals&#39;][0][-1] = &#39;True&#39;
+        results[&#39;Solver.EvapTrans.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(evap_file)
+
+    # change initial pressure height
+    results[&#39;Geom.domain.ICPressure.Value&#39;][&#39;vals&#39;][0][-1] = str(init)
+    results[&#39;Geom.domain.ICPressure.RefPatch&#39;][&#39;vals&#39;][0][-1] = str(initw)
+
+    # change timing info
+    results[&#39;TimingInfo.BaseUnit&#39;][&#39;vals&#39;][0][-1] = str(baseu)
+    results[&#39;TimingInfo.StartTime&#39;][&#39;vals&#39;][0][-1] = str(start_time)
+    results[&#39;TimingInfo.StopTime&#39;][&#39;vals&#39;][0][-1] = str(end_time)
+    results[&#39;TimingInfo.DumpInterval&#39;][&#39;vals&#39;][0][-1] = str(dump)
+    results[&#39;TimeStep.Value&#39;][&#39;vals&#39;][0][-1] = str(timestep)
+
+    # finally change domain info
+    results[&#39;GeomInput.domaininput.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(solid_file)
+    results[&#39;TopoSlopesX.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(slope_file_x)
+    results[&#39;TopoSlopesY.FileName&#39;][&#39;vals&#39;][0][-1] = os.path.basename(slope_file_y)
+
+    results[&#39;pfdist&#39;][&#39;vals&#39;][0][-1] = os.path.basename(slope_file_x)
+    results[&#39;pfdist&#39;][&#39;vals&#39;][1][-1] = os.path.basename(slope_file_y)
+
+    if evap_choice == 1:
+        results[&#39;pfdist&#39;][&#39;vals&#39;][2][-1] = os.path.basename(evap_file)
+    else:
+        results[&#39;pfdist&#39;][&#39;vals&#39;][2][0] = &#39;#&#39; + results[&#39;pfdist&#39;][&#39;vals&#39;][2][0]
+
+    # read slope file x into array
+    slope_x = file_io_tools.read_file(slope_file_x)
+    nz0, ny0, nx0 = slope_x.shape
+
+    results[&#39;ComputationalGrid.NX&#39;][&#39;vals&#39;][0][-1] = str(nx0)
+    results[&#39;ComputationalGrid.NY&#39;][&#39;vals&#39;][0][-1] = str(ny0)
+    results[&#39;ComputationalGrid.NZ&#39;][&#39;vals&#39;][0][-1] = str(nz)
+
+    results[&#39;ComputationalGrid.DX&#39;][&#39;vals&#39;][0][-1] = str(dx)
+    results[&#39;ComputationalGrid.DY&#39;][&#39;vals&#39;][0][-1] = str(dy)
+    results[&#39;ComputationalGrid.DZ&#39;][&#39;vals&#39;][0][-1] = str(dz)
+
+    results[&#39;dzScale.nzListNumber&#39;][&#39;vals&#39;][0][-1] = str(nz)
+
+    for ni in range(nz):
+        results[&#39;Cell.&#39; + str(ni) + &#39;.dzScale.Value&#39;][&#39;vals&#39;][0][-1] = str(dz_scales[ni])
+
+    # get batch name
+    batch_dict = {0: &#39;land&#39;, 1: &#39;ocean&#39;, 2: &#39;land&#39;, 3: &#39;top&#39;, 4: &#39;lake&#39;,
+                  5: &#39;sink&#39;, 6: &#39;bottom&#39;, 8: &#39;stream&#39;, 9: &#39;reservoir&#39;}
+
+    patch_str = &#39;\&#34;&#39;
+    for batch in batches.rstrip(&#39; &#39;).split(&#39; &#39;):
+        patch_str += batch_dict.get(int(batch), &#39;&#39;) + &#39; &#39;
+
+    patch_str += &#39;\&#34;&#39;
+    results[&#39;Geom.domain.Patches&#39;][&#39;vals&#39;][0] = results[&#39;Geom.domain.Patches&#39;][&#39;vals&#39;][0][:2] + [patch_str]
+
+    results[&#39;BCPressure.PatchNames&#39;][&#39;vals&#39;][0] = results[&#39;BCPressure.PatchNames&#39;][&#39;vals&#39;][0][:2] + [patch_str]
+
+    # write new file
+    for k in results.keys():
+        locs = results[k][&#39;locs&#39;]
+        vals = results[k][&#39;vals&#39;]
+        for ix, loci in enumerate(locs):
+            content[loci] = &#39; &#39;.join(vals[ix])
+
+    with open(out_file, &#39;w&#39;) as fo:
+        for line in content:
+            fo.write(line + &#39;\n&#39;)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.builders.tcl.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    # parsing arguments
+
+    # setup logging
+    start_date = datetime.utcnow()
+    logging.basicConfig(filename=&#39;tcl_builder.log&#39;, filemode=&#39;w&#39;, level=logging.INFO)
+    logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(sys.argv[:])}&#39;)
+
+    args = parse_args(sys.argv[1:])
+    out_file = args.out_file
+
+    # parsing processor info
+    p = args.P
+    q = args.Q
+    r = args.R
+
+    # parsing input files
+    temp_file = args.temp_file
+    runname = args.runname
+    slope_file = args.slope_file
+    solid_file = args.solid_file
+    evap_choice = args.evap
+    evap_file = args.evap_file
+
+    # TODO: move to parse_args
+    # if evap_choice == 0 and evap_file:
+    #     parser.error(&#39;--evap_file can only be set when -evap=1.&#39;)
+    # elif evap_choice == 1 and evap_file is None:
+    #     parser.error(&#39;--evap_file must be set when -evap=1&#39;)
+
+    # parsing parameters
+    k = args.perm
+    poros = args.porosity
+    rain = args.rain
+    rec = args.rec
+    constant = args.constant
+    init = args.init
+    initw = args.initw
+    flow = args.flow
+
+    # TODO: move to parse_args
+    # if constant == 1 and flow == &#39;OverlandFlow&#39;:
+    #     parser.error(&#39;--flow should be set to FluxConst when --constant==1.&#39;)
+
+    # parsing timing info
+    start_time = args.start
+    end_time = args.end
+    baseu = args.baseu
+    timestep = args.timestep
+    dump = args.dump
+
+    # parsing domain info
+    dx = args.dx
+    dy = args.dy
+    dz = args.dz
+    nz = args.nz
+    batches = sorted([int(x) for x in args.batches])
+
+    if args.dz_scales is None:
+        dz_scales = [0.5]
+    else:
+        dz_scales = args.dz_scales
+
+    build_tcl(out_file, temp_file, runname, slope_file, solid_file, evap_file, end_time, batches, p, q, r, evap_choice,
+              k, poros, rain,
+              rec, constant, init, initw, flow, start_time, baseu, timestep, dump, dx, dy, dz, nz,
+              dz_scales)
+
+    end_date = datetime.utcnow()
+    logging.info(f&#39;completed process at {end_date} for a runtime of {end_date-start_date}&#39;)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.builders.tcl.parse_args"><code class="name flex">
+<span>def <span class="ident">parse_args</span></span>(<span>args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse the command line arguments</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>args</code></strong> :&ensp;<code>list</code></dt>
+<dd>list of arguments from sys.argv</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Namespace</code></dt>
+<dd>populated Namespace object from the parsed command line options</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parse_args(args):
+    &#34;&#34;&#34;Parse the command line arguments
+
+    Parameters
+    ----------
+    args : list
+        list of arguments from sys.argv
+
+    Returns
+    -------
+    Namespace
+        populated Namespace object from the parsed command line options
+    &#34;&#34;&#34;
+    parser = argparse.ArgumentParser(description=&#39;Generate .tcl script from parkinglot template&#39;)
+
+    # CORES
+    parser.add_argument(&#39;-P&#39;, type=int, default=2, help=&#39;Processor in P(optional). Default is 2&#39;, required=False)
+    parser.add_argument(&#39;-Q&#39;, type=int, default=1, help=&#39;Processor in Q(optional). Default is 1&#39;, required=False)
+    parser.add_argument(&#39;-R&#39;, type=int, default=1, help=&#39;Processor in R(optional). Default is 1&#39;, required=False)
+
+    # OUT FILE
+    parser.add_argument(&#39;-o&#39;, &#39;--out_file&#39;, type=str, help=&#39;output file&#39;, required=True)
+
+    # INPUT FILES
+    parser.add_argument(&#39;-i&#39;, &#39;--temp_file&#39;, type=str, help=&#39;template file for modifying&#39;, required=True)
+    parser.add_argument(&#39;--runname&#39;, type=str, help=&#39;run name of the simulation&#39;, required=True)
+    parser.add_argument(&#39;-sl&#39;, &#39;--slope_file&#39;, type=str, help=&#39;name of the slope file, either in x or y direction&#39;,
+                        required=True)
+    parser.add_argument(&#39;-so&#39;, &#39;--solid_file&#39;, type=str, help=&#39;name of the solid file&#39;, required=True)
+    parser.add_argument(&#39;-evap&#39;, type=int, default=0, help=&#39;PME file for simulation (optional).Default is 0&#39;)
+    parser.add_argument(&#39;--evap_file&#39;, type=str, help=&#39;name of the PME file&#39;)
+
+    # PARAMETERS
+    parser.add_argument(&#39;-K&#39;, &#39;--perm&#39;, type=float, default=0.02849,
+                        help=&#39;Permeability (optional). Default is 0.02849 (i.e. average K of the Upper Colorado basin)&#39;,
+                        required=False)
+    parser.add_argument(&#39;--porosity&#39;, type=float, default=0.39738,
+                        help=&#39;Porosity (optional). &#39;
+                             &#39;Default is 0.39738 (i.e. average porosity of the Upper Colorado basin)&#39;,
+                        required=False)
+    parser.add_argument(&#39;--rain&#39;, type=float, default=-0.05, help=&#39;Rain value (optional). Default is -0.05&#39;,
+                        required=False)
+    parser.add_argument(&#39;--rec&#39;, type=float, default=0.0, help=&#39;Recession value (optional). Default is 0.0&#39;,
+                        required=False)
+    parser.add_argument(&#39;--flow&#39;, type=str, default=&#39;OverlandFlow&#39;,
+                        help=&#39;Flow type for top layer (optional). Default is OverlandFlow&#39;, required=False)
+    parser.add_argument(&#39;--constant&#39;, type=int, default=0,
+                        help=&#39;Constant boundary condition for top layer (optional). Default is No (0)&#39;, required=False)
+    parser.add_argument(&#39;--initw&#39;, choices=[&#39;top&#39;, &#39;bottom&#39;], default=&#39;bottom&#39;,
+                        help=&#39;Where to set initial pressure (optional). Default is bottom&#39;, required=False)
+    parser.add_argument(&#39;--init&#39;, type=float, default=0.0,
+                        help=&#39;Initial pressure for bottom layer (optional). Default is 0.0&#39;, required=False)
+
+    # TIMING INFO
+    parser.add_argument(&#39;-s&#39;, &#39;--start&#39;, type=float, default=0.0, help=&#39;Start time(optional). Default is 0.0&#39;,
+                        required=False)
+    parser.add_argument(&#39;-e&#39;, &#39;--end&#39;, type=float, help=&#39;End time (required)&#39;, required=True)
+    parser.add_argument(&#39;--baseu&#39;, type=float, default=1, help=&#39;Base unit(optional). Default is 1&#39;, required=False)
+    parser.add_argument(&#39;-ts&#39;, &#39;--timestep&#39;, type=float, default=1,
+                        help=&#39;Constant time step (optional). Default is 1&#39;,
+                        required=False)
+    parser.add_argument(&#39;--dump&#39;, type=float, default=-1.0, help=&#39;Dump interval (optional). Default is -1&#39;,
+                        required=False)
+
+    # DOMAIN RESOLUTIONS
+    parser.add_argument(&#39;-dx&#39;, type=float, default=1000., help=&#39;dx resolution (optional). Default is 1000.&#39;)
+    parser.add_argument(&#39;-dy&#39;, type=float, default=1000., help=&#39;dy resolution (optional). Default is 1000.&#39;)
+    parser.add_argument(&#39;-dz&#39;, type=float, default=1000., help=&#39;dz resolution (optional). Default is 1000.&#39;)
+    parser.add_argument(&#39;-nz&#39;, type=int, default=1, help=&#39;Number of z layers (optional). Default is 1.&#39;)
+    parser.add_argument(&#39;--dz_scales&#39;, nargs=&#39;+&#39;, help=&#39;dz scale to be multiplied with dz (optional). Default is 0.5&#39;,
+                        required=False)
+    parser.add_argument(&#39;--batches&#39;, nargs=&#39;+&#39;, help=&#39;batches in domain (required)&#39;, required=True)
+
+    return parser.parse_args(args)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.builders.tcl.read_infile"><code class="name flex">
+<span>def <span class="ident">read_infile</span></span>(<span>infile)</span>
+</code></dt>
+<dd>
+<div class="desc"><h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>infile</code></strong> :&ensp;<code>str</code></dt>
+<dd>template input file to build from</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>results</code></strong> :&ensp;<code>dictionary</code></dt>
+<dd>key values for ParFlow keys</dd>
+<dt><strong><code>content</code></strong> :&ensp;<code>list</code></dt>
+<dd>list of <code>infile</code> contents</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_infile(infile):
+    &#34;&#34;&#34;
+
+    Parameters
+    ----------
+    infile : str
+        template input file to build from
+
+    Returns
+    -------
+    results : dictionary
+        key values for ParFlow keys
+    content : list
+        list of `infile` contents
+    &#34;&#34;&#34;
+    # critical information
+    crit_info = [&#39;runname&#39;, &#39;Process.Topology.P&#39;, &#39;Process.Topology.Q&#39;, &#39;Process.Topology.R&#39;,
+                 &#39;file copy -force&#39;, &#39;ComputationalGrid.NX&#39;, &#39;ComputationalGrid.NY&#39;,
+                 &#39;ComputationalGrid.NZ&#39;, &#39;ComputationalGrid.DX&#39;, &#39;ComputationalGrid.DY&#39;,
+                 &#39;ComputationalGrid.DZ&#39;, &#39;GeomInput.domaininput.FileName&#39;, &#39;Geom.domain.Patches&#39;,
+                 &#39;dzScale.nzListNumber&#39;, &#39;Cell.0.dzScale.Value&#39;, &#39;Cell.1.dzScale.Value&#39;,
+                 &#39;Cell.2.dzScale.Value&#39;, &#39;Cell.3.dzScale.Value&#39;, &#39;Cell.4.dzScale.Value&#39;,
+                 &#39;Geom.domain.Perm.Value&#39;, &#39;TimingInfo.BaseUnit&#39;, &#39;TimingInfo.StartTime&#39;,
+                 &#39;TimingInfo.StopTime&#39;, &#39;TimingInfo.DumpInterval&#39;, &#39;TimeStep.Value&#39;,
+                 &#39;Geom.domain.Porosity.Value&#39;, &#39;BCPressure.PatchNames&#39;,
+                 &#39;Patch.top.BCPressure.Type&#39;, &#39;Patch.top.BCPressure.Cycle&#39;,
+                 &#39;Patch.top.BCPressure.rain.Value&#39;, &#39;Patch.top.BCPressure.rec.Value&#39;,
+                 &#39;Patch.top.BCPressure.alltime.Value&#39;, &#39;Solver.EvapTransFile&#39;,
+                 &#39;Solver.EvapTrans.FileName&#39;, &#39;TopoSlopesX.FileName&#39;, &#39;TopoSlopesY.FileName&#39;,
+                 &#39;pfdist&#39;, &#39;Geom.domain.ICPressure.Value&#39;, &#39;Geom.domain.ICPressure.RefPatch&#39;]
+
+    with open(infile, &#39;r&#39;) as fi:
+        content = fi.read()
+
+    results = {}
+
+    content = content.split(&#39;\n&#39;)
+    # filter out commented, empty lines
+    for ii, line in enumerate(content):
+        if line:
+            if line[0] != &#39;#&#39;:
+                for info in crit_info:
+                    if info in line:
+                        if info not in results.keys():
+                            results[info] = {}
+                            results[info][&#39;locs&#39;] = []
+                            results[info][&#39;vals&#39;] = []
+                        line = [x.strip() for x in line.split(&#39; &#39;) if x]
+                        results[info][&#39;locs&#39;].append(ii)
+                        results[info][&#39;vals&#39;].append(line)
+
+    return results, content</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.subset.builders" href="index.html">parflow.subset.builders</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="parflow.subset.builders.tcl.build_tcl" href="#parflow.subset.builders.tcl.build_tcl">build_tcl</a></code></li>
+<li><code><a title="parflow.subset.builders.tcl.main" href="#parflow.subset.builders.tcl.main">main</a></code></li>
+<li><code><a title="parflow.subset.builders.tcl.parse_args" href="#parflow.subset.builders.tcl.parse_args">parse_args</a></code></li>
+<li><code><a title="parflow.subset.builders.tcl.read_infile" href="#parflow.subset.builders.tcl.read_infile">read_infile</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

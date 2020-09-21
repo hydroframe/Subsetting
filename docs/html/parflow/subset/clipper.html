@@ -1,0 +1,1435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.subset.clipper API documentation</title>
+<meta name="description" content="Classes for clipping gridded inputs" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.subset.clipper</code></h1>
+</header>
+<section id="section-intro">
+<p>Classes for clipping gridded inputs</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Classes for clipping gridded inputs&#34;&#34;&#34;
+import logging
+from abc import ABC, abstractmethod
+import numpy as np
+import numpy.ma as ma
+from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
+from parflow.subset.utils import io as file_io_tools
+
+
+class Clipper(ABC):
+
+    &#34;&#34;&#34;Abstract Clipper Class&#34;&#34;&#34;
+
+    @abstractmethod
+    def subset(self, data_array):
+        &#34;&#34;&#34;Clip the data_array
+
+        Parameters
+        ----------
+        data_array : ndarray
+            3d array of data to be clipped
+
+        Returns
+        -------
+        ndarray
+            clipped portion of data_array
+        &#34;&#34;&#34;
+        pass
+
+
+class BoxClipper(Clipper):
+    &#34;&#34;&#34;Clip a rectangular data region specified by a bounding box
+ self.padding = padding
+        self.no_data = no_data
+        self.ref_array = ref_array
+        if nx is None:
+            nx = self.ref_array.shape[2]
+        if ny is None:
+            ny = self.ref_array.shape[1]
+        if nz is None:
+            nz = self.ref_array.shape[0]
+        if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
+            raise Exception(&#34;Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1&#34;)
+        self.update_bbox(x, y, z, nx, ny, nz, padding)
+    &#34;&#34;&#34;
+    def __repr__(self):
+        return f&#34;{self.__class__.__name__}(x_0:{self.x_0}, x_end:{self.x_end}, y_0:{self.y_0}, y_end:{self.y_end}, &#34; \
+               f&#34;z_0:{self.z_0}, z_end:{self.z_end}, nx:{self.nx}, ny:{self.ny}, nz:{self.nz!r}, &#34; \
+               f&#34;ref_array:{self.ref_array!r}, padding:{self.padding!r}, no_data:{self.no_data!r}&#34;
+
+    def __init__(self, ref_array, x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=NO_DATA):
+        &#34;&#34;&#34;
+
+        Parameters
+        ----------
+        ref_array : ndarray
+            the full extent array identical in dimension to the data that will be clipped
+        x : int, optional
+            the starting x value (1 based index)
+        y : int, optional
+            the starting y value (1 based index)
+        z : int, optional
+            the starting z value (1 based index)
+        nx : int, optional
+            the number of x cells to clip (default extents of &#39;ref_array&#39;)
+        ny : int, optional
+            the number of y cells to clip (default extents of &#39;ref_array&#39;)
+        nz : int, optional
+            the number of z cells to clip (default extents of &#39;ref_array&#39;)
+        padding : tuple, optional
+            no_data padding to add around data. specified clockwise from top. (top,right,bot,left)
+        no_data: int
+            the no data value to use (default package NO_DATA_VALUE)
+
+        Returns
+        -------
+        BoxClipper
+
+        Raises
+        -------
+        Exception
+            Invalid dimensions will raise an exception
+        &#34;&#34;&#34;
+        self.padding = padding
+        self.no_data = no_data
+        self.ref_array = ref_array
+        if nx is None:
+            nx = self.ref_array.shape[2]
+        if ny is None:
+            ny = self.ref_array.shape[1]
+        if nz is None:
+            nz = self.ref_array.shape[0]
+        if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
+            raise Exception(&#34;Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1&#34;)
+        self.update_bbox(x, y, z, nx, ny, nz, padding)
+
+    def update_bbox(self, x=None, y=None, z=None, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0)):
+        &#34;&#34;&#34;update the x,y,z, nx, ny, nz and padding values
+
+        Parameters
+        ----------
+        x : int, optional
+             Starting X value (Default value = None)
+        y : int, optional
+             Staring Y value (Default value = None)
+        z : int, optional
+             Starting Z value (Default value = None)
+        nx : int, optional
+             number of X cells to clip (Default value = None)
+        ny : int, optional
+             number of Y cells to clip (Default value = None)
+        nz : int, optional
+             number of Z cells to clip (Default value = None)
+        padding : tuple, optional
+             number of no_data cells to add around box, clockwise starting from top (CSS style)
+             (default value = (0,0,0,0)
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        if nx is not None:
+            self.nx = nx
+        if ny is not None:
+            self.ny = ny
+        if nz is not None:
+            self.nz = nz
+        if x is not None:
+            self.x_0 = x - 1
+            self.x_end = self.x_0 + nx
+        if z is not None:
+            self.z_0 = z - 1
+            self.z_end = self.z_0 + nz
+        if y is not None:
+            self.y_0 = y - 1
+            self.y_end = self.y_0 + ny
+        self.padding = padding
+
+    def subset(self, data_array=None):
+        &#34;&#34;&#34; Clip the data_array to the region specified by the bounding box
+
+        Parameters
+        ----------
+        data_array : ndarray, optional
+            a 3d array of data to clip, if no array passed return clip of the initialization array
+
+        Returns
+        -------
+        ret_array : ndarray
+            the clipped `data_array`
+
+        &#34;&#34;&#34;
+        if data_array is None:
+            data_array = self.ref_array
+        if any(self.padding):
+            # create a full dimensioned array of no_data_values
+            ret_array = np.full(shape=(self.nz,
+                                self.ny + self.padding[0] + self.padding[2],
+                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=np.float64)
+            # assign values from the data_array into the return array, mind the padding
+            ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
+            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,
+                                                                    self.x_0:self.x_end]
+        else:
+            ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
+        return ret_array, None, None, None
+
+
+class MaskClipper(Clipper):
+    &#34;&#34;&#34;Clip an irregular data region specified by a mask&#34;&#34;&#34;
+
+    def __repr__(self):
+        return f&#34;{self.__class__.__name__}(subset_mask:{self.subset_mask!r}, bbox:{self.bbox!r}, &#34; \
+               f&#34;clipped_geom:{self.clipped_geom!r}, clipped_mask:{self.clipped_mask!r}&#34;
+
+    def __init__(self, subset_mask, no_data_threshold=NO_DATA):
+        &#34;&#34;&#34;Assumes input mask_array has 1&#39;s written to valid data, 0&#39;s for bounding box,
+             and &lt;=no_data_threshold for no_data val, no_data_threshold must be &lt; 0 or bounding box will
+             not be identifiable
+
+        Parameters
+        ----------
+        subset_mask : SubsetMask
+            instantiated mask object
+        no_data_threshold : int
+            upper bound to which all values are no_data
+
+        Returns
+        -------
+        MaskClipper
+        &#34;&#34;&#34;
+        self.subset_mask = subset_mask
+        min_y, max_y, min_x, max_x = self.subset_mask.bbox_edges
+        self.bbox = [min_y, max_y + 1, min_x, max_x + 1]
+        self.clipped_geom = self.subset_mask.calculate_new_geom(min_x, min_y,
+                                                                self.subset_mask.mask_tif.GetGeoTransform())
+        self.clipped_mask = (self.subset_mask.bbox_mask.filled(fill_value=no_data_threshold) == 1)[:,
+                            self.bbox[0]:self.bbox[1],
+                            self.bbox[2]:self.bbox[3]]
+
+    def subset(self, data_array, no_data=NO_DATA, crop_inner=1):
+        &#34;&#34;&#34;subset the data from data_array in the shape and extents of the clipper&#39;s clipped subset_mask
+
+        Parameters
+        ----------
+        data_array : numpy.ndarray
+            3d array of data to subset
+        no_data : int
+            no data value for outputs (Default = NO_DATA)
+        crop_inner : int
+            crop the data to the bbox(0) or the mask(1) (default = 1)
+
+        Returns
+        -------
+        return_arr : numpy.ndarray
+            the subset data as a 3d array
+        clipped_geom : list
+            gdal geometry for the clip
+        clipped_mask : numpy.ndarray
+            mask of 1/0 showing clipped area
+        bounding box : tuple
+            x, y, nx, ny values indicating region clipped
+
+        &#34;&#34;&#34;
+        full_mask = self.subset_mask.bbox_mask.mask
+        clip_mask = ~self.clipped_mask
+        # Handle multi-layered files, such as subsurface or forcings
+        if data_array.shape[0] &gt; 1:
+            full_mask = np.broadcast_to(full_mask, data_array.shape)
+            clip_mask = np.broadcast_to(clip_mask, (data_array.shape[0], clip_mask.shape[1], clip_mask.shape[2]))
+            logging.info(f&#39;clipper: broadcast subset_mask to match input data z layers: {data_array.shape[0]}&#39;)
+        # full_dim_mask the input data using numpy masked array module (True=InvalidData, False=ValidData)
+        masked_data = ma.masked_array(data=data_array, mask=full_mask)
+
+        if crop_inner:
+            # return an array that includes all of the z data, and x and y no_data outside of the full_dim_mask area
+            return_arr = ma.masked_array(masked_data[:,
+                                         self.bbox[0]: self.bbox[1],
+                                         self.bbox[2]: self.bbox[3]].filled(fill_value=no_data),
+                                         mask=clip_mask).filled(fill_value=no_data)
+            # logging.info(f&#39;clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} &#39;
+            #              f&#39;using bbox (top, bot, left, right) {self.printable_bbox}&#39;)
+        else:
+            # return an array that includes all of the z data, and x and y inside the bounding box
+            return_arr = ma.masked_array(masked_data[:,
+                                         self.bbox[0]: self.bbox[1],
+                                         self.bbox[2]: self.bbox[3]],
+                                         mask=np.zeros(clip_mask.shape)).filled()
+            # logging.info(f&#39;clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} &#39;
+            #              f&#39;using bbox (top, bot, left, right) {self.printable_bbox}&#39;)
+
+        return return_arr, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
+
+
+class ClmClipper:
+    &#34;&#34;&#34;Specialized clipper for CLM input files&#34;&#34;&#34;
+
+    def __init__(self, bbox):
+        &#34;&#34;&#34;Clips CLM datafiles lat/lon and land cover
+
+        Parameters
+        ----------
+        bbox : BBox
+            BBox object describing the mask bounds
+        &#34;&#34;&#34;
+        self.bbox = bbox.get_human_bbox()
+        self.clipper = BoxClipper(ref_array=None, x=self.bbox[0], y=self.bbox[1], nx=self.bbox[2], ny=self.bbox[3],
+                                  nz=1)
+
+    def clip_latlon(self, lat_lon_file):
+        &#34;&#34;&#34;Clip the domain lat/lon data to the bounding box of the mask
+
+        Parameters
+        ----------
+        lat_lon_file : str
+            lat/lon data for the domain
+
+        Returns
+        -------
+        sa_formatted : numpy.ndarray
+            the clipped data formatted in a 1d output arrray for writing to a .sa file
+        clipped_data : numpy.ndarray
+            the raw clipped data (3d) read from &#39;lat_lon_file&#39;
+
+        &#34;&#34;&#34;
+        data = file_io_tools.read_file(lat_lon_file)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        #sa_formatted = np.flip(clipped_data, axis=1).flatten()
+        sa_formatted = clipped_data.flatten()
+        return sa_formatted, clipped_data
+
+    def clip_land_cover(self, lat_lon_array, land_cover_file):
+        &#34;&#34;&#34;Clip the domain land cover data to the bounding box of the mask
+
+        Parameters
+        ----------
+        lat_lon_array : numpy.ndarray
+            clipped lat/lon tuple data for the masked area
+        land_cover_file : str
+            land cover file for the domain
+
+        Returns
+        -------
+        sa_formatted : numpy.ndarray
+            the clipped data formatted in a 1d output arrray for writing to a .sa file
+        output : numpy.ndarray
+            vegm formatted representation of the data (2d)
+        &#34;&#34;&#34;
+        lat_lon_proper = np.char.split(lat_lon_array.astype(str), &#39; &#39;)
+        data = file_io_tools.read_file(land_cover_file)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        #sa_formatted = np.flip(clipped_data, axis=1).flatten()
+        sa_formatted = clipped_data.flatten()
+        sand = 0.16
+        clay = 0.26
+        color = 2
+        # get value of land cover for each coordinate
+        npoints = sa_formatted.shape[0]
+        # make output matrix
+        output = np.zeros((npoints, 25))
+        output[:, 4] = sand
+        output[:, 5] = clay
+        output[:, 6] = color
+        # assign x values, looping from 1 to x extent, holding y constant
+        output[:, 0] = list(range(1, clipped_data.shape[2] + 1)) * clipped_data.shape[1]
+        # assign y values, repeating each y value from 1 to y extent for every x
+        output[:, 1] = np.repeat(range(1, clipped_data.shape[1] + 1), clipped_data.shape[2])
+        # assign lat values
+        output[:, 2] = [latlon[0] for latlon in lat_lon_proper]
+        # assign lon values
+        output[:, 3] = [latlon[1] for latlon in lat_lon_proper]
+        cols = [int(i) + 6 for i in sa_formatted]
+        rows = list(range(npoints))
+        output[rows, cols] = 1
+        return sa_formatted, output
+
+    def write_land_cover(self, land_cover_data, out_file):
+        &#34;&#34;&#34;Write the land cover file in vegm format
+
+        Parameters
+        ----------
+        land_cover_data : ndarray
+            formatted vegm data (2d array)
+        out_file : str
+            path and name to write output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        heading = &#34;x y lat lon sand clay color fractional coverage of grid, by vegetation class (Must/Should Add to &#34; \
+                  &#34;1.0) &#34;
+        col_names = [&#39;&#39;, &#39;&#39;, &#39;(Deg)&#39;, &#39;(Deg)&#39;, &#39;(%/100)&#39;, &#39;&#39;, &#39;index&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;,
+                     &#39;10&#39;, &#39;11&#39;,
+                     &#39;12&#39;, &#39;13&#39;, &#39;14&#39;, &#39;15&#39;, &#39;16&#39;, &#39;17&#39;, &#39;18&#39;]
+        header = &#39;\n&#39;.join([heading, &#39; &#39;.join(col_names)])
+        file_io_tools.write_array_to_text_file(out_file=out_file, data=land_cover_data, header=header,
+                                               fmt=[&#39;%d&#39;] * 2 + [&#39;%.6f&#39;] * 2 + [&#39;%.2f&#39;] * 2 + [&#39;%d&#39;] * 19)
+
+    def write_lat_lon(self, lat_lon_data, out_file, x=0, y=0, z=0):
+        &#34;&#34;&#34;Write the lat/lon data to a ParFlow simple ascii formatted file
+
+        Parameters
+        ----------
+        lat_lon_data : ndarray
+            lat/lon data in formatted 1d array
+        out_file : str
+            path and name for output file
+        x : int
+            size of x dimension (Default value = 0)
+        y : int
+            size of y dimension (Default value = 0)
+        z : int
+            size of z dimension (Default value = 0)
+
+        Returns
+        -------
+        None
+
+        &#34;&#34;&#34;
+        file_io_tools.write_array_to_text_file(out_file=out_file, data=lat_lon_data, fmt=&#39;%s&#39;, header=f&#39;{x} {y} {z}&#39;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="parflow.subset.clipper.BoxClipper"><code class="flex name class">
+<span>class <span class="ident">BoxClipper</span></span>
+<span>(</span><span>ref_array, x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=-999)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip a rectangular data region specified by a bounding box
+self.padding = padding
+self.no_data = no_data
+self.ref_array = ref_array
+if nx is None:
+nx = self.ref_array.shape[2]
+if ny is None:
+ny = self.ref_array.shape[1]
+if nz is None:
+nz = self.ref_array.shape[0]
+if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
+raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1")
+self.update_bbox(x, y, z, nx, ny, nz, padding)</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ref_array</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>the full extent array identical in dimension to the data that will be clipped</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>the starting x value (1 based index)</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>the starting y value (1 based index)</dd>
+<dt><strong><code>z</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>the starting z value (1 based index)</dd>
+<dt><strong><code>nx</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>the number of x cells to clip (default extents of 'ref_array')</dd>
+<dt><strong><code>ny</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>the number of y cells to clip (default extents of 'ref_array')</dd>
+<dt><strong><code>nz</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>the number of z cells to clip (default extents of 'ref_array')</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>no_data padding to add around data. specified clockwise from top. (top,right,bot,left)</dd>
+<dt><strong><code>no_data</code></strong> :&ensp;<code>int</code></dt>
+<dd>the no data value to use (default package NO_DATA_VALUE)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="parflow.subset.clipper.BoxClipper" href="#parflow.subset.clipper.BoxClipper">BoxClipper</a></code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>Exception</code></dt>
+<dd>Invalid dimensions will raise an exception</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BoxClipper(Clipper):
+    &#34;&#34;&#34;Clip a rectangular data region specified by a bounding box
+ self.padding = padding
+        self.no_data = no_data
+        self.ref_array = ref_array
+        if nx is None:
+            nx = self.ref_array.shape[2]
+        if ny is None:
+            ny = self.ref_array.shape[1]
+        if nz is None:
+            nz = self.ref_array.shape[0]
+        if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
+            raise Exception(&#34;Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1&#34;)
+        self.update_bbox(x, y, z, nx, ny, nz, padding)
+    &#34;&#34;&#34;
+    def __repr__(self):
+        return f&#34;{self.__class__.__name__}(x_0:{self.x_0}, x_end:{self.x_end}, y_0:{self.y_0}, y_end:{self.y_end}, &#34; \
+               f&#34;z_0:{self.z_0}, z_end:{self.z_end}, nx:{self.nx}, ny:{self.ny}, nz:{self.nz!r}, &#34; \
+               f&#34;ref_array:{self.ref_array!r}, padding:{self.padding!r}, no_data:{self.no_data!r}&#34;
+
+    def __init__(self, ref_array, x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=NO_DATA):
+        &#34;&#34;&#34;
+
+        Parameters
+        ----------
+        ref_array : ndarray
+            the full extent array identical in dimension to the data that will be clipped
+        x : int, optional
+            the starting x value (1 based index)
+        y : int, optional
+            the starting y value (1 based index)
+        z : int, optional
+            the starting z value (1 based index)
+        nx : int, optional
+            the number of x cells to clip (default extents of &#39;ref_array&#39;)
+        ny : int, optional
+            the number of y cells to clip (default extents of &#39;ref_array&#39;)
+        nz : int, optional
+            the number of z cells to clip (default extents of &#39;ref_array&#39;)
+        padding : tuple, optional
+            no_data padding to add around data. specified clockwise from top. (top,right,bot,left)
+        no_data: int
+            the no data value to use (default package NO_DATA_VALUE)
+
+        Returns
+        -------
+        BoxClipper
+
+        Raises
+        -------
+        Exception
+            Invalid dimensions will raise an exception
+        &#34;&#34;&#34;
+        self.padding = padding
+        self.no_data = no_data
+        self.ref_array = ref_array
+        if nx is None:
+            nx = self.ref_array.shape[2]
+        if ny is None:
+            ny = self.ref_array.shape[1]
+        if nz is None:
+            nz = self.ref_array.shape[0]
+        if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
+            raise Exception(&#34;Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1&#34;)
+        self.update_bbox(x, y, z, nx, ny, nz, padding)
+
+    def update_bbox(self, x=None, y=None, z=None, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0)):
+        &#34;&#34;&#34;update the x,y,z, nx, ny, nz and padding values
+
+        Parameters
+        ----------
+        x : int, optional
+             Starting X value (Default value = None)
+        y : int, optional
+             Staring Y value (Default value = None)
+        z : int, optional
+             Starting Z value (Default value = None)
+        nx : int, optional
+             number of X cells to clip (Default value = None)
+        ny : int, optional
+             number of Y cells to clip (Default value = None)
+        nz : int, optional
+             number of Z cells to clip (Default value = None)
+        padding : tuple, optional
+             number of no_data cells to add around box, clockwise starting from top (CSS style)
+             (default value = (0,0,0,0)
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        if nx is not None:
+            self.nx = nx
+        if ny is not None:
+            self.ny = ny
+        if nz is not None:
+            self.nz = nz
+        if x is not None:
+            self.x_0 = x - 1
+            self.x_end = self.x_0 + nx
+        if z is not None:
+            self.z_0 = z - 1
+            self.z_end = self.z_0 + nz
+        if y is not None:
+            self.y_0 = y - 1
+            self.y_end = self.y_0 + ny
+        self.padding = padding
+
+    def subset(self, data_array=None):
+        &#34;&#34;&#34; Clip the data_array to the region specified by the bounding box
+
+        Parameters
+        ----------
+        data_array : ndarray, optional
+            a 3d array of data to clip, if no array passed return clip of the initialization array
+
+        Returns
+        -------
+        ret_array : ndarray
+            the clipped `data_array`
+
+        &#34;&#34;&#34;
+        if data_array is None:
+            data_array = self.ref_array
+        if any(self.padding):
+            # create a full dimensioned array of no_data_values
+            ret_array = np.full(shape=(self.nz,
+                                self.ny + self.padding[0] + self.padding[2],
+                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=np.float64)
+            # assign values from the data_array into the return array, mind the padding
+            ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
+            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,
+                                                                    self.x_0:self.x_end]
+        else:
+            ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
+        return ret_array, None, None, None</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="parflow.subset.clipper.Clipper" href="#parflow.subset.clipper.Clipper">Clipper</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.subset.clipper.BoxClipper.subset"><code class="name flex">
+<span>def <span class="ident">subset</span></span>(<span>self, data_array=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip the data_array to the region specified by the bounding box</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>data_array</code></strong> :&ensp;<code>ndarray</code>, optional</dt>
+<dd>a 3d array of data to clip, if no array passed return clip of the initialization array</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>ret_array</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>the clipped <code>data_array</code></dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subset(self, data_array=None):
+    &#34;&#34;&#34; Clip the data_array to the region specified by the bounding box
+
+    Parameters
+    ----------
+    data_array : ndarray, optional
+        a 3d array of data to clip, if no array passed return clip of the initialization array
+
+    Returns
+    -------
+    ret_array : ndarray
+        the clipped `data_array`
+
+    &#34;&#34;&#34;
+    if data_array is None:
+        data_array = self.ref_array
+    if any(self.padding):
+        # create a full dimensioned array of no_data_values
+        ret_array = np.full(shape=(self.nz,
+                            self.ny + self.padding[0] + self.padding[2],
+                            self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=np.float64)
+        # assign values from the data_array into the return array, mind the padding
+        ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
+        self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,
+                                                                self.x_0:self.x_end]
+    else:
+        ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
+    return ret_array, None, None, None</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.clipper.BoxClipper.update_bbox"><code class="name flex">
+<span>def <span class="ident">update_bbox</span></span>(<span>self, x=None, y=None, z=None, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>update the x,y,z, nx, ny, nz and padding values</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Starting X value (Default value = None)</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Staring Y value (Default value = None)</dd>
+<dt><strong><code>z</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Starting Z value (Default value = None)</dd>
+<dt><strong><code>nx</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>number of X cells to clip (Default value = None)</dd>
+<dt><strong><code>ny</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>number of Y cells to clip (Default value = None)</dd>
+<dt><strong><code>nz</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>number of Z cells to clip (Default value = None)</dd>
+<dt><strong><code>padding</code></strong> :&ensp;<code>tuple</code>, optional</dt>
+<dd>number of no_data cells to add around box, clockwise starting from top (CSS style)
+(default value = (0,0,0,0)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_bbox(self, x=None, y=None, z=None, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0)):
+    &#34;&#34;&#34;update the x,y,z, nx, ny, nz and padding values
+
+    Parameters
+    ----------
+    x : int, optional
+         Starting X value (Default value = None)
+    y : int, optional
+         Staring Y value (Default value = None)
+    z : int, optional
+         Starting Z value (Default value = None)
+    nx : int, optional
+         number of X cells to clip (Default value = None)
+    ny : int, optional
+         number of Y cells to clip (Default value = None)
+    nz : int, optional
+         number of Z cells to clip (Default value = None)
+    padding : tuple, optional
+         number of no_data cells to add around box, clockwise starting from top (CSS style)
+         (default value = (0,0,0,0)
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    if nx is not None:
+        self.nx = nx
+    if ny is not None:
+        self.ny = ny
+    if nz is not None:
+        self.nz = nz
+    if x is not None:
+        self.x_0 = x - 1
+        self.x_end = self.x_0 + nx
+    if z is not None:
+        self.z_0 = z - 1
+        self.z_end = self.z_0 + nz
+    if y is not None:
+        self.y_0 = y - 1
+        self.y_end = self.y_0 + ny
+    self.padding = padding</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.subset.clipper.Clipper"><code class="flex name class">
+<span>class <span class="ident">Clipper</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract Clipper Class</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Clipper(ABC):
+
+    &#34;&#34;&#34;Abstract Clipper Class&#34;&#34;&#34;
+
+    @abstractmethod
+    def subset(self, data_array):
+        &#34;&#34;&#34;Clip the data_array
+
+        Parameters
+        ----------
+        data_array : ndarray
+            3d array of data to be clipped
+
+        Returns
+        -------
+        ndarray
+            clipped portion of data_array
+        &#34;&#34;&#34;
+        pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="parflow.subset.clipper.BoxClipper" href="#parflow.subset.clipper.BoxClipper">BoxClipper</a></li>
+<li><a title="parflow.subset.clipper.MaskClipper" href="#parflow.subset.clipper.MaskClipper">MaskClipper</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.subset.clipper.Clipper.subset"><code class="name flex">
+<span>def <span class="ident">subset</span></span>(<span>self, data_array)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip the data_array</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>data_array</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>3d array of data to be clipped</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ndarray</code></dt>
+<dd>clipped portion of data_array</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def subset(self, data_array):
+    &#34;&#34;&#34;Clip the data_array
+
+    Parameters
+    ----------
+    data_array : ndarray
+        3d array of data to be clipped
+
+    Returns
+    -------
+    ndarray
+        clipped portion of data_array
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.subset.clipper.ClmClipper"><code class="flex name class">
+<span>class <span class="ident">ClmClipper</span></span>
+<span>(</span><span>bbox)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Specialized clipper for CLM input files</p>
+<p>Clips CLM datafiles lat/lon and land cover</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>bbox</code></strong> :&ensp;<code>BBox</code></dt>
+<dd>BBox object describing the mask bounds</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ClmClipper:
+    &#34;&#34;&#34;Specialized clipper for CLM input files&#34;&#34;&#34;
+
+    def __init__(self, bbox):
+        &#34;&#34;&#34;Clips CLM datafiles lat/lon and land cover
+
+        Parameters
+        ----------
+        bbox : BBox
+            BBox object describing the mask bounds
+        &#34;&#34;&#34;
+        self.bbox = bbox.get_human_bbox()
+        self.clipper = BoxClipper(ref_array=None, x=self.bbox[0], y=self.bbox[1], nx=self.bbox[2], ny=self.bbox[3],
+                                  nz=1)
+
+    def clip_latlon(self, lat_lon_file):
+        &#34;&#34;&#34;Clip the domain lat/lon data to the bounding box of the mask
+
+        Parameters
+        ----------
+        lat_lon_file : str
+            lat/lon data for the domain
+
+        Returns
+        -------
+        sa_formatted : numpy.ndarray
+            the clipped data formatted in a 1d output arrray for writing to a .sa file
+        clipped_data : numpy.ndarray
+            the raw clipped data (3d) read from &#39;lat_lon_file&#39;
+
+        &#34;&#34;&#34;
+        data = file_io_tools.read_file(lat_lon_file)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        #sa_formatted = np.flip(clipped_data, axis=1).flatten()
+        sa_formatted = clipped_data.flatten()
+        return sa_formatted, clipped_data
+
+    def clip_land_cover(self, lat_lon_array, land_cover_file):
+        &#34;&#34;&#34;Clip the domain land cover data to the bounding box of the mask
+
+        Parameters
+        ----------
+        lat_lon_array : numpy.ndarray
+            clipped lat/lon tuple data for the masked area
+        land_cover_file : str
+            land cover file for the domain
+
+        Returns
+        -------
+        sa_formatted : numpy.ndarray
+            the clipped data formatted in a 1d output arrray for writing to a .sa file
+        output : numpy.ndarray
+            vegm formatted representation of the data (2d)
+        &#34;&#34;&#34;
+        lat_lon_proper = np.char.split(lat_lon_array.astype(str), &#39; &#39;)
+        data = file_io_tools.read_file(land_cover_file)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        #sa_formatted = np.flip(clipped_data, axis=1).flatten()
+        sa_formatted = clipped_data.flatten()
+        sand = 0.16
+        clay = 0.26
+        color = 2
+        # get value of land cover for each coordinate
+        npoints = sa_formatted.shape[0]
+        # make output matrix
+        output = np.zeros((npoints, 25))
+        output[:, 4] = sand
+        output[:, 5] = clay
+        output[:, 6] = color
+        # assign x values, looping from 1 to x extent, holding y constant
+        output[:, 0] = list(range(1, clipped_data.shape[2] + 1)) * clipped_data.shape[1]
+        # assign y values, repeating each y value from 1 to y extent for every x
+        output[:, 1] = np.repeat(range(1, clipped_data.shape[1] + 1), clipped_data.shape[2])
+        # assign lat values
+        output[:, 2] = [latlon[0] for latlon in lat_lon_proper]
+        # assign lon values
+        output[:, 3] = [latlon[1] for latlon in lat_lon_proper]
+        cols = [int(i) + 6 for i in sa_formatted]
+        rows = list(range(npoints))
+        output[rows, cols] = 1
+        return sa_formatted, output
+
+    def write_land_cover(self, land_cover_data, out_file):
+        &#34;&#34;&#34;Write the land cover file in vegm format
+
+        Parameters
+        ----------
+        land_cover_data : ndarray
+            formatted vegm data (2d array)
+        out_file : str
+            path and name to write output
+
+        Returns
+        -------
+        None
+        &#34;&#34;&#34;
+        heading = &#34;x y lat lon sand clay color fractional coverage of grid, by vegetation class (Must/Should Add to &#34; \
+                  &#34;1.0) &#34;
+        col_names = [&#39;&#39;, &#39;&#39;, &#39;(Deg)&#39;, &#39;(Deg)&#39;, &#39;(%/100)&#39;, &#39;&#39;, &#39;index&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;,
+                     &#39;10&#39;, &#39;11&#39;,
+                     &#39;12&#39;, &#39;13&#39;, &#39;14&#39;, &#39;15&#39;, &#39;16&#39;, &#39;17&#39;, &#39;18&#39;]
+        header = &#39;\n&#39;.join([heading, &#39; &#39;.join(col_names)])
+        file_io_tools.write_array_to_text_file(out_file=out_file, data=land_cover_data, header=header,
+                                               fmt=[&#39;%d&#39;] * 2 + [&#39;%.6f&#39;] * 2 + [&#39;%.2f&#39;] * 2 + [&#39;%d&#39;] * 19)
+
+    def write_lat_lon(self, lat_lon_data, out_file, x=0, y=0, z=0):
+        &#34;&#34;&#34;Write the lat/lon data to a ParFlow simple ascii formatted file
+
+        Parameters
+        ----------
+        lat_lon_data : ndarray
+            lat/lon data in formatted 1d array
+        out_file : str
+            path and name for output file
+        x : int
+            size of x dimension (Default value = 0)
+        y : int
+            size of y dimension (Default value = 0)
+        z : int
+            size of z dimension (Default value = 0)
+
+        Returns
+        -------
+        None
+
+        &#34;&#34;&#34;
+        file_io_tools.write_array_to_text_file(out_file=out_file, data=lat_lon_data, fmt=&#39;%s&#39;, header=f&#39;{x} {y} {z}&#39;)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.subset.clipper.ClmClipper.clip_land_cover"><code class="name flex">
+<span>def <span class="ident">clip_land_cover</span></span>(<span>self, lat_lon_array, land_cover_file)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip the domain land cover data to the bounding box of the mask</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>lat_lon_array</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>clipped lat/lon tuple data for the masked area</dd>
+<dt><strong><code>land_cover_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>land cover file for the domain</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>sa_formatted</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>the clipped data formatted in a 1d output arrray for writing to a .sa file</dd>
+<dt><strong><code>output</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>vegm formatted representation of the data (2d)</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clip_land_cover(self, lat_lon_array, land_cover_file):
+    &#34;&#34;&#34;Clip the domain land cover data to the bounding box of the mask
+
+    Parameters
+    ----------
+    lat_lon_array : numpy.ndarray
+        clipped lat/lon tuple data for the masked area
+    land_cover_file : str
+        land cover file for the domain
+
+    Returns
+    -------
+    sa_formatted : numpy.ndarray
+        the clipped data formatted in a 1d output arrray for writing to a .sa file
+    output : numpy.ndarray
+        vegm formatted representation of the data (2d)
+    &#34;&#34;&#34;
+    lat_lon_proper = np.char.split(lat_lon_array.astype(str), &#39; &#39;)
+    data = file_io_tools.read_file(land_cover_file)
+    clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+    #sa_formatted = np.flip(clipped_data, axis=1).flatten()
+    sa_formatted = clipped_data.flatten()
+    sand = 0.16
+    clay = 0.26
+    color = 2
+    # get value of land cover for each coordinate
+    npoints = sa_formatted.shape[0]
+    # make output matrix
+    output = np.zeros((npoints, 25))
+    output[:, 4] = sand
+    output[:, 5] = clay
+    output[:, 6] = color
+    # assign x values, looping from 1 to x extent, holding y constant
+    output[:, 0] = list(range(1, clipped_data.shape[2] + 1)) * clipped_data.shape[1]
+    # assign y values, repeating each y value from 1 to y extent for every x
+    output[:, 1] = np.repeat(range(1, clipped_data.shape[1] + 1), clipped_data.shape[2])
+    # assign lat values
+    output[:, 2] = [latlon[0] for latlon in lat_lon_proper]
+    # assign lon values
+    output[:, 3] = [latlon[1] for latlon in lat_lon_proper]
+    cols = [int(i) + 6 for i in sa_formatted]
+    rows = list(range(npoints))
+    output[rows, cols] = 1
+    return sa_formatted, output</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.clipper.ClmClipper.clip_latlon"><code class="name flex">
+<span>def <span class="ident">clip_latlon</span></span>(<span>self, lat_lon_file)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip the domain lat/lon data to the bounding box of the mask</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>lat_lon_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>lat/lon data for the domain</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>sa_formatted</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>the clipped data formatted in a 1d output arrray for writing to a .sa file</dd>
+<dt><strong><code>clipped_data</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>the raw clipped data (3d) read from 'lat_lon_file'</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clip_latlon(self, lat_lon_file):
+    &#34;&#34;&#34;Clip the domain lat/lon data to the bounding box of the mask
+
+    Parameters
+    ----------
+    lat_lon_file : str
+        lat/lon data for the domain
+
+    Returns
+    -------
+    sa_formatted : numpy.ndarray
+        the clipped data formatted in a 1d output arrray for writing to a .sa file
+    clipped_data : numpy.ndarray
+        the raw clipped data (3d) read from &#39;lat_lon_file&#39;
+
+    &#34;&#34;&#34;
+    data = file_io_tools.read_file(lat_lon_file)
+    clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+    #sa_formatted = np.flip(clipped_data, axis=1).flatten()
+    sa_formatted = clipped_data.flatten()
+    return sa_formatted, clipped_data</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.clipper.ClmClipper.write_land_cover"><code class="name flex">
+<span>def <span class="ident">write_land_cover</span></span>(<span>self, land_cover_data, out_file)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the land cover file in vegm format</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>land_cover_data</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>formatted vegm data (2d array)</dd>
+<dt><strong><code>out_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>path and name to write output</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_land_cover(self, land_cover_data, out_file):
+    &#34;&#34;&#34;Write the land cover file in vegm format
+
+    Parameters
+    ----------
+    land_cover_data : ndarray
+        formatted vegm data (2d array)
+    out_file : str
+        path and name to write output
+
+    Returns
+    -------
+    None
+    &#34;&#34;&#34;
+    heading = &#34;x y lat lon sand clay color fractional coverage of grid, by vegetation class (Must/Should Add to &#34; \
+              &#34;1.0) &#34;
+    col_names = [&#39;&#39;, &#39;&#39;, &#39;(Deg)&#39;, &#39;(Deg)&#39;, &#39;(%/100)&#39;, &#39;&#39;, &#39;index&#39;, &#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;4&#39;, &#39;5&#39;, &#39;6&#39;, &#39;7&#39;, &#39;8&#39;, &#39;9&#39;,
+                 &#39;10&#39;, &#39;11&#39;,
+                 &#39;12&#39;, &#39;13&#39;, &#39;14&#39;, &#39;15&#39;, &#39;16&#39;, &#39;17&#39;, &#39;18&#39;]
+    header = &#39;\n&#39;.join([heading, &#39; &#39;.join(col_names)])
+    file_io_tools.write_array_to_text_file(out_file=out_file, data=land_cover_data, header=header,
+                                           fmt=[&#39;%d&#39;] * 2 + [&#39;%.6f&#39;] * 2 + [&#39;%.2f&#39;] * 2 + [&#39;%d&#39;] * 19)</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.clipper.ClmClipper.write_lat_lon"><code class="name flex">
+<span>def <span class="ident">write_lat_lon</span></span>(<span>self, lat_lon_data, out_file, x=0, y=0, z=0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write the lat/lon data to a ParFlow simple ascii formatted file</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>lat_lon_data</code></strong> :&ensp;<code>ndarray</code></dt>
+<dd>lat/lon data in formatted 1d array</dd>
+<dt><strong><code>out_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>path and name for output file</dd>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>size of x dimension (Default value = 0)</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>size of y dimension (Default value = 0)</dd>
+<dt><strong><code>z</code></strong> :&ensp;<code>int</code></dt>
+<dd>size of z dimension (Default value = 0)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>None</code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_lat_lon(self, lat_lon_data, out_file, x=0, y=0, z=0):
+    &#34;&#34;&#34;Write the lat/lon data to a ParFlow simple ascii formatted file
+
+    Parameters
+    ----------
+    lat_lon_data : ndarray
+        lat/lon data in formatted 1d array
+    out_file : str
+        path and name for output file
+    x : int
+        size of x dimension (Default value = 0)
+    y : int
+        size of y dimension (Default value = 0)
+    z : int
+        size of z dimension (Default value = 0)
+
+    Returns
+    -------
+    None
+
+    &#34;&#34;&#34;
+    file_io_tools.write_array_to_text_file(out_file=out_file, data=lat_lon_data, fmt=&#39;%s&#39;, header=f&#39;{x} {y} {z}&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.subset.clipper.MaskClipper"><code class="flex name class">
+<span>class <span class="ident">MaskClipper</span></span>
+<span>(</span><span>subset_mask, no_data_threshold=-999)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip an irregular data region specified by a mask</p>
+<p>Assumes input mask_array has 1's written to valid data, 0's for bounding box,
+and &lt;=no_data_threshold for no_data val, no_data_threshold must be &lt; 0 or bounding box will
+not be identifiable</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>subset_mask</code></strong> :&ensp;<code>SubsetMask</code></dt>
+<dd>instantiated mask object</dd>
+<dt><strong><code>no_data_threshold</code></strong> :&ensp;<code>int</code></dt>
+<dd>upper bound to which all values are no_data</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="parflow.subset.clipper.MaskClipper" href="#parflow.subset.clipper.MaskClipper">MaskClipper</a></code></dt>
+<dd>&nbsp;</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MaskClipper(Clipper):
+    &#34;&#34;&#34;Clip an irregular data region specified by a mask&#34;&#34;&#34;
+
+    def __repr__(self):
+        return f&#34;{self.__class__.__name__}(subset_mask:{self.subset_mask!r}, bbox:{self.bbox!r}, &#34; \
+               f&#34;clipped_geom:{self.clipped_geom!r}, clipped_mask:{self.clipped_mask!r}&#34;
+
+    def __init__(self, subset_mask, no_data_threshold=NO_DATA):
+        &#34;&#34;&#34;Assumes input mask_array has 1&#39;s written to valid data, 0&#39;s for bounding box,
+             and &lt;=no_data_threshold for no_data val, no_data_threshold must be &lt; 0 or bounding box will
+             not be identifiable
+
+        Parameters
+        ----------
+        subset_mask : SubsetMask
+            instantiated mask object
+        no_data_threshold : int
+            upper bound to which all values are no_data
+
+        Returns
+        -------
+        MaskClipper
+        &#34;&#34;&#34;
+        self.subset_mask = subset_mask
+        min_y, max_y, min_x, max_x = self.subset_mask.bbox_edges
+        self.bbox = [min_y, max_y + 1, min_x, max_x + 1]
+        self.clipped_geom = self.subset_mask.calculate_new_geom(min_x, min_y,
+                                                                self.subset_mask.mask_tif.GetGeoTransform())
+        self.clipped_mask = (self.subset_mask.bbox_mask.filled(fill_value=no_data_threshold) == 1)[:,
+                            self.bbox[0]:self.bbox[1],
+                            self.bbox[2]:self.bbox[3]]
+
+    def subset(self, data_array, no_data=NO_DATA, crop_inner=1):
+        &#34;&#34;&#34;subset the data from data_array in the shape and extents of the clipper&#39;s clipped subset_mask
+
+        Parameters
+        ----------
+        data_array : numpy.ndarray
+            3d array of data to subset
+        no_data : int
+            no data value for outputs (Default = NO_DATA)
+        crop_inner : int
+            crop the data to the bbox(0) or the mask(1) (default = 1)
+
+        Returns
+        -------
+        return_arr : numpy.ndarray
+            the subset data as a 3d array
+        clipped_geom : list
+            gdal geometry for the clip
+        clipped_mask : numpy.ndarray
+            mask of 1/0 showing clipped area
+        bounding box : tuple
+            x, y, nx, ny values indicating region clipped
+
+        &#34;&#34;&#34;
+        full_mask = self.subset_mask.bbox_mask.mask
+        clip_mask = ~self.clipped_mask
+        # Handle multi-layered files, such as subsurface or forcings
+        if data_array.shape[0] &gt; 1:
+            full_mask = np.broadcast_to(full_mask, data_array.shape)
+            clip_mask = np.broadcast_to(clip_mask, (data_array.shape[0], clip_mask.shape[1], clip_mask.shape[2]))
+            logging.info(f&#39;clipper: broadcast subset_mask to match input data z layers: {data_array.shape[0]}&#39;)
+        # full_dim_mask the input data using numpy masked array module (True=InvalidData, False=ValidData)
+        masked_data = ma.masked_array(data=data_array, mask=full_mask)
+
+        if crop_inner:
+            # return an array that includes all of the z data, and x and y no_data outside of the full_dim_mask area
+            return_arr = ma.masked_array(masked_data[:,
+                                         self.bbox[0]: self.bbox[1],
+                                         self.bbox[2]: self.bbox[3]].filled(fill_value=no_data),
+                                         mask=clip_mask).filled(fill_value=no_data)
+            # logging.info(f&#39;clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} &#39;
+            #              f&#39;using bbox (top, bot, left, right) {self.printable_bbox}&#39;)
+        else:
+            # return an array that includes all of the z data, and x and y inside the bounding box
+            return_arr = ma.masked_array(masked_data[:,
+                                         self.bbox[0]: self.bbox[1],
+                                         self.bbox[2]: self.bbox[3]],
+                                         mask=np.zeros(clip_mask.shape)).filled()
+            # logging.info(f&#39;clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} &#39;
+            #              f&#39;using bbox (top, bot, left, right) {self.printable_bbox}&#39;)
+
+        return return_arr, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="parflow.subset.clipper.Clipper" href="#parflow.subset.clipper.Clipper">Clipper</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.subset.clipper.MaskClipper.subset"><code class="name flex">
+<span>def <span class="ident">subset</span></span>(<span>self, data_array, no_data=-999, crop_inner=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>subset the data from data_array in the shape and extents of the clipper's clipped subset_mask</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>data_array</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>3d array of data to subset</dd>
+<dt><strong><code>no_data</code></strong> :&ensp;<code>int</code></dt>
+<dd>no data value for outputs (Default = NO_DATA)</dd>
+<dt><strong><code>crop_inner</code></strong> :&ensp;<code>int</code></dt>
+<dd>crop the data to the bbox(0) or the mask(1) (default = 1)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><strong><code>return_arr</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>the subset data as a 3d array</dd>
+<dt><strong><code>clipped_geom</code></strong> :&ensp;<code>list</code></dt>
+<dd>gdal geometry for the clip</dd>
+<dt><strong><code>clipped_mask</code></strong> :&ensp;<code>numpy.ndarray</code></dt>
+<dd>mask of 1/0 showing clipped area</dd>
+<dt><code>bounding box : tuple</code></dt>
+<dd>x, y, nx, ny values indicating region clipped</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def subset(self, data_array, no_data=NO_DATA, crop_inner=1):
+    &#34;&#34;&#34;subset the data from data_array in the shape and extents of the clipper&#39;s clipped subset_mask
+
+    Parameters
+    ----------
+    data_array : numpy.ndarray
+        3d array of data to subset
+    no_data : int
+        no data value for outputs (Default = NO_DATA)
+    crop_inner : int
+        crop the data to the bbox(0) or the mask(1) (default = 1)
+
+    Returns
+    -------
+    return_arr : numpy.ndarray
+        the subset data as a 3d array
+    clipped_geom : list
+        gdal geometry for the clip
+    clipped_mask : numpy.ndarray
+        mask of 1/0 showing clipped area
+    bounding box : tuple
+        x, y, nx, ny values indicating region clipped
+
+    &#34;&#34;&#34;
+    full_mask = self.subset_mask.bbox_mask.mask
+    clip_mask = ~self.clipped_mask
+    # Handle multi-layered files, such as subsurface or forcings
+    if data_array.shape[0] &gt; 1:
+        full_mask = np.broadcast_to(full_mask, data_array.shape)
+        clip_mask = np.broadcast_to(clip_mask, (data_array.shape[0], clip_mask.shape[1], clip_mask.shape[2]))
+        logging.info(f&#39;clipper: broadcast subset_mask to match input data z layers: {data_array.shape[0]}&#39;)
+    # full_dim_mask the input data using numpy masked array module (True=InvalidData, False=ValidData)
+    masked_data = ma.masked_array(data=data_array, mask=full_mask)
+
+    if crop_inner:
+        # return an array that includes all of the z data, and x and y no_data outside of the full_dim_mask area
+        return_arr = ma.masked_array(masked_data[:,
+                                     self.bbox[0]: self.bbox[1],
+                                     self.bbox[2]: self.bbox[3]].filled(fill_value=no_data),
+                                     mask=clip_mask).filled(fill_value=no_data)
+        # logging.info(f&#39;clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} &#39;
+        #              f&#39;using bbox (top, bot, left, right) {self.printable_bbox}&#39;)
+    else:
+        # return an array that includes all of the z data, and x and y inside the bounding box
+        return_arr = ma.masked_array(masked_data[:,
+                                     self.bbox[0]: self.bbox[1],
+                                     self.bbox[2]: self.bbox[3]],
+                                     mask=np.zeros(clip_mask.shape)).filled()
+        # logging.info(f&#39;clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} &#39;
+        #              f&#39;using bbox (top, bot, left, right) {self.printable_bbox}&#39;)
+
+    return return_arr, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.subset" href="index.html">parflow.subset</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="parflow.subset.clipper.BoxClipper" href="#parflow.subset.clipper.BoxClipper">BoxClipper</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.subset.clipper.BoxClipper.subset" href="#parflow.subset.clipper.BoxClipper.subset">subset</a></code></li>
+<li><code><a title="parflow.subset.clipper.BoxClipper.update_bbox" href="#parflow.subset.clipper.BoxClipper.update_bbox">update_bbox</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.subset.clipper.Clipper" href="#parflow.subset.clipper.Clipper">Clipper</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.subset.clipper.Clipper.subset" href="#parflow.subset.clipper.Clipper.subset">subset</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.subset.clipper.ClmClipper" href="#parflow.subset.clipper.ClmClipper">ClmClipper</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.subset.clipper.ClmClipper.clip_land_cover" href="#parflow.subset.clipper.ClmClipper.clip_land_cover">clip_land_cover</a></code></li>
+<li><code><a title="parflow.subset.clipper.ClmClipper.clip_latlon" href="#parflow.subset.clipper.ClmClipper.clip_latlon">clip_latlon</a></code></li>
+<li><code><a title="parflow.subset.clipper.ClmClipper.write_land_cover" href="#parflow.subset.clipper.ClmClipper.write_land_cover">write_land_cover</a></code></li>
+<li><code><a title="parflow.subset.clipper.ClmClipper.write_lat_lon" href="#parflow.subset.clipper.ClmClipper.write_lat_lon">write_lat_lon</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.subset.clipper.MaskClipper" href="#parflow.subset.clipper.MaskClipper">MaskClipper</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.subset.clipper.MaskClipper.subset" href="#parflow.subset.clipper.MaskClipper.subset">subset</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

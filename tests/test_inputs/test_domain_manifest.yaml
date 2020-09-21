@@ -1,0 +1,49 @@
+---
+# TestModel Input file to filename mapping
+
+test_domain:
+  1:
+    required_files:
+      DOMAIN_MASK: Domain_Blank_Mask.tif
+      SLOPE_X: testdom_slope_x.sa
+      SLOPE_Y: testdom_slope_y.sa
+  2:
+    required_files:
+      DOMAIN_MASK: Domain_Blank_Mask.tif
+      SUBSURFACE_DATA: testdom_subsurface.sa
+      SLOPE_X: testdom_slope_x.sa
+      SLOPE_Y: testdom_slope_y.sa
+    optional_files:
+      DEM: testdom_dem.sa
+  3:
+    required_files:
+      DOMAIN_MASK: Domain_Blank_Mask.tif
+      SUBSURFACE_DATA: testdom_subsurface.sa
+      SLOPE_X: testdom_slope_x.sa
+      SLOPE_Y: testdom_slope_y.sa
+      PME: testdom_pme.sa
+    optional_files:
+      LAND_COVER: testdom_landcover.sa
+      LAT_LON: testdom_latlon.sa
+      DEM: testdom_dem.sa
+  4:
+    optional_files:
+      LAND_COVER: testdom_landcover.sa
+      LAT_LON: testdom_latlon.sa
+      DEM: testdom_dem.sa
+  5:
+    required_files:
+      DOMAIN_MASK: testdom_noexists_mask.tif
+      SLOPE_X: testdom_slope_x.sa
+      SLOPE_Y: testdom_slope_y.sa
+  6:
+    required_files:
+      DOMAIN_MASK: Domain_Blank_Mask.tif
+      SUBSURFACE_DATA: testdom_subsurface.sa
+      SLOPE_X: testdom_slope_x.sa
+      SLOPE_Y: testdom_slope_y.sa
+      PME: testdom_pme.sa
+    optional_files:
+      LAND_COVER: testdom_landcover.sa
+      LAT_LON: testdom_latlon.sa
+      DEM: testdom_noexists_dem.sa

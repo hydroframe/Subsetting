@@ -44,8 +44,8 @@ The generator will search the following places, in this order.
 Create a clean environment using anaconda or miniconda:
 
 ```
-git clone https://github.com/arezaii/subsetter
-cd subsetter
+git clone https://github.com/hydroframe/subsetting
+cd subsetting
 conda env create -f=environment.yml
 conda activate pf_subsetter
 ```

@@ -1,4 +1,4 @@
-[![Build Status](http://travis-ci.com/arezaii/subsetter.svg?branch=master)](http://travis-ci.com/arezaii/subsetter)
+[![Build Status](https://travis-ci.com/hydroframe/Subsetting.svg?branch=master)](https://travis-ci.com/hydroframe/Subsetting)
 
 # Subsetter
 The subsetter is a suite of tools for clipping ParFlow inputs and outputs. Included are command

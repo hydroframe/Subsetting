@@ -47,6 +47,7 @@ def read_file(infile):
         pfdata.loadHeader()
         pfdata.loadData()
         res_arr = pfdata.getDataAsArray()
+        pfdata.close()
     else:
         raise ValueError('can not read file type ' + ext)
 

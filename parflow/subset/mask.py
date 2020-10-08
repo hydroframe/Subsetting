@@ -49,7 +49,10 @@ class SubsetMask:
             masked numpy array with full_dim_mask edges at outer area
 
         """
-        mx = ma.masked_where(self.mask_array < self.bbox_val, self.mask_array)
+        if np.amin(self.mask_array) == 0:
+            mx = ma.masked_where(self.mask_array <= self.bbox_val, self.mask_array)
+        else:
+            mx = ma.masked_where(self.mask_array < self.bbox_val, self.mask_array)
         logging.info(f'SubsetMask located outer bbox in full_dim_mask array')
         return mx
 

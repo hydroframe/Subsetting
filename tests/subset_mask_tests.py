@@ -1,17 +1,17 @@
 import unittest
 from parflow.subset.mask import SubsetMask
-from test_files import huc10190004
+from tests.test_files import huc10190004, test_all_zeros_and_ones_mask
 
 
 class SubsetMaskClassTests(unittest.TestCase):
 
     def test_normal_startup(self):
-        my_mask = SubsetMask(huc10190004.get('conus1_mask').as_posix())
+        my_mask = SubsetMask(huc10190004.get('conus1_mask'))
         self.assertEqual(-999, my_mask.no_data_value)
         self.assertEqual(0, my_mask.bbox_val)
 
     def test_resize_bbox(self):
-        my_mask = SubsetMask(huc10190004.get('conus1_mask').as_posix())
+        my_mask = SubsetMask(huc10190004.get('conus1_mask'))
         self.assertSequenceEqual((716, 745, 1039, 1123), my_mask.inner_mask_edges)
         self.assertSequenceEqual((716, 745, 1039, 1123), my_mask.bbox_edges)
         self.assertSequenceEqual((30, 85), my_mask.bbox_shape)
@@ -23,6 +23,18 @@ class SubsetMaskClassTests(unittest.TestCase):
         self.assertSequenceEqual((48, 103), my_mask.bbox_shape)
         self.assertEqual(-999, my_mask.no_data_value)
         self.assertEqual(0, my_mask.bbox_val)
+
+    def test_all_zeroes_ones_mask(self):
+        my_mask = SubsetMask(test_all_zeros_and_ones_mask)
+        self.assertSequenceEqual((1752, 2222, 3672, 4078), my_mask.inner_mask_edges)
+        self.assertSequenceEqual((1752, 2222, 3672, 4078), my_mask.bbox_edges)
+        self.assertSequenceEqual((471, 407), my_mask.bbox_shape)
+        self.assertSequenceEqual((471, 407), my_mask.inner_mask_shape)
+        my_mask.add_bbox_to_mask(padding=(5, 5, 4, 4))
+        self.assertSequenceEqual((1752, 2222, 3672, 4078), my_mask.inner_mask_edges)
+        self.assertSequenceEqual((1748, 2227, 3668, 4083), my_mask.bbox_edges)
+        self.assertSequenceEqual((480, 416), my_mask.bbox_shape)
+        self.assertSequenceEqual((471, 407), my_mask.inner_mask_shape)
 
 
 if __name__ == '__main__':

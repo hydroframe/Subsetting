@@ -188,6 +188,7 @@ def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_dat
         if tif_outs and new_geom is not None and ref_proj is not None:
             file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{filename}_clip.tif'),
                                                  return_arr, new_geom, ref_proj, no_data=no_data)
+        del return_arr
 
 
 def get_file_list(input_dir, glob_pattern=None, files=None) -> list:

@@ -65,7 +65,7 @@ class ShapefileRasterizer:
 
         Parameters
         ----------
-        attribute_ids : str
+        attribute_ids : list of ints
             list of attribute ID values to select (Default value = None)
         dtype : gdal.datatype
             the datatype to write (Default value = gdal.GDT_Int32)

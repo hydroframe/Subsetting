@@ -102,9 +102,7 @@ class SubsetConusRegressionTests(unittest.TestCase):
         self.partial_shapefile_name = test_files.partial_shape_file.stem
 
     def test_conus1_subset_regression(self):
-        if os.environ.get('TRAVIS'):
-            pass
-        else:
+        if os.path.isdir('/home/arezaii/git/subset_1/CONUS1_inputs'):
             test_dir = Path('test_outputs')
             test_dir.mkdir(exist_ok=True)
             subset_conus.subset_conus(input_path=self.good_shape_file_path,
@@ -136,6 +134,8 @@ class SubsetConusRegressionTests(unittest.TestCase):
                     self.assertEqual(test_file.read().split('\n')[2:], ref_file.read().split('\n')[2:],
                                      'Writing vtk file matches reference for conus1')
             shutil.rmtree(test_dir)
+        else:
+            pass
 
 
 if __name__ == '__main__':

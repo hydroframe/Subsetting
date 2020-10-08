@@ -22,6 +22,8 @@ regression_truth_tif = test_inputs / 'test_truth.tif'
 
 test_domain_manifest = test_inputs / 'test_domain_manifest.yaml'
 
+test_all_zeros_and_ones_mask = test_inputs / 'icom_mask_final.tif'
+
 test_domain_inputs = test_inputs / 'testdom_inputs'
 
 huc10190004 = {'conus1_mask': huc10190004_inputs/'conus1'/'WBDHU8_conus1_mask.tif',

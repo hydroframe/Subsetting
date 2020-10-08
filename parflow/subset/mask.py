@@ -165,7 +165,21 @@ class SubsetMask:
             A bounding box describing the mask location and size in the domain
         """
         return BBox(self.inner_mask_edges[2] + 1, self.inner_mask_edges[0] + 1,
-                    self.inner_mask_shape[1], self.inner_mask_shape[0])
+                    self.inner_mask_shape[1], self.inner_mask_shape[0], pad=self.get_padding())
+
+    def get_padding(self):
+        """get the padding information for the mask this is the difference between the bounding box value and inner data
+
+        Returns
+        -------
+        tuple of ints
+            the padding (top, right, bot, left) around the data value
+        """
+        padding = [0, 0, 0, 0]
+        indexes = [1, 3, 0, 2]
+        for i in range(4):
+            padding[i] = abs(self.bbox_edges[indexes[i]] - self.inner_mask_edges[indexes[i]])
+        return tuple(padding)
 
     def get_human_bbox(self):
         """

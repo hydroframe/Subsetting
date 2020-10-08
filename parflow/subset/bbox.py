@@ -87,6 +87,16 @@ class BBox:
         y_end = y_0 + self.pad_top + self.pad_bottom + self.ny
         return y_0, y_end, x_0, x_end
 
+    def get_padding(self):
+        """ get the padding values for the bbox
+
+        Returns
+        -------
+        tuple of ints
+            padding values in (top, right, bot, left) format
+        """
+        return tuple([self.pad_top, self.pad_right, self.pad_bottom, self.pad_left])
+
     def get_system_bbox(self):
         """get 0's based bbox values
         """

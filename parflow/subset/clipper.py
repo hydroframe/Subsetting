@@ -156,11 +156,10 @@ class BoxClipper(Clipper):
             # create a full dimensioned array of no_data_values
             ret_array = np.full(shape=(self.nz,
                                 self.ny + self.padding[0] + self.padding[2],
-                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=np.float64)
+                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=data_array.dtype)
             # assign values from the data_array into the return array, mind the padding
             ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
-            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,
-                                                                    self.x_0:self.x_end]
+            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
         else:
             ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
         return ret_array, None, None, None
@@ -265,7 +264,7 @@ class ClmClipper:
         """
         self.bbox = bbox.get_human_bbox()
         self.clipper = BoxClipper(ref_array=None, x=self.bbox[0], y=self.bbox[1], nx=self.bbox[2], ny=self.bbox[3],
-                                  nz=1)
+                                  nz=1, padding=bbox.get_padding())
 
     def clip_latlon(self, lat_lon_file):
         """Clip the domain lat/lon data to the bounding box of the mask

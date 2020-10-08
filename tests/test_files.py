@@ -24,9 +24,12 @@ test_domain_manifest = test_inputs / 'test_domain_manifest.yaml'
 
 test_all_zeros_and_ones_mask = test_inputs / 'icom_mask_final.tif'
 
+test_padded_icom_mask = test_inputs / 'icom_padded_mask.tif'
+
 test_domain_inputs = test_inputs / 'testdom_inputs'
 
 huc10190004 = {'conus1_mask': huc10190004_inputs/'conus1'/'WBDHU8_conus1_mask.tif',
+               'conus1_padded_mask': huc10190004_inputs/'conus1'/'WBDHU8_conus1_mask_padded.tif',
                'conus1_sol': huc10190004_inputs/'conus1'/'WBDHU8_conus1.pfsol',
                'conus1_vtk': huc10190004_inputs/'conus1'/'WBDHU8_conus1_ref.vtk',
                'conus2_mask': huc10190004_inputs/'conus2'/'WBDHU8_conus2_mask.tif',

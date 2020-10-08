@@ -48,8 +48,7 @@ class ClmUtilsClipperRegressionTests(unittest.TestCase):
                                       y=latlon_data.shape[1], z=latlon_data.shape[0])
             self.assertIsNone(np.testing.assert_array_equal(file_io_tools.read_file('WBDHU8_latlon_test.sa'),
                                                             file_io_tools.read_file(
-                                                                test_files.huc10190004.get('conus1_latlon').as_posix()
-                                                            )),
+                                                                test_files.huc10190004.get('conus1_latlon'))),
                               'clipping conus1 lat/lon values regression test works')
             os.remove('WBDHU8_latlon_test.sa')
         else:
@@ -70,6 +69,27 @@ class ClmUtilsClipperRegressionTests(unittest.TestCase):
                                       y=latlon_data.shape[1], z=latlon_data.shape[0])
             self.assertSequenceEqual((1, 48, 103), latlon_data.shape, 'check that clm clip when mask has padding works')
             os.remove('WBDHU8_latlon_test.sa')
+        else:
+            print('WARNING! Unable to run test test_clm_clip_latlon because source file not found. '
+                  'copy conus1_Grid_Centers_Short_Deg.format.sa into test_inputs/CONUS1_Inputs to enable test!')
+            pass
+
+    def test_clm_clip_land_cover_padded(self):
+        if os.environ.get('TRAVIS'):
+            pass
+        elif os.path.isfile(test_files.conus1_latlon):
+            my_mask = SubsetMask(test_files.huc10190004.get('conus1_padded_mask'))
+            bbox = my_mask.get_bbox()
+            self.assertSequenceEqual((9, 9, 9, 9), bbox.get_padding())
+            clm_clipper = ClmClipper(bbox)
+
+            latlon_data, _ = clm_clipper.clip_latlon(test_files.conus1_latlon)
+            land_cover_data, vegm_data = clm_clipper.clip_land_cover(lat_lon_array=latlon_data,
+                                                                     land_cover_file=test_files.conus1_landcover)
+            clm_clipper.write_land_cover(vegm_data, 'WBDHU8_vegm_test.dat')
+
+
+            os.remove('WBDHU8_vegm_test.dat')
         else:
             print('WARNING! Unable to run test test_clm_clip_latlon because source file not found. '
                   'copy conus1_Grid_Centers_Short_Deg.format.sa into test_inputs/CONUS1_Inputs to enable test!')

@@ -263,8 +263,9 @@ class ClmClipper:
             BBox object describing the mask bounds
         """
         self.bbox = bbox.get_human_bbox()
-        self.clipper = BoxClipper(ref_array=None, x=self.bbox[0], y=self.bbox[1], nx=self.bbox[2], ny=self.bbox[3],
-                                  nz=1, padding=bbox.get_padding())
+        padded_extents = bbox.get_padded_extents()
+        self.clipper = BoxClipper(ref_array=None, x=padded_extents[2]+1, y=padded_extents[0]+1, nx=padded_extents[3]-padded_extents[2], ny=padded_extents[1]-padded_extents[0],
+                                  nz=1)
 
     def clip_latlon(self, lat_lon_file):
         """Clip the domain lat/lon data to the bounding box of the mask

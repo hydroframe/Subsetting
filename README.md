@@ -124,7 +124,7 @@ python -m parflow.subset.tools.subset_conus --input_path -i INPUT_PATH --shapefi
 
 Create a subset of the CONUS1 domain with CLM inputs based on the shapefile at ~/downloads/shapfiles/WBDHU8.shp and write the .tcl file to run the model
 ```
-python -m parflow.subset.tools.subset_conus -i ~/downloads/shapefiles -s WBDHU8 -f ~/downloads/conus1 -c 1 -w 1 -n watershedA_conus1_clip
+python -m parflow.subset.tools.subset_conus -i ~/downloads/shapefiles -s WBDHU8 -f ~/downloads/conus1 -v 1 -w -n watershedA_conus1_clip
 ```
 
 #### Rasterize a shapefile for use as a mask

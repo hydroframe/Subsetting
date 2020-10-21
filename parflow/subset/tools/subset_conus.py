@@ -8,13 +8,12 @@ import logging
 import os
 import sys
 from pathlib import Path
+from datetime import datetime
 from parflow.subset.utils.arguments import is_valid_path, is_positive_integer, is_valid_file
 from parflow.subset.clipper import MaskClipper
 from parflow.subset.domain import Conus
 from parflow.subset.rasterizer import ShapefileRasterizer
-from datetime import datetime
 import parflow.subset.tools.bulk_clipper as bulk_clipper
-import parflow.subset.builders.solidfile as solidfile_generator
 from parflow.subset.builders.tcl import build_tcl
 from parflow.subset.clipper import ClmClipper
 from parflow.subset.data import parkinglot_template, conus_manifest

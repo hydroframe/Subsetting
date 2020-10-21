@@ -12,36 +12,40 @@ line scripts to:
 ## Prerequisites
 
 ### Packages
-* [parflowio](https://github.com/hydroframe/parflowio)
+* [parflowio](https://pypi.org/parflowio/)
 * [gdal](https://gdal.org/download.html)
 * [numpy](https://numpy.org/install/)
 * [pyyaml](https://pypi.org/project/PyYAML/)
 * [pandas](https://pandas.pydata.org/)
+* [pftools](https://pypi.org/project/pftools)
 
 
 #### Building Solid Files
 
-To build solid files (.pfsol), one of the following tools is required:
-`pfmask-to-pfsol` (included with ParFlow) 
-or
-[mask-to-pfsol](https://github.com/smithsg84/pf-mask-utilities.git)
-
-*If using `mask-to-pfsol`, be sure to follow [instructions](https://github.com/smithsg84/pf-mask-utilities.git) for building the utilities.*
+To build solid files (.pfsol), the following ParFlow tool is required:
+* `pfmask-to-pfsol` (included with [ParFlow](https://github.com/parflow/parflow)) 
 
 ##### Environment Variables
 
-For the solidfile generator to work, it must be able to locate either `mask-to-pfsol` or `pfmask-to-pfsol`
+For the SolidFileBuilder to work, it must be able to locate `pfmask-to-pfsol`
 
-The generator will search the following places, in this order.
-1. PFMASKUTILS environment variable
-2. *mask-to-pfsol* directory in PATH variable
-3. PARFLOW_DIR environment variable 
-4. ParFlow *bin* directory in PATH variable
+1. PARFLOW_DIR environment variable must be set 
+2. bin/pfmask-to-pfsol must be located directly under PARFLOW_DIR
 
 
 ## Setup
 
-Create a clean environment using anaconda or miniconda:
+It is strongly recommended that you create a clean environment using anaconda or miniconda as it will make 
+installing the required GDAL package easier.
+
+
+The easiest way to install the subsetter:
+
+```
+$ pip install parflow-subsetter
+```
+
+Otherwise, you can use the contents of this repository to install the package. 
 
 ```
 git clone https://github.com/hydroframe/subsetting
@@ -92,7 +96,8 @@ If your local filenames differ from this list, update the local filenames in:
 
 `parflow/subset/data/conus_manifest.yaml`
  
-
+Or copy the format of the file list above into a new `.yaml` file and pass it as an argument to `subset_conus` 
+script using the `--manifest` parameter
 
 ## Testing
 

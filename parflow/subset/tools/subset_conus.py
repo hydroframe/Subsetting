@@ -8,16 +8,16 @@ import logging
 import os
 import sys
 from pathlib import Path
+from datetime import datetime
 from parflow.subset.utils.arguments import is_valid_path, is_positive_integer, is_valid_file
 from parflow.subset.clipper import MaskClipper
 from parflow.subset.domain import Conus
 from parflow.subset.rasterizer import ShapefileRasterizer
-from datetime import datetime
 import parflow.subset.tools.bulk_clipper as bulk_clipper
-import parflow.subset.builders.solidfile as solidfile_generator
 from parflow.subset.builders.tcl import build_tcl
 from parflow.subset.clipper import ClmClipper
 from parflow.subset.data import parkinglot_template, conus_manifest
+from parflow.tools.builders import SolidFileBuilder
 
 
 def parse_args(args):
@@ -146,7 +146,7 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files='.', out_di
 
     rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
                                      no_data=-999, output_path=out_dir, )
-    rasterizer.rasterize_shapefile_to_disk(out_name=f'{out_name}_raster_from_shapefile.tif',
+    mask_array = rasterizer.rasterize_shapefile_to_disk(out_name=f'{out_name}_raster_from_shapefile.tif',
                                            padding=padding,
                                            attribute_name=attribute_name,
                                            attribute_ids=attribute_ids)
@@ -155,10 +155,17 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files='.', out_di
 
     # Step 2, Generate solid file
     clip = MaskClipper(subset_mask, no_data_threshold=-1)
-    batches = solidfile_generator.make_solid_file(clipped_mask=clip.clipped_mask,
-                                                  out_name=os.path.join(out_dir, out_name))
-    if len(batches) == 0:
-        raise Exception("Did not make solid file correctly")
+
+    # TODO: Add patches
+    patches = []
+    [patch.clip_patch(clip) for patch in patches]
+
+    #batches = solidfile_generator.make_solid_file(clipped_mask=clip.clipped_mask,
+    #                                             out_name=os.path.join(out_dir, out_name))
+    sfb = SolidFileBuilder(top=3, bottom=6, side=0).mask(clip.subset(mask_array, crop_inner=0)[0][0, :, :])
+    _ = sfb.write(os.path.join(out_dir, f'{out_name}.pfsol'), cellsize=1000, vtk=True)
+    # if len(batches) == 0:
+    #     raise Exception("Did not make solid file correctly")
 
     # Step 3. Clip all the domain data inputs
     bulk_clipper.clip_inputs(clip,

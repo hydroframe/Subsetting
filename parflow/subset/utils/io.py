@@ -46,8 +46,9 @@ def read_file(infile):
         pfdata = PFData(file_string_path)
         pfdata.loadHeader()
         pfdata.loadData()
-        res_arr = pfdata.getDataAsArray()
+        res_arr = pfdata.moveDataArray()
         pfdata.close()
+        del pfdata
     else:
         raise ValueError('can not read file type ' + ext)
 
@@ -108,6 +109,7 @@ def write_pfb(data, outfile, x0=0, y0=0, z0=0, dx=1000, dz=1000):
     pf_data.setY(y0)
     pf_data.setZ(z0)
     pf_data.writeFile(outfile)
+    del pf_data
 
 
 def write_bbox(bbox, outfile):

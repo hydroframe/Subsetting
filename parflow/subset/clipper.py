@@ -30,18 +30,6 @@ class Clipper(ABC):
 
 class BoxClipper(Clipper):
     """Clip a rectangular data region specified by a bounding box
- self.padding = padding
-        self.no_data = no_data
-        self.ref_array = ref_array
-        if nx is None:
-            nx = self.ref_array.shape[2]
-        if ny is None:
-            ny = self.ref_array.shape[1]
-        if nz is None:
-            nz = self.ref_array.shape[0]
-        if nx < 1 or ny < 1 or nz < 1 or x < 1 or y < 1 or z < 1:
-            raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
-        self.update_bbox(x, y, z, nx, ny, nz, padding)
     """
     def __repr__(self):
         return f"{self.__class__.__name__}(x_0:{self.x_0}, x_end:{self.x_end}, y_0:{self.y_0}, y_end:{self.y_end}, " \

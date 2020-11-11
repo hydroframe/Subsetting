@@ -1,0 +1,1884 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.tools.database.domains API documentation</title>
+<meta name="description" content="This module aims to gather all kind of value validation you would like to
+enable inside Parflow run." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.tools.database.domains</code></h1>
+</header>
+<section id="section-intro">
+<p>This module aims to gather all kind of value validation you would like to
+enable inside Parflow run.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">r&#34;&#34;&#34;
+This module aims to gather all kind of value validation you would like to
+enable inside Parflow run.
+&#34;&#34;&#34;
+
+import sys
+import traceback
+import os
+
+from ..terminal import Colors as term
+from ..terminal import Symbols as term_symbol
+
+# -----------------------------------------------------------------------------
+# Validation helper functions
+# -----------------------------------------------------------------------------
+
+def filter_errors_by_type(msg_type, errors):
+    &#34;&#34;&#34;Extract decorated message for a given type&#34;&#34;&#34;
+    filter_list = []
+    for error in errors:
+        if error[&#39;type&#39;] == msg_type:
+            filter_list.append(error[&#39;message&#39;])
+
+    return filter_list
+
+# -----------------------------------------------------------------------------
+
+def error(message):
+    &#34;&#34;&#34;Message decorator that add ERROR as type&#34;&#34;&#34;
+    return {
+        &#39;type&#39;: &#39;ERROR&#39;,
+        &#39;message&#39;: message
+    }
+
+# -----------------------------------------------------------------------------
+
+def warning(message):
+    &#34;&#34;&#34;Message decorator that add WARNING as type&#34;&#34;&#34;
+    return {
+        &#39;type&#39;: &#39;WARNING&#39;,
+        &#39;message&#39;: message
+    }
+
+# -----------------------------------------------------------------------------
+
+def get_comparable_version(version):
+    &#34;&#34;&#34;Return an integer that can be used for comparison
+
+    Args:
+        version (str): A version like &#39;3.6.0&#39; or &#39;v3.6.0&#39;
+
+    Returns:
+        int: An integer that you can easily conpare (i.e: 3006000)
+
+    &#34;&#34;&#34;
+    c_version = 0
+    validVersionNumber = version[1:] if version[0] == &#39;v&#39; else version
+    version_tokens = validVersionNumber.split(&#39;.&#39;)
+    for version_token in version_tokens:
+        c_version *= 1000
+        c_version += int(version_token)
+    return c_version
+
+# -----------------------------------------------------------------------------
+
+def get_installed_parflow_module(module):
+    &#34;&#34;&#34;Helper function to test if a given module is available inside ParFlow
+    This method rely on PARFLOW_DIR environment variable.
+
+    Args:
+        module (str): Name of the module to test. (CLM, SILO, NetCDF, etc.)
+
+    Returns:
+        bool: Return True if the provided module was found.
+
+    &#34;&#34;&#34;
+    module_file = f&#39;{os.getenv(&#34;PARFLOW_DIR&#34;)}/config/Makefile.config&#39;
+    has_module_installed = False
+    if os.path.exists(os.path.abspath(module_file)):
+        with open(module_file, &#34;rt&#34;) as f:
+            for line in f.readlines():
+                if f&#39;PARFLOW_HAVE_{module}&#39; in line and &#39;yes&#39; in line:
+                    has_module_installed = True
+    else:
+        print(
+            f&#39;Cannot find Makefile.config in {os.path.abspath(module_file)}.&#39;)
+    return has_module_installed
+
+# -----------------------------------------------------------------------------
+# Validation classes
+# -----------------------------------------------------------------------------
+
+class ValidationException(Exception):
+    &#34;&#34;&#34;
+    Basic parflow exception used for domains to report error
+    &#34;&#34;&#34;
+    pass
+
+# -----------------------------------------------------------------------------
+
+
+class MandatoryValue:
+    &#34;&#34;&#34;
+    MandatoryValue makes sure that the key is set
+
+    If the value is not defined in the script and has a default value,
+    the default value will be written out in the validation message
+    and database file.
+    &#34;&#34;&#34;
+    def validate(self, value, **kwargs):
+        errors = []
+
+        if value is None:
+            errors.append(error(&#39;Needs to be set&#39;))
+            return errors
+
+        return errors
+
+
+class IntValue:
+    &#34;&#34;&#34;
+    IntRange domain constrains value to be an integer
+    while also ensure optionally if its value needs to be
+    above or below another one.
+
+    The expected set of keyword arguments are:
+      - min_value: If available the value must be strictly above it
+      - max_value: If available the value must be strictly below it
+    &#34;&#34;&#34;
+    def validate(self, value, min_value=None, max_value=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if not isinstance(value, int):
+            errors.append(error(&#39;Needs to be an integer&#39;))
+
+        if min_value is not None and value &lt; min_value:
+            errors.append(error(f&#39;Is smaller than min: {min_value}&#39;))
+        if max_value is not None and value &gt; max_value:
+            errors.append(error(f&#39;Is greater than max: {max_value}&#39;))
+
+        return errors
+
+
+class DoubleValue:
+    &#34;&#34;&#34;
+    DoubleValue domain constrains value to be a double (or int)
+    while also ensure optionally if its value needs to be
+    above or below another one.
+
+    The expected set of keyword arguments are:
+      - min_value: If available the value must be strictly above it
+      - max_value: If available the value must be strictly below it
+    &#34;&#34;&#34;
+    def validate(self, value, min_value=None, max_value=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if not (isinstance(value, float) or isinstance(value, int)):
+            errors.append(error(&#39;Needs to be a double&#39;))
+
+        if min_value is not None and value &lt; min_value:
+            errors.append(error(f&#39;Is smaller than min: {min_value}&#39;))
+        if max_value is not None and value &gt; max_value:
+            errors.append(error(f&#39;Is greater than max: {max_value}&#39;))
+
+        return errors
+
+# -----------------------------------------------------------------------------
+
+
+class EnumDomain:
+    &#34;&#34;&#34;
+    EnumDomain domain constrains value to be a particular string
+    that is part of a list defined in the enum_list.
+
+    The expected keyword argument is a list of the accepted values.
+    &#34;&#34;&#34;
+    def validate(self, value, enum_list=[], pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if isinstance(value, list) and len(value) == 1:
+            value = value[0]
+
+        lookupList = []
+        if isinstance(enum_list, list):
+          lookupList = enum_list
+
+        if isinstance(enum_list, dict):
+          # We need to find the matching version
+          sortedVersions = [(get_comparable_version(v), v) for v in enum_list.keys()]
+          sortedVersions.sort(key=lambda t: t[0])
+          versionToUse = sortedVersions[0]
+          currentVersion = get_comparable_version(pf_version)
+          for version in sortedVersions:
+            if currentVersion &gt;= version[0]:
+              versionToUse = version
+
+          lookupList = enum_list[versionToUse[1]]
+
+        if value not in lookupList:
+            str_list = &#39;, &#39;.join(lookupList)
+            errors.append(error(f&#39;{value} must be one of [{str_list}]&#39;))
+
+        return errors
+
+# -----------------------------------------------------------------------------
+
+
+class AnyString:
+    &#34;&#34;&#34;
+    AnyString domain constrains the value to be a string or list of strings.
+    &#34;&#34;&#34;
+    def validate(self, value, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if isinstance(value, list) or isinstance(value, str):
+            return errors
+
+        errors.append(error(f&#39;{value} ({type(value)} must be a string&#39;))
+        return errors
+
+# -----------------------------------------------------------------------------
+
+
+class BoolDomain:
+    &#34;&#34;&#34;
+    BoolDomain domain constrains the value to be a boolean.
+    &#34;&#34;&#34;
+    def validate(self, value, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if isinstance(value, bool):
+            return errors
+
+        errors.append(error(f&#39;{value} ({type(value)} must be True/False)&#39;))
+        return errors
+
+# -----------------------------------------------------------------------------
+
+
+class ValidFile:
+    &#34;&#34;&#34;
+    ValidFile domain checks the working directory to find the specified file.
+    &#34;&#34;&#34;
+    def validate(self, value, working_directory=None, path_prefix_source=None, container=None, **kwargs):
+        errors = []
+        path_prefix = &#39;&#39;
+
+        if value is None:
+            return errors
+
+        if working_directory is None:
+            errors.append(error(&#39;Working directory is not defined&#39;))
+            return errors
+
+        if path_prefix_source:
+            path_prefix = container.get_selection_from_location(path_prefix_source)[0]
+
+        if os.path.exists(os.path.join(working_directory, path_prefix, value)):
+            return errors
+
+        errors.append(error(
+            f&#39;Could not locate file {os.path.abspath(os.path.join(working_directory, path_prefix, value))}&#39;))
+        return errors
+
+
+# -----------------------------------------------------------------------------
+
+class AddedInVersion:
+    &#34;&#34;&#34;
+    AddedInVersion domain deals with keys that were added to the ParFlow code in
+    recent versions. It will check your version of ParFlow with the added version
+    and print an error if your ParFlow version does not have the given key.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        version = get_comparable_version(arg)
+        current_version = get_comparable_version(pf_version)
+
+        if version &gt; current_version:
+            errors.append(error(f&#39;Not valid in ParFlow versions before v{arg}&#39;))
+
+        return errors
+
+
+
+# -----------------------------------------------------------------------------
+
+
+class DeprecatedInVersion:
+    &#34;&#34;&#34;
+    DeprecatedInVersion domain deals with keys that have been or will be deprecated. It
+    will check your version of ParFlow with the deprecated version and print
+    an error or warning depending on whether the key has been deprecated.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        version = get_comparable_version(arg)
+        current_version = get_comparable_version(pf_version)
+
+        if version &lt;= current_version:
+            errors.append(error(f&#39;Deprecated in v{arg}&#39;))
+
+        if version &gt; current_version:
+            errors.append(warning(f&#39;Will be deprecated in v{arg}&#39;))
+
+        return errors
+
+# -----------------------------------------------------------------------------
+
+
+class RemovedInVersion:
+    &#34;&#34;&#34;
+    RemovedInVersion domain deals with keys that have been or will be removed from the
+    ParFlow code. It will check your version of ParFlow with the removed version
+    and print an error or warning depending on whether the key has been or will
+    be removed.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        version = get_comparable_version(arg)
+        current_version = get_comparable_version(pf_version)
+
+        if version &lt;= current_version:
+            errors.append(error(f&#39;Removed in v{arg}&#39;))
+
+        if version &gt; current_version:
+            errors.append(warning(f&#39;Will be removed in v{arg}&#39;))
+
+        return errors
+
+# -----------------------------------------------------------------------------
+
+
+class RequiresModule:
+    &#34;&#34;&#34;
+    RequiresModule domain deals with keys that require specific modules associated
+    with ParFlow (e.g. CLM, SILO, NetCDF, etc.). It will check to see whether the
+    required modules are installed with ParFlow and will print an error message
+    if the required module is missing.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        arg_list = arg.split() if isinstance(arg, str) else arg
+
+        for module in arg_list:
+            if not get_installed_parflow_module(module):
+                errors.append(error(f&#39;Need to install {module} module&#39;))
+
+        return errors
+
+# -----------------------------------------------------------------------------
+# Helper map with an instance of each domain type
+# -----------------------------------------------------------------------------
+
+AVAILABLE_DOMAINS = {}
+
+def get_domain(class_name):
+    &#34;&#34;&#34;Return a domain instance based on its class_name or None if
+    not found.
+
+    A message will be printed to notify the user that a domain was
+    not found.
+    &#34;&#34;&#34;
+    if class_name in AVAILABLE_DOMAINS:
+        return AVAILABLE_DOMAINS[class_name]
+
+    if hasattr(sys.modules[__name__], class_name):
+        klass = getattr(sys.modules[__name__], class_name)
+        instance = klass()
+        AVAILABLE_DOMAINS[class_name] = instance
+        return instance
+
+    print(f&#39;{term.FAIL}{term_symbol.ko}{term.ENDC} Could not find domain: &#34;{class_name}&#34;&#39;)
+
+    return None
+
+# -----------------------------------------------------------------------------
+# API meant to be used outside of this module
+# -----------------------------------------------------------------------------
+
+
+def validate_value_with_errors(value, domain_definitions=None, domain_add_on_kwargs=None):
+    &#34;&#34;&#34;This method validates the value set to a key using the domains
+    provided in the key definition files.
+
+    Args:
+        value (?): Value to check
+        domain_definitions (dict): Set of domains to test against.
+            The structure will look like the one below:
+            domain_definitions = {
+                IntRangeDomain: {
+                    min_value: 1
+                  },
+                NoNoneValueDomain:
+            }
+        domain_add_on_kwargs (dict): This dictionary will contains
+            global settings such as parflow version, working directory.
+            This allow domains to validate things to a broader scale.
+
+    Returns:
+        List of errors/warnings: A list of tagged message
+
+    &#34;&#34;&#34;
+    errors = []
+    if not domain_definitions:
+        return errors
+
+    for domain_classname in domain_definitions:
+        domain = get_domain(domain_classname)
+        if domain:
+            domain_kwargs = {}
+            if domain_add_on_kwargs:
+                domain_kwargs.update(domain_add_on_kwargs)
+
+            if domain_definitions[domain_classname]:
+                if isinstance(domain_definitions[domain_classname], str):
+                    domain_kwargs[&#39;arg&#39;] = domain_definitions[domain_classname]
+                elif isinstance(domain_definitions[domain_classname], list):
+                    domain_kwargs[&#39;arg&#39;] = domain_definitions[domain_classname]
+                else:
+                    domain_kwargs.update(domain_definitions[domain_classname])
+
+            errors.extend(domain.validate(value, **domain_kwargs))
+
+    return errors
+
+# -----------------------------------------------------------------------------
+
+
+def validate_value_with_exception(value, domain_definition=None, domain_add_on_kwargs=None, exit_on_error=False):
+    &#34;&#34;&#34;This method validates the value set to a key using the domains
+    provided in the key definition files. But it will print information
+    on where the error was detected (line number).
+
+    Args:
+        value (?): Value to check
+        domain_definitions (dict): Set of domains to test against.
+            The structure will look like the one below:
+            domain_definitions = {
+                IntRangeDomain: {
+                    min_value: 1
+                  },
+                NoNoneValueDomain:
+            }
+        domain_add_on_kwargs (dict): This dictionary will contains
+            global settings such as parflow version, working directory.
+            This allow domains to validate things to a broader scale.
+        exit_on_error (bool): If True the program will stop at the first
+            error.
+
+    &#34;&#34;&#34;
+    all_messages = validate_value_with_errors(
+        value, domain_definition, domain_add_on_kwargs)
+    errors = filter_errors_by_type(&#39;ERROR&#39;, all_messages)
+
+    if len(errors):
+        print()
+        try:
+            raise ValidationException()
+        except ValidationException:
+            exp, val, tb = sys.exc_info()
+            listing = traceback.format_stack(tb.tb_frame)
+            for item in listing:
+                if &#39;parflow/database&#39; in item:
+                    continue
+                print(item)
+
+        print(f&#39;    The value {value} is invalid&#39;)
+        for error in errors:
+            print(f&#39;    - {error}&#39;)
+        print()
+
+        if exit_on_error:
+            sys.exit(1)
+
+# -----------------------------------------------------------------------------
+
+def validate_value_to_string(container, value, has_default=False, domain_definition=None, domain_add_on_kwargs=None, history=None, indent=1):
+    &#34;&#34;&#34;This method validates the value set to a key using the domains
+    provided in the key definition files. But it will return a string
+    that could be used for printing information.
+
+    Args:
+        container (PFDBObj): Object that own the field
+        name (str): Name of the key that hold the value
+        value (?): Value to check
+        domain_definitions (dict): Set of domains to test against.
+            The structure will look like the one below:
+            domain_definitions = {
+                IntRangeDomain: {
+                    min_value: 1
+                  },
+                NoNoneValueDomain:
+            }
+        domain_add_on_kwargs (dict): This dictionary will contains
+            global settings such as parflow version, working directory.
+            This allow domains to validate things to a broader scale.
+        history (array): List of set values
+        indent (int): Depth level of the given value
+
+    Returns:
+        number_of_errors (int): Number of detected issue
+        message (str): String to print
+    &#34;&#34;&#34;
+    indent_str = &#39;  &#39; * (indent - 1)
+    domain_add_on_kwargs[&#39;container&#39;] = container
+    all_messages = validate_value_with_errors(
+        value, domain_definition, domain_add_on_kwargs)
+    errors = filter_errors_by_type(&#39;ERROR&#39;, all_messages)
+    warnings = filter_errors_by_type(&#39;WARNING&#39;, all_messages)
+    validation_string = []
+
+    if len(errors):
+        validation_string.append(
+            f&#39;{value} {term.FAIL}{term_symbol.ko}{term.ENDC}&#39;)
+        for error in errors:
+            validation_string.append(
+                f&#39;{indent_str}    {term.WARNING}{term_symbol.errorItem}{term.ENDC} {error}&#39;)
+    elif value is not None:
+        # checking for duplicates and changing print statement
+        if history is not None:
+            dup_count = len(history)-1 if has_default is True else len(history)
+            if dup_count &gt; 1:
+                dup_str = &#39;(&#39;
+                for val in range(dup_count-1):
+                    dup_str += str(history[val]) + &#39; =&gt; &#39;
+                dup_str += str(history[dup_count-1]) + &#39;)&#39;
+                validation_string.append(
+                    f&#39;{term.MAGENTA}{term_symbol.warning}{term.ENDC} {value}  {term.MAGENTA}{dup_str}{term.ENDC}&#39;)
+            else:
+                validation_string.append(
+                    f&#39;{value} {term.OKGREEN}{term_symbol.ok}{term.ENDC}&#39;)
+        else:
+            validation_string.append(
+                f&#39;{value} {term.OKGREEN}{term_symbol.ok}{term.ENDC}&#39;)
+
+    if len(warnings):
+        for warning in warnings:
+            validation_string.append(
+                f&#39;{indent_str}    {term.CYAN}{term_symbol.warning}{term.ENDC} {warning}&#39;)
+
+    return len(all_messages), &#39;\n&#39;.join(validation_string)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="parflow.tools.database.domains.error"><code class="name flex">
+<span>def <span class="ident">error</span></span>(<span>message)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Message decorator that add ERROR as type</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def error(message):
+    &#34;&#34;&#34;Message decorator that add ERROR as type&#34;&#34;&#34;
+    return {
+        &#39;type&#39;: &#39;ERROR&#39;,
+        &#39;message&#39;: message
+    }</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.filter_errors_by_type"><code class="name flex">
+<span>def <span class="ident">filter_errors_by_type</span></span>(<span>msg_type, errors)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extract decorated message for a given type</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def filter_errors_by_type(msg_type, errors):
+    &#34;&#34;&#34;Extract decorated message for a given type&#34;&#34;&#34;
+    filter_list = []
+    for error in errors:
+        if error[&#39;type&#39;] == msg_type:
+            filter_list.append(error[&#39;message&#39;])
+
+    return filter_list</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.get_comparable_version"><code class="name flex">
+<span>def <span class="ident">get_comparable_version</span></span>(<span>version)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return an integer that can be used for comparison</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>version</code></strong> :&ensp;<code>str</code></dt>
+<dd>A version like '3.6.0' or 'v3.6.0'</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>An integer that you can easily conpare (i.e: 3006000)</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_comparable_version(version):
+    &#34;&#34;&#34;Return an integer that can be used for comparison
+
+    Args:
+        version (str): A version like &#39;3.6.0&#39; or &#39;v3.6.0&#39;
+
+    Returns:
+        int: An integer that you can easily conpare (i.e: 3006000)
+
+    &#34;&#34;&#34;
+    c_version = 0
+    validVersionNumber = version[1:] if version[0] == &#39;v&#39; else version
+    version_tokens = validVersionNumber.split(&#39;.&#39;)
+    for version_token in version_tokens:
+        c_version *= 1000
+        c_version += int(version_token)
+    return c_version</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.get_domain"><code class="name flex">
+<span>def <span class="ident">get_domain</span></span>(<span>class_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a domain instance based on its class_name or None if
+not found.</p>
+<p>A message will be printed to notify the user that a domain was
+not found.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_domain(class_name):
+    &#34;&#34;&#34;Return a domain instance based on its class_name or None if
+    not found.
+
+    A message will be printed to notify the user that a domain was
+    not found.
+    &#34;&#34;&#34;
+    if class_name in AVAILABLE_DOMAINS:
+        return AVAILABLE_DOMAINS[class_name]
+
+    if hasattr(sys.modules[__name__], class_name):
+        klass = getattr(sys.modules[__name__], class_name)
+        instance = klass()
+        AVAILABLE_DOMAINS[class_name] = instance
+        return instance
+
+    print(f&#39;{term.FAIL}{term_symbol.ko}{term.ENDC} Could not find domain: &#34;{class_name}&#34;&#39;)
+
+    return None</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.get_installed_parflow_module"><code class="name flex">
+<span>def <span class="ident">get_installed_parflow_module</span></span>(<span>module)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper function to test if a given module is available inside ParFlow
+This method rely on PARFLOW_DIR environment variable.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>module</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the module to test. (CLM, SILO, NetCDF, etc.)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>Return True if the provided module was found.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_installed_parflow_module(module):
+    &#34;&#34;&#34;Helper function to test if a given module is available inside ParFlow
+    This method rely on PARFLOW_DIR environment variable.
+
+    Args:
+        module (str): Name of the module to test. (CLM, SILO, NetCDF, etc.)
+
+    Returns:
+        bool: Return True if the provided module was found.
+
+    &#34;&#34;&#34;
+    module_file = f&#39;{os.getenv(&#34;PARFLOW_DIR&#34;)}/config/Makefile.config&#39;
+    has_module_installed = False
+    if os.path.exists(os.path.abspath(module_file)):
+        with open(module_file, &#34;rt&#34;) as f:
+            for line in f.readlines():
+                if f&#39;PARFLOW_HAVE_{module}&#39; in line and &#39;yes&#39; in line:
+                    has_module_installed = True
+    else:
+        print(
+            f&#39;Cannot find Makefile.config in {os.path.abspath(module_file)}.&#39;)
+    return has_module_installed</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.validate_value_to_string"><code class="name flex">
+<span>def <span class="ident">validate_value_to_string</span></span>(<span>container, value, has_default=False, domain_definition=None, domain_add_on_kwargs=None, history=None, indent=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This method validates the value set to a key using the domains
+provided in the key definition files. But it will return a string
+that could be used for printing information.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>container</code></strong> :&ensp;<code>PFDBObj</code></dt>
+<dd>Object that own the field</dd>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the key that hold the value</dd>
+<dt>value (?): Value to check</dt>
+<dt><strong><code>domain_definitions</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Set of domains to test against.
+The structure will look like the one below:
+domain_definitions = {
+IntRangeDomain: {
+min_value: 1
+},
+NoNoneValueDomain:
+}</dd>
+<dt><strong><code>domain_add_on_kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>This dictionary will contains
+global settings such as parflow version, working directory.
+This allow domains to validate things to a broader scale.</dd>
+<dt><strong><code>history</code></strong> :&ensp;<code>array</code></dt>
+<dd>List of set values</dd>
+<dt><strong><code>indent</code></strong> :&ensp;<code>int</code></dt>
+<dd>Depth level of the given value</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>number_of_errors (int): Number of detected issue
+message (str): String to print</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_value_to_string(container, value, has_default=False, domain_definition=None, domain_add_on_kwargs=None, history=None, indent=1):
+    &#34;&#34;&#34;This method validates the value set to a key using the domains
+    provided in the key definition files. But it will return a string
+    that could be used for printing information.
+
+    Args:
+        container (PFDBObj): Object that own the field
+        name (str): Name of the key that hold the value
+        value (?): Value to check
+        domain_definitions (dict): Set of domains to test against.
+            The structure will look like the one below:
+            domain_definitions = {
+                IntRangeDomain: {
+                    min_value: 1
+                  },
+                NoNoneValueDomain:
+            }
+        domain_add_on_kwargs (dict): This dictionary will contains
+            global settings such as parflow version, working directory.
+            This allow domains to validate things to a broader scale.
+        history (array): List of set values
+        indent (int): Depth level of the given value
+
+    Returns:
+        number_of_errors (int): Number of detected issue
+        message (str): String to print
+    &#34;&#34;&#34;
+    indent_str = &#39;  &#39; * (indent - 1)
+    domain_add_on_kwargs[&#39;container&#39;] = container
+    all_messages = validate_value_with_errors(
+        value, domain_definition, domain_add_on_kwargs)
+    errors = filter_errors_by_type(&#39;ERROR&#39;, all_messages)
+    warnings = filter_errors_by_type(&#39;WARNING&#39;, all_messages)
+    validation_string = []
+
+    if len(errors):
+        validation_string.append(
+            f&#39;{value} {term.FAIL}{term_symbol.ko}{term.ENDC}&#39;)
+        for error in errors:
+            validation_string.append(
+                f&#39;{indent_str}    {term.WARNING}{term_symbol.errorItem}{term.ENDC} {error}&#39;)
+    elif value is not None:
+        # checking for duplicates and changing print statement
+        if history is not None:
+            dup_count = len(history)-1 if has_default is True else len(history)
+            if dup_count &gt; 1:
+                dup_str = &#39;(&#39;
+                for val in range(dup_count-1):
+                    dup_str += str(history[val]) + &#39; =&gt; &#39;
+                dup_str += str(history[dup_count-1]) + &#39;)&#39;
+                validation_string.append(
+                    f&#39;{term.MAGENTA}{term_symbol.warning}{term.ENDC} {value}  {term.MAGENTA}{dup_str}{term.ENDC}&#39;)
+            else:
+                validation_string.append(
+                    f&#39;{value} {term.OKGREEN}{term_symbol.ok}{term.ENDC}&#39;)
+        else:
+            validation_string.append(
+                f&#39;{value} {term.OKGREEN}{term_symbol.ok}{term.ENDC}&#39;)
+
+    if len(warnings):
+        for warning in warnings:
+            validation_string.append(
+                f&#39;{indent_str}    {term.CYAN}{term_symbol.warning}{term.ENDC} {warning}&#39;)
+
+    return len(all_messages), &#39;\n&#39;.join(validation_string)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.validate_value_with_errors"><code class="name flex">
+<span>def <span class="ident">validate_value_with_errors</span></span>(<span>value, domain_definitions=None, domain_add_on_kwargs=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This method validates the value set to a key using the domains
+provided in the key definition files.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>value (?): Value to check</dt>
+<dt><strong><code>domain_definitions</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Set of domains to test against.
+The structure will look like the one below:
+domain_definitions = {
+IntRangeDomain: {
+min_value: 1
+},
+NoNoneValueDomain:
+}</dd>
+<dt><strong><code>domain_add_on_kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>This dictionary will contains
+global settings such as parflow version, working directory.
+This allow domains to validate things to a broader scale.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>List of errors/warnings: A list of tagged message</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_value_with_errors(value, domain_definitions=None, domain_add_on_kwargs=None):
+    &#34;&#34;&#34;This method validates the value set to a key using the domains
+    provided in the key definition files.
+
+    Args:
+        value (?): Value to check
+        domain_definitions (dict): Set of domains to test against.
+            The structure will look like the one below:
+            domain_definitions = {
+                IntRangeDomain: {
+                    min_value: 1
+                  },
+                NoNoneValueDomain:
+            }
+        domain_add_on_kwargs (dict): This dictionary will contains
+            global settings such as parflow version, working directory.
+            This allow domains to validate things to a broader scale.
+
+    Returns:
+        List of errors/warnings: A list of tagged message
+
+    &#34;&#34;&#34;
+    errors = []
+    if not domain_definitions:
+        return errors
+
+    for domain_classname in domain_definitions:
+        domain = get_domain(domain_classname)
+        if domain:
+            domain_kwargs = {}
+            if domain_add_on_kwargs:
+                domain_kwargs.update(domain_add_on_kwargs)
+
+            if domain_definitions[domain_classname]:
+                if isinstance(domain_definitions[domain_classname], str):
+                    domain_kwargs[&#39;arg&#39;] = domain_definitions[domain_classname]
+                elif isinstance(domain_definitions[domain_classname], list):
+                    domain_kwargs[&#39;arg&#39;] = domain_definitions[domain_classname]
+                else:
+                    domain_kwargs.update(domain_definitions[domain_classname])
+
+            errors.extend(domain.validate(value, **domain_kwargs))
+
+    return errors</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.validate_value_with_exception"><code class="name flex">
+<span>def <span class="ident">validate_value_with_exception</span></span>(<span>value, domain_definition=None, domain_add_on_kwargs=None, exit_on_error=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This method validates the value set to a key using the domains
+provided in the key definition files. But it will print information
+on where the error was detected (line number).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>value (?): Value to check</dt>
+<dt><strong><code>domain_definitions</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Set of domains to test against.
+The structure will look like the one below:
+domain_definitions = {
+IntRangeDomain: {
+min_value: 1
+},
+NoNoneValueDomain:
+}</dd>
+<dt><strong><code>domain_add_on_kwargs</code></strong> :&ensp;<code>dict</code></dt>
+<dd>This dictionary will contains
+global settings such as parflow version, working directory.
+This allow domains to validate things to a broader scale.</dd>
+<dt><strong><code>exit_on_error</code></strong> :&ensp;<code>bool</code></dt>
+<dd>If True the program will stop at the first
+error.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_value_with_exception(value, domain_definition=None, domain_add_on_kwargs=None, exit_on_error=False):
+    &#34;&#34;&#34;This method validates the value set to a key using the domains
+    provided in the key definition files. But it will print information
+    on where the error was detected (line number).
+
+    Args:
+        value (?): Value to check
+        domain_definitions (dict): Set of domains to test against.
+            The structure will look like the one below:
+            domain_definitions = {
+                IntRangeDomain: {
+                    min_value: 1
+                  },
+                NoNoneValueDomain:
+            }
+        domain_add_on_kwargs (dict): This dictionary will contains
+            global settings such as parflow version, working directory.
+            This allow domains to validate things to a broader scale.
+        exit_on_error (bool): If True the program will stop at the first
+            error.
+
+    &#34;&#34;&#34;
+    all_messages = validate_value_with_errors(
+        value, domain_definition, domain_add_on_kwargs)
+    errors = filter_errors_by_type(&#39;ERROR&#39;, all_messages)
+
+    if len(errors):
+        print()
+        try:
+            raise ValidationException()
+        except ValidationException:
+            exp, val, tb = sys.exc_info()
+            listing = traceback.format_stack(tb.tb_frame)
+            for item in listing:
+                if &#39;parflow/database&#39; in item:
+                    continue
+                print(item)
+
+        print(f&#39;    The value {value} is invalid&#39;)
+        for error in errors:
+            print(f&#39;    - {error}&#39;)
+        print()
+
+        if exit_on_error:
+            sys.exit(1)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.domains.warning"><code class="name flex">
+<span>def <span class="ident">warning</span></span>(<span>message)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Message decorator that add WARNING as type</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def warning(message):
+    &#34;&#34;&#34;Message decorator that add WARNING as type&#34;&#34;&#34;
+    return {
+        &#39;type&#39;: &#39;WARNING&#39;,
+        &#39;message&#39;: message
+    }</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="parflow.tools.database.domains.AddedInVersion"><code class="flex name class">
+<span>class <span class="ident">AddedInVersion</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>AddedInVersion domain deals with keys that were added to the ParFlow code in
+recent versions. It will check your version of ParFlow with the added version
+and print an error if your ParFlow version does not have the given key.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AddedInVersion:
+    &#34;&#34;&#34;
+    AddedInVersion domain deals with keys that were added to the ParFlow code in
+    recent versions. It will check your version of ParFlow with the added version
+    and print an error if your ParFlow version does not have the given key.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        version = get_comparable_version(arg)
+        current_version = get_comparable_version(pf_version)
+
+        if version &gt; current_version:
+            errors.append(error(f&#39;Not valid in ParFlow versions before v{arg}&#39;))
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.AddedInVersion.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, arg, pf_version=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, arg, pf_version=None, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    version = get_comparable_version(arg)
+    current_version = get_comparable_version(pf_version)
+
+    if version &gt; current_version:
+        errors.append(error(f&#39;Not valid in ParFlow versions before v{arg}&#39;))
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.AnyString"><code class="flex name class">
+<span>class <span class="ident">AnyString</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>AnyString domain constrains the value to be a string or list of strings.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AnyString:
+    &#34;&#34;&#34;
+    AnyString domain constrains the value to be a string or list of strings.
+    &#34;&#34;&#34;
+    def validate(self, value, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if isinstance(value, list) or isinstance(value, str):
+            return errors
+
+        errors.append(error(f&#39;{value} ({type(value)} must be a string&#39;))
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.AnyString.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    if isinstance(value, list) or isinstance(value, str):
+        return errors
+
+    errors.append(error(f&#39;{value} ({type(value)} must be a string&#39;))
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.BoolDomain"><code class="flex name class">
+<span>class <span class="ident">BoolDomain</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>BoolDomain domain constrains the value to be a boolean.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BoolDomain:
+    &#34;&#34;&#34;
+    BoolDomain domain constrains the value to be a boolean.
+    &#34;&#34;&#34;
+    def validate(self, value, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if isinstance(value, bool):
+            return errors
+
+        errors.append(error(f&#39;{value} ({type(value)} must be True/False)&#39;))
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.BoolDomain.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    if isinstance(value, bool):
+        return errors
+
+    errors.append(error(f&#39;{value} ({type(value)} must be True/False)&#39;))
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.DeprecatedInVersion"><code class="flex name class">
+<span>class <span class="ident">DeprecatedInVersion</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DeprecatedInVersion domain deals with keys that have been or will be deprecated. It
+will check your version of ParFlow with the deprecated version and print
+an error or warning depending on whether the key has been deprecated.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DeprecatedInVersion:
+    &#34;&#34;&#34;
+    DeprecatedInVersion domain deals with keys that have been or will be deprecated. It
+    will check your version of ParFlow with the deprecated version and print
+    an error or warning depending on whether the key has been deprecated.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        version = get_comparable_version(arg)
+        current_version = get_comparable_version(pf_version)
+
+        if version &lt;= current_version:
+            errors.append(error(f&#39;Deprecated in v{arg}&#39;))
+
+        if version &gt; current_version:
+            errors.append(warning(f&#39;Will be deprecated in v{arg}&#39;))
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.DeprecatedInVersion.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, arg, pf_version=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, arg, pf_version=None, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    version = get_comparable_version(arg)
+    current_version = get_comparable_version(pf_version)
+
+    if version &lt;= current_version:
+        errors.append(error(f&#39;Deprecated in v{arg}&#39;))
+
+    if version &gt; current_version:
+        errors.append(warning(f&#39;Will be deprecated in v{arg}&#39;))
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.DoubleValue"><code class="flex name class">
+<span>class <span class="ident">DoubleValue</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>DoubleValue domain constrains value to be a double (or int)
+while also ensure optionally if its value needs to be
+above or below another one.</p>
+<p>The expected set of keyword arguments are:
+- min_value: If available the value must be strictly above it
+- max_value: If available the value must be strictly below it</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DoubleValue:
+    &#34;&#34;&#34;
+    DoubleValue domain constrains value to be a double (or int)
+    while also ensure optionally if its value needs to be
+    above or below another one.
+
+    The expected set of keyword arguments are:
+      - min_value: If available the value must be strictly above it
+      - max_value: If available the value must be strictly below it
+    &#34;&#34;&#34;
+    def validate(self, value, min_value=None, max_value=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if not (isinstance(value, float) or isinstance(value, int)):
+            errors.append(error(&#39;Needs to be a double&#39;))
+
+        if min_value is not None and value &lt; min_value:
+            errors.append(error(f&#39;Is smaller than min: {min_value}&#39;))
+        if max_value is not None and value &gt; max_value:
+            errors.append(error(f&#39;Is greater than max: {max_value}&#39;))
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.DoubleValue.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, min_value=None, max_value=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, min_value=None, max_value=None, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    if not (isinstance(value, float) or isinstance(value, int)):
+        errors.append(error(&#39;Needs to be a double&#39;))
+
+    if min_value is not None and value &lt; min_value:
+        errors.append(error(f&#39;Is smaller than min: {min_value}&#39;))
+    if max_value is not None and value &gt; max_value:
+        errors.append(error(f&#39;Is greater than max: {max_value}&#39;))
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.EnumDomain"><code class="flex name class">
+<span>class <span class="ident">EnumDomain</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>EnumDomain domain constrains value to be a particular string
+that is part of a list defined in the enum_list.</p>
+<p>The expected keyword argument is a list of the accepted values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EnumDomain:
+    &#34;&#34;&#34;
+    EnumDomain domain constrains value to be a particular string
+    that is part of a list defined in the enum_list.
+
+    The expected keyword argument is a list of the accepted values.
+    &#34;&#34;&#34;
+    def validate(self, value, enum_list=[], pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if isinstance(value, list) and len(value) == 1:
+            value = value[0]
+
+        lookupList = []
+        if isinstance(enum_list, list):
+          lookupList = enum_list
+
+        if isinstance(enum_list, dict):
+          # We need to find the matching version
+          sortedVersions = [(get_comparable_version(v), v) for v in enum_list.keys()]
+          sortedVersions.sort(key=lambda t: t[0])
+          versionToUse = sortedVersions[0]
+          currentVersion = get_comparable_version(pf_version)
+          for version in sortedVersions:
+            if currentVersion &gt;= version[0]:
+              versionToUse = version
+
+          lookupList = enum_list[versionToUse[1]]
+
+        if value not in lookupList:
+            str_list = &#39;, &#39;.join(lookupList)
+            errors.append(error(f&#39;{value} must be one of [{str_list}]&#39;))
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.EnumDomain.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, enum_list=[], pf_version=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, enum_list=[], pf_version=None, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    if isinstance(value, list) and len(value) == 1:
+        value = value[0]
+
+    lookupList = []
+    if isinstance(enum_list, list):
+      lookupList = enum_list
+
+    if isinstance(enum_list, dict):
+      # We need to find the matching version
+      sortedVersions = [(get_comparable_version(v), v) for v in enum_list.keys()]
+      sortedVersions.sort(key=lambda t: t[0])
+      versionToUse = sortedVersions[0]
+      currentVersion = get_comparable_version(pf_version)
+      for version in sortedVersions:
+        if currentVersion &gt;= version[0]:
+          versionToUse = version
+
+      lookupList = enum_list[versionToUse[1]]
+
+    if value not in lookupList:
+        str_list = &#39;, &#39;.join(lookupList)
+        errors.append(error(f&#39;{value} must be one of [{str_list}]&#39;))
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.IntValue"><code class="flex name class">
+<span>class <span class="ident">IntValue</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>IntRange domain constrains value to be an integer
+while also ensure optionally if its value needs to be
+above or below another one.</p>
+<p>The expected set of keyword arguments are:
+- min_value: If available the value must be strictly above it
+- max_value: If available the value must be strictly below it</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class IntValue:
+    &#34;&#34;&#34;
+    IntRange domain constrains value to be an integer
+    while also ensure optionally if its value needs to be
+    above or below another one.
+
+    The expected set of keyword arguments are:
+      - min_value: If available the value must be strictly above it
+      - max_value: If available the value must be strictly below it
+    &#34;&#34;&#34;
+    def validate(self, value, min_value=None, max_value=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        if not isinstance(value, int):
+            errors.append(error(&#39;Needs to be an integer&#39;))
+
+        if min_value is not None and value &lt; min_value:
+            errors.append(error(f&#39;Is smaller than min: {min_value}&#39;))
+        if max_value is not None and value &gt; max_value:
+            errors.append(error(f&#39;Is greater than max: {max_value}&#39;))
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.IntValue.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, min_value=None, max_value=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, min_value=None, max_value=None, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    if not isinstance(value, int):
+        errors.append(error(&#39;Needs to be an integer&#39;))
+
+    if min_value is not None and value &lt; min_value:
+        errors.append(error(f&#39;Is smaller than min: {min_value}&#39;))
+    if max_value is not None and value &gt; max_value:
+        errors.append(error(f&#39;Is greater than max: {max_value}&#39;))
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.MandatoryValue"><code class="flex name class">
+<span>class <span class="ident">MandatoryValue</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>MandatoryValue makes sure that the key is set</p>
+<p>If the value is not defined in the script and has a default value,
+the default value will be written out in the validation message
+and database file.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class MandatoryValue:
+    &#34;&#34;&#34;
+    MandatoryValue makes sure that the key is set
+
+    If the value is not defined in the script and has a default value,
+    the default value will be written out in the validation message
+    and database file.
+    &#34;&#34;&#34;
+    def validate(self, value, **kwargs):
+        errors = []
+
+        if value is None:
+            errors.append(error(&#39;Needs to be set&#39;))
+            return errors
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.MandatoryValue.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, **kwargs):
+    errors = []
+
+    if value is None:
+        errors.append(error(&#39;Needs to be set&#39;))
+        return errors
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.RemovedInVersion"><code class="flex name class">
+<span>class <span class="ident">RemovedInVersion</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>RemovedInVersion domain deals with keys that have been or will be removed from the
+ParFlow code. It will check your version of ParFlow with the removed version
+and print an error or warning depending on whether the key has been or will
+be removed.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RemovedInVersion:
+    &#34;&#34;&#34;
+    RemovedInVersion domain deals with keys that have been or will be removed from the
+    ParFlow code. It will check your version of ParFlow with the removed version
+    and print an error or warning depending on whether the key has been or will
+    be removed.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, pf_version=None, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        version = get_comparable_version(arg)
+        current_version = get_comparable_version(pf_version)
+
+        if version &lt;= current_version:
+            errors.append(error(f&#39;Removed in v{arg}&#39;))
+
+        if version &gt; current_version:
+            errors.append(warning(f&#39;Will be removed in v{arg}&#39;))
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.RemovedInVersion.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, arg, pf_version=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, arg, pf_version=None, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    version = get_comparable_version(arg)
+    current_version = get_comparable_version(pf_version)
+
+    if version &lt;= current_version:
+        errors.append(error(f&#39;Removed in v{arg}&#39;))
+
+    if version &gt; current_version:
+        errors.append(warning(f&#39;Will be removed in v{arg}&#39;))
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.RequiresModule"><code class="flex name class">
+<span>class <span class="ident">RequiresModule</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>RequiresModule domain deals with keys that require specific modules associated
+with ParFlow (e.g. CLM, SILO, NetCDF, etc.). It will check to see whether the
+required modules are installed with ParFlow and will print an error message
+if the required module is missing.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RequiresModule:
+    &#34;&#34;&#34;
+    RequiresModule domain deals with keys that require specific modules associated
+    with ParFlow (e.g. CLM, SILO, NetCDF, etc.). It will check to see whether the
+    required modules are installed with ParFlow and will print an error message
+    if the required module is missing.
+    &#34;&#34;&#34;
+    def validate(self, value, arg, **kwargs):
+        errors = []
+
+        if value is None:
+            return errors
+
+        arg_list = arg.split() if isinstance(arg, str) else arg
+
+        for module in arg_list:
+            if not get_installed_parflow_module(module):
+                errors.append(error(f&#39;Need to install {module} module&#39;))
+
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.RequiresModule.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, arg, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, arg, **kwargs):
+    errors = []
+
+    if value is None:
+        return errors
+
+    arg_list = arg.split() if isinstance(arg, str) else arg
+
+    for module in arg_list:
+        if not get_installed_parflow_module(module):
+            errors.append(error(f&#39;Need to install {module} module&#39;))
+
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.ValidFile"><code class="flex name class">
+<span>class <span class="ident">ValidFile</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>ValidFile domain checks the working directory to find the specified file.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ValidFile:
+    &#34;&#34;&#34;
+    ValidFile domain checks the working directory to find the specified file.
+    &#34;&#34;&#34;
+    def validate(self, value, working_directory=None, path_prefix_source=None, container=None, **kwargs):
+        errors = []
+        path_prefix = &#39;&#39;
+
+        if value is None:
+            return errors
+
+        if working_directory is None:
+            errors.append(error(&#39;Working directory is not defined&#39;))
+            return errors
+
+        if path_prefix_source:
+            path_prefix = container.get_selection_from_location(path_prefix_source)[0]
+
+        if os.path.exists(os.path.join(working_directory, path_prefix, value)):
+            return errors
+
+        errors.append(error(
+            f&#39;Could not locate file {os.path.abspath(os.path.join(working_directory, path_prefix, value))}&#39;))
+        return errors</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.domains.ValidFile.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, value, working_directory=None, path_prefix_source=None, container=None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, value, working_directory=None, path_prefix_source=None, container=None, **kwargs):
+    errors = []
+    path_prefix = &#39;&#39;
+
+    if value is None:
+        return errors
+
+    if working_directory is None:
+        errors.append(error(&#39;Working directory is not defined&#39;))
+        return errors
+
+    if path_prefix_source:
+        path_prefix = container.get_selection_from_location(path_prefix_source)[0]
+
+    if os.path.exists(os.path.join(working_directory, path_prefix, value)):
+        return errors
+
+    errors.append(error(
+        f&#39;Could not locate file {os.path.abspath(os.path.join(working_directory, path_prefix, value))}&#39;))
+    return errors</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.domains.ValidationException"><code class="flex name class">
+<span>class <span class="ident">ValidationException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Basic parflow exception used for domains to report error</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ValidationException(Exception):
+    &#34;&#34;&#34;
+    Basic parflow exception used for domains to report error
+    &#34;&#34;&#34;
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.tools.database" href="index.html">parflow.tools.database</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.error" href="#parflow.tools.database.domains.error">error</a></code></li>
+<li><code><a title="parflow.tools.database.domains.filter_errors_by_type" href="#parflow.tools.database.domains.filter_errors_by_type">filter_errors_by_type</a></code></li>
+<li><code><a title="parflow.tools.database.domains.get_comparable_version" href="#parflow.tools.database.domains.get_comparable_version">get_comparable_version</a></code></li>
+<li><code><a title="parflow.tools.database.domains.get_domain" href="#parflow.tools.database.domains.get_domain">get_domain</a></code></li>
+<li><code><a title="parflow.tools.database.domains.get_installed_parflow_module" href="#parflow.tools.database.domains.get_installed_parflow_module">get_installed_parflow_module</a></code></li>
+<li><code><a title="parflow.tools.database.domains.validate_value_to_string" href="#parflow.tools.database.domains.validate_value_to_string">validate_value_to_string</a></code></li>
+<li><code><a title="parflow.tools.database.domains.validate_value_with_errors" href="#parflow.tools.database.domains.validate_value_with_errors">validate_value_with_errors</a></code></li>
+<li><code><a title="parflow.tools.database.domains.validate_value_with_exception" href="#parflow.tools.database.domains.validate_value_with_exception">validate_value_with_exception</a></code></li>
+<li><code><a title="parflow.tools.database.domains.warning" href="#parflow.tools.database.domains.warning">warning</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="parflow.tools.database.domains.AddedInVersion" href="#parflow.tools.database.domains.AddedInVersion">AddedInVersion</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.AddedInVersion.validate" href="#parflow.tools.database.domains.AddedInVersion.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.AnyString" href="#parflow.tools.database.domains.AnyString">AnyString</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.AnyString.validate" href="#parflow.tools.database.domains.AnyString.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.BoolDomain" href="#parflow.tools.database.domains.BoolDomain">BoolDomain</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.BoolDomain.validate" href="#parflow.tools.database.domains.BoolDomain.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.DeprecatedInVersion" href="#parflow.tools.database.domains.DeprecatedInVersion">DeprecatedInVersion</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.DeprecatedInVersion.validate" href="#parflow.tools.database.domains.DeprecatedInVersion.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.DoubleValue" href="#parflow.tools.database.domains.DoubleValue">DoubleValue</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.DoubleValue.validate" href="#parflow.tools.database.domains.DoubleValue.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.EnumDomain" href="#parflow.tools.database.domains.EnumDomain">EnumDomain</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.EnumDomain.validate" href="#parflow.tools.database.domains.EnumDomain.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.IntValue" href="#parflow.tools.database.domains.IntValue">IntValue</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.IntValue.validate" href="#parflow.tools.database.domains.IntValue.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.MandatoryValue" href="#parflow.tools.database.domains.MandatoryValue">MandatoryValue</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.MandatoryValue.validate" href="#parflow.tools.database.domains.MandatoryValue.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.RemovedInVersion" href="#parflow.tools.database.domains.RemovedInVersion">RemovedInVersion</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.RemovedInVersion.validate" href="#parflow.tools.database.domains.RemovedInVersion.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.RequiresModule" href="#parflow.tools.database.domains.RequiresModule">RequiresModule</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.RequiresModule.validate" href="#parflow.tools.database.domains.RequiresModule.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.ValidFile" href="#parflow.tools.database.domains.ValidFile">ValidFile</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.domains.ValidFile.validate" href="#parflow.tools.database.domains.ValidFile.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.domains.ValidationException" href="#parflow.tools.database.domains.ValidationException">ValidationException</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

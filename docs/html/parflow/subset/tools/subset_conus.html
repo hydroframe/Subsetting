@@ -38,17 +38,18 @@ import logging
 import os
 import sys
 from pathlib import Path
+from datetime import datetime
+import numpy as np
 from parflow.subset.utils.arguments import is_valid_path, is_positive_integer, is_valid_file
 from parflow.subset.clipper import MaskClipper
 from parflow.subset.domain import Conus
 from parflow.subset.rasterizer import ShapefileRasterizer
-from datetime import datetime
 import parflow.subset.tools.bulk_clipper as bulk_clipper
-import parflow.subset.builders.solidfile as solidfile_generator
-from parflow.subset.builders.tcl import build_tcl
 from parflow.subset.clipper import ClmClipper
 from parflow.subset.data import parkinglot_template, conus_manifest
-
+from parflow.tools.builders import SolidFileBuilder
+from parflow.subset import TIF_NO_DATA_VALUE_OUT
+from parflow.subset.data import parking_lot_template
 
 def parse_args(args):
     &#34;&#34;&#34;Parse the command line arguments
@@ -105,7 +106,7 @@ def parse_args(args):
                         action=&#39;store_true&#39;,
                         help=&#34;also clip inputs for CLM&#34;)
 
-    parser.add_argument(&#34;--write_tcl&#34;, &#34;-w&#34;, dest=&#34;write_tcl&#34;, required=False,
+    parser.add_argument(&#34;--run_script&#34;, &#34;-w&#34;, dest=&#34;run_script&#34;, required=False,
                         action=&#39;store_true&#39;,
                         help=&#34;generate the .tcl script for this subset&#34;)
 
@@ -131,7 +132,7 @@ def parse_args(args):
 
 
 def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;, out_dir=&#39;.&#39;, out_name=None, clip_clm=False,
-                 write_tcl=False, padding=(0, 0, 0, 0), attribute_name=&#39;OBJECTID&#39;, attribute_ids=None, write_tifs=False,
+                 run_script=False, padding=(0, 0, 0, 0), attribute_name=&#39;OBJECTID&#39;, attribute_ids=None, write_tifs=False,
                  manifest_file=conus_manifest):
     &#34;&#34;&#34;subset a conus domain inputs for running a regional model
 
@@ -151,8 +152,8 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;
         name to give the outputs (default shapefile name)
     clip_clm : int, optional
         whether or not to clip the CLM input files too (default no)
-    write_tcl : int, optional
-        whether or not to write a TCL file for the subset (default no)
+    run_script : int, optional
+        whether or not to build and return a Run object for the subset (default no)
     padding : tuple, optional
         grid cells of no_data to add around domain mask. CSS Style (top, right, bottom, left) default 0
     attribute_name : str, optional
@@ -164,7 +165,8 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;
 
     Returns
     -------
-    None
+    run_script : parflow.tools.Run
+        The Run object which can be used to execute the ParFlow model subset that was created by subset_conus
     &#34;&#34;&#34;
     if out_name is None:
         out_name = shapefile
@@ -175,8 +177,8 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;
     # Step 1, rasterize shapefile
 
     rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
-                                     no_data=-999, output_path=out_dir, )
-    rasterizer.rasterize_shapefile_to_disk(out_name=f&#39;{out_name}_raster_from_shapefile.tif&#39;,
+                                     no_data=TIF_NO_DATA_VALUE_OUT, output_path=out_dir, )
+    mask_array = rasterizer.rasterize_shapefile_to_disk(out_name=f&#39;{out_name}_raster_from_shapefile.tif&#39;,
                                            padding=padding,
                                            attribute_name=attribute_name,
                                            attribute_ids=attribute_ids)
@@ -185,10 +187,21 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;
 
     # Step 2, Generate solid file
     clip = MaskClipper(subset_mask, no_data_threshold=-1)
-    batches = solidfile_generator.make_solid_file(clipped_mask=clip.clipped_mask,
-                                                  out_name=os.path.join(out_dir, out_name))
-    if len(batches) == 0:
-        raise Exception(&#34;Did not make solid file correctly&#34;)
+
+    sfb = SolidFileBuilder(top=3, bottom=6, side=1).mask(clip.subset(mask_array, crop_inner=0)[0][0, :, :])
+    # identify the unique patch ID&#39;s assigned to the solid file
+
+    #TODO: get patch defs from a class
+    sfb.top_ids(clip.subset(conus.get_domain_mask())[0][0, :, :])
+    sfb.side_ids(clip.subset(conus.get_border_mask())[0][0, :, :])
+
+    top_patchIDs = np.unique(clip.subset(conus.get_domain_mask())[0][0, :, :])
+    side_patchIDs = np.unique(clip.subset(conus.get_border_mask())[0][0, :, :])
+    side_patchIDs[side_patchIDs == 0] = 2
+    botom_patchIDs = [6]
+    patch_ids = np.unique(np.concatenate((top_patchIDs, side_patchIDs, botom_patchIDs)))
+
+    sfb = sfb.write(os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;), cellsize=1000, vtk=True)
 
     # Step 3. Clip all the domain data inputs
     bulk_clipper.clip_inputs(clip,
@@ -198,7 +211,7 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;
 
     # Step 4. Clip CLM inputs
     if clip_clm == 1:
-        clm_clipper = ClmClipper(subset_mask)
+        clm_clipper = ClmClipper(subset_mask.get_bbox())
         latlon_formatted, latlon_data = clm_clipper.clip_latlon(os.path.join(conus.local_path,
                                                                              conus.optional_files.get(&#39;LAT_LON&#39;)))
 
@@ -212,15 +225,43 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;
 
         clm_clipper.write_land_cover(vegm_data, os.path.join(out_dir, f&#39;{out_name}_vegm.dat&#39;))
 
-    # Step 5. Generate TCL File
-    if write_tcl == 1:
-        build_tcl(os.path.join(out_dir, f&#39;{out_name}.tcl&#39;),
-                  parkinglot_template,
-                  out_name,
-                  os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_X&#34;)).stem}_clip.pfb&#39;),
-                  os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;),
-                  os.path.join(out_dir, &#39;pme.pfb&#39;), end_time=10, batches=batches,
-                  p=2, q=1, r=1, timestep=1, constant=1)
+    # Step 5. Generate Run Script
+
+    if run_script == 1:
+        slopex_file = os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_X&#34;)).stem}_clip.pfb&#39;)
+        slopey_file = os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_Y&#34;)).stem}_clip.pfb&#39;)
+        solid_file = os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;)
+        bbox = subset_mask.get_bbox()
+        extents = bbox.get_padded_extents()
+
+        NX = int(extents[3] - extents[2])
+        NY = int(extents[1] - extents[0])
+
+        out_name = f&#39;{out_name}.conus{conus_version}.parking_lot&#39;
+        # TODO: associate model templates with models and versions, provide method to override boundary conditions
+        run_script = parking_lot_template.get_parking_lot_model(out_name, slopex_file, slopey_file, solid_file, NX, NY)
+        patch_names = [conus.get_patch_name(patch_id) for patch_id in patch_ids[patch_ids&gt;TIF_NO_DATA_VALUE_OUT]]
+        run_script.Geom.domain.Patches = &#39; &#39;.join(patch_names)
+
+        # convert patch ID&#39;s to patch names for run script
+        for patch in patch_names:
+            bc = parking_lot_template.get_parking_lot_model_boundary(patch)
+            for k, v in bc.items():
+                # assign patch Boundary Conditions as defined by CONUS Model 1 or 2
+                run_script.Patch.pfset(key=f&#39;{patch}.BCPressure.{k}&#39;, value=v)
+
+        if conus_version == 1:
+            # CONUS1 doesn&#39;t seem to work well with OverlandKinematic
+            run_script.Patch.top.BCPressure.Type = &#39;OverlandFlow&#39;
+
+        run_script.validate()
+        run_script.write(file_name=os.path.join(out_dir, out_name), file_format=&#39;pfidb&#39;)
+        run_script.write(file_name=os.path.join(out_dir, out_name), file_format=&#39;yaml&#39;)
+        run_script.write(file_name=os.path.join(out_dir, out_name), file_format=&#39;json&#39;)
+        run_script.dist(slopey_file)
+        run_script.dist(slopex_file)
+        run_script.run(working_directory=out_dir)
+        return run_script
 
 
 def main():
@@ -233,7 +274,7 @@ def main():
     logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(cmd_line_args[:])}&#39;)
     subset_conus(input_path=args.input_path, shapefile=args.shapefile, conus_version=args.conus_version,
                  conus_files=args.conus_files, out_dir=args.out_dir, out_name=args.out_name, clip_clm=args.clip_clm,
-                 write_tcl=args.write_tcl, padding=args.padding, attribute_ids=args.attribute_ids,
+                 run_script=args.run_script, padding=args.padding, attribute_ids=args.attribute_ids,
                  attribute_name=args.attribute_name, write_tifs=args.write_tifs, manifest_file=args.manifest_file)
 
     end_date = datetime.utcnow()
@@ -270,7 +311,7 @@ if __name__ == &#39;__main__&#39;:
     logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(cmd_line_args[:])}&#39;)
     subset_conus(input_path=args.input_path, shapefile=args.shapefile, conus_version=args.conus_version,
                  conus_files=args.conus_files, out_dir=args.out_dir, out_name=args.out_name, clip_clm=args.clip_clm,
-                 write_tcl=args.write_tcl, padding=args.padding, attribute_ids=args.attribute_ids,
+                 run_script=args.run_script, padding=args.padding, attribute_ids=args.attribute_ids,
                  attribute_name=args.attribute_name, write_tifs=args.write_tifs, manifest_file=args.manifest_file)
 
     end_date = datetime.utcnow()
@@ -351,7 +392,7 @@ if __name__ == &#39;__main__&#39;:
                         action=&#39;store_true&#39;,
                         help=&#34;also clip inputs for CLM&#34;)
 
-    parser.add_argument(&#34;--write_tcl&#34;, &#34;-w&#34;, dest=&#34;write_tcl&#34;, required=False,
+    parser.add_argument(&#34;--run_script&#34;, &#34;-w&#34;, dest=&#34;run_script&#34;, required=False,
                         action=&#39;store_true&#39;,
                         help=&#34;generate the .tcl script for this subset&#34;)
 
@@ -377,7 +418,7 @@ if __name__ == &#39;__main__&#39;:
 </details>
 </dd>
 <dt id="parflow.subset.tools.subset_conus.subset_conus"><code class="name flex">
-<span>def <span class="ident">subset_conus</span></span>(<span>input_path, shapefile, conus_version=1, conus_files='.', out_dir='.', out_name=None, clip_clm=False, write_tcl=False, padding=(0, 0, 0, 0), attribute_name='OBJECTID', attribute_ids=None, write_tifs=False, manifest_file=PosixPath('/home/arezaii/git/pf_subsetter/parflow/subset/data/conus_manifest.yaml'))</span>
+<span>def <span class="ident">subset_conus</span></span>(<span>input_path, shapefile, conus_version=1, conus_files='.', out_dir='.', out_name=None, clip_clm=False, run_script=False, padding=(0, 0, 0, 0), attribute_name='OBJECTID', attribute_ids=None, write_tifs=False, manifest_file=PosixPath('/home/arezaii/git/subset_hf/parflow/subset/data/conus_manifest.yaml'))</span>
 </code></dt>
 <dd>
 <div class="desc"><p>subset a conus domain inputs for running a regional model</p>
@@ -397,8 +438,8 @@ if __name__ == &#39;__main__&#39;:
 <dd>name to give the outputs (default shapefile name)</dd>
 <dt><strong><code>clip_clm</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>whether or not to clip the CLM input files too (default no)</dd>
-<dt><strong><code>write_tcl</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>whether or not to write a TCL file for the subset (default no)</dd>
+<dt><strong><code>run_script</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>whether or not to build and return a Run object for the subset (default no)</dd>
 <dt><strong><code>padding</code></strong> :&ensp;<code>tuple</code>, optional</dt>
 <dd>grid cells of no_data to add around domain mask. CSS Style (top, right, bottom, left) default 0</dd>
 <dt><strong><code>attribute_name</code></strong> :&ensp;<code>str</code>, optional</dt>
@@ -410,15 +451,15 @@ if __name__ == &#39;__main__&#39;:
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>None</code></dt>
-<dd>&nbsp;</dd>
+<dt><strong><code>run_script</code></strong> :&ensp;<code>parflow.tools.Run</code></dt>
+<dd>The Run object which can be used to execute the ParFlow model subset that was created by subset_conus</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def subset_conus(input_path, shapefile, conus_version=1, conus_files=&#39;.&#39;, out_dir=&#39;.&#39;, out_name=None, clip_clm=False,
-                 write_tcl=False, padding=(0, 0, 0, 0), attribute_name=&#39;OBJECTID&#39;, attribute_ids=None, write_tifs=False,
+                 run_script=False, padding=(0, 0, 0, 0), attribute_name=&#39;OBJECTID&#39;, attribute_ids=None, write_tifs=False,
                  manifest_file=conus_manifest):
     &#34;&#34;&#34;subset a conus domain inputs for running a regional model
 
@@ -438,8 +479,8 @@ if __name__ == &#39;__main__&#39;:
         name to give the outputs (default shapefile name)
     clip_clm : int, optional
         whether or not to clip the CLM input files too (default no)
-    write_tcl : int, optional
-        whether or not to write a TCL file for the subset (default no)
+    run_script : int, optional
+        whether or not to build and return a Run object for the subset (default no)
     padding : tuple, optional
         grid cells of no_data to add around domain mask. CSS Style (top, right, bottom, left) default 0
     attribute_name : str, optional
@@ -451,7 +492,8 @@ if __name__ == &#39;__main__&#39;:
 
     Returns
     -------
-    None
+    run_script : parflow.tools.Run
+        The Run object which can be used to execute the ParFlow model subset that was created by subset_conus
     &#34;&#34;&#34;
     if out_name is None:
         out_name = shapefile
@@ -462,8 +504,8 @@ if __name__ == &#39;__main__&#39;:
     # Step 1, rasterize shapefile
 
     rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
-                                     no_data=-999, output_path=out_dir, )
-    rasterizer.rasterize_shapefile_to_disk(out_name=f&#39;{out_name}_raster_from_shapefile.tif&#39;,
+                                     no_data=TIF_NO_DATA_VALUE_OUT, output_path=out_dir, )
+    mask_array = rasterizer.rasterize_shapefile_to_disk(out_name=f&#39;{out_name}_raster_from_shapefile.tif&#39;,
                                            padding=padding,
                                            attribute_name=attribute_name,
                                            attribute_ids=attribute_ids)
@@ -472,10 +514,21 @@ if __name__ == &#39;__main__&#39;:
 
     # Step 2, Generate solid file
     clip = MaskClipper(subset_mask, no_data_threshold=-1)
-    batches = solidfile_generator.make_solid_file(clipped_mask=clip.clipped_mask,
-                                                  out_name=os.path.join(out_dir, out_name))
-    if len(batches) == 0:
-        raise Exception(&#34;Did not make solid file correctly&#34;)
+
+    sfb = SolidFileBuilder(top=3, bottom=6, side=1).mask(clip.subset(mask_array, crop_inner=0)[0][0, :, :])
+    # identify the unique patch ID&#39;s assigned to the solid file
+
+    #TODO: get patch defs from a class
+    sfb.top_ids(clip.subset(conus.get_domain_mask())[0][0, :, :])
+    sfb.side_ids(clip.subset(conus.get_border_mask())[0][0, :, :])
+
+    top_patchIDs = np.unique(clip.subset(conus.get_domain_mask())[0][0, :, :])
+    side_patchIDs = np.unique(clip.subset(conus.get_border_mask())[0][0, :, :])
+    side_patchIDs[side_patchIDs == 0] = 2
+    botom_patchIDs = [6]
+    patch_ids = np.unique(np.concatenate((top_patchIDs, side_patchIDs, botom_patchIDs)))
+
+    sfb = sfb.write(os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;), cellsize=1000, vtk=True)
 
     # Step 3. Clip all the domain data inputs
     bulk_clipper.clip_inputs(clip,
@@ -485,7 +538,7 @@ if __name__ == &#39;__main__&#39;:
 
     # Step 4. Clip CLM inputs
     if clip_clm == 1:
-        clm_clipper = ClmClipper(subset_mask)
+        clm_clipper = ClmClipper(subset_mask.get_bbox())
         latlon_formatted, latlon_data = clm_clipper.clip_latlon(os.path.join(conus.local_path,
                                                                              conus.optional_files.get(&#39;LAT_LON&#39;)))
 
@@ -499,15 +552,43 @@ if __name__ == &#39;__main__&#39;:
 
         clm_clipper.write_land_cover(vegm_data, os.path.join(out_dir, f&#39;{out_name}_vegm.dat&#39;))
 
-    # Step 5. Generate TCL File
-    if write_tcl == 1:
-        build_tcl(os.path.join(out_dir, f&#39;{out_name}.tcl&#39;),
-                  parkinglot_template,
-                  out_name,
-                  os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_X&#34;)).stem}_clip.pfb&#39;),
-                  os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;),
-                  os.path.join(out_dir, &#39;pme.pfb&#39;), end_time=10, batches=batches,
-                  p=2, q=1, r=1, timestep=1, constant=1)</code></pre>
+    # Step 5. Generate Run Script
+
+    if run_script == 1:
+        slopex_file = os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_X&#34;)).stem}_clip.pfb&#39;)
+        slopey_file = os.path.join(out_dir, f&#39;{Path(conus.required_files.get(&#34;SLOPE_Y&#34;)).stem}_clip.pfb&#39;)
+        solid_file = os.path.join(out_dir, f&#39;{out_name}.pfsol&#39;)
+        bbox = subset_mask.get_bbox()
+        extents = bbox.get_padded_extents()
+
+        NX = int(extents[3] - extents[2])
+        NY = int(extents[1] - extents[0])
+
+        out_name = f&#39;{out_name}.conus{conus_version}.parking_lot&#39;
+        # TODO: associate model templates with models and versions, provide method to override boundary conditions
+        run_script = parking_lot_template.get_parking_lot_model(out_name, slopex_file, slopey_file, solid_file, NX, NY)
+        patch_names = [conus.get_patch_name(patch_id) for patch_id in patch_ids[patch_ids&gt;TIF_NO_DATA_VALUE_OUT]]
+        run_script.Geom.domain.Patches = &#39; &#39;.join(patch_names)
+
+        # convert patch ID&#39;s to patch names for run script
+        for patch in patch_names:
+            bc = parking_lot_template.get_parking_lot_model_boundary(patch)
+            for k, v in bc.items():
+                # assign patch Boundary Conditions as defined by CONUS Model 1 or 2
+                run_script.Patch.pfset(key=f&#39;{patch}.BCPressure.{k}&#39;, value=v)
+
+        if conus_version == 1:
+            # CONUS1 doesn&#39;t seem to work well with OverlandKinematic
+            run_script.Patch.top.BCPressure.Type = &#39;OverlandFlow&#39;
+
+        run_script.validate()
+        run_script.write(file_name=os.path.join(out_dir, out_name), file_format=&#39;pfidb&#39;)
+        run_script.write(file_name=os.path.join(out_dir, out_name), file_format=&#39;yaml&#39;)
+        run_script.write(file_name=os.path.join(out_dir, out_name), file_format=&#39;json&#39;)
+        run_script.dist(slopey_file)
+        run_script.dist(slopex_file)
+        run_script.run(working_directory=out_dir)
+        return run_script</code></pre>
 </details>
 </dd>
 </dl>

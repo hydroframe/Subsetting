@@ -249,10 +249,25 @@ class Conus(ParflowDomain):
         if manifest_file is None:
             manifest_file = data.conus_manifest
         super().__init__(&#39;conus&#39;, local_path, manifest_file, version)
-        # self.mask_array = self.mask_tif.ReadAsArray()
         # had to do this because conus1 full_dim_mask is all 0&#39;s
         if self.version == 1:
             self.mask_array = self.get_domain_mask() + 1
+            self.mask_array = self.mask_array * 3
+            self._patch_map = {1: &#39;land&#39;, 3: &#39;top&#39;, 5: &#39;sink&#39;, 6: &#39;bottom&#39;}
+        elif self.version == 2:
+            self._patch_map = {1: &#39;ocean&#39;, 2: &#39;land&#39;, 3: &#39;top&#39;, 4: &#39;lakes&#39;, 5: &#39;sink&#39;, 6: &#39;bottom&#39;}
+        self._border_mask = None
+
+    def get_border_mask(self):
+        if self._border_mask is None:
+            tif_filename = os.path.join(self.local_path, self.required_files.get(&#39;CELL_TYPES&#39;))
+            self._border_mask = file_io_tools.read_file(tif_filename)
+            if self.version == 1:
+                self._border_mask = self._border_mask + 1
+        return self._border_mask
+
+    def get_patch_name(self, patch_id):
+        return self._patch_map.get(patch_id)
 
     def __repr__(self):
         return f&#34;{self.__class__.__name__}(name:{self.name!r}, version:{self.version!r}, &#34; \
@@ -315,10 +330,25 @@ class Conus(ParflowDomain):
         if manifest_file is None:
             manifest_file = data.conus_manifest
         super().__init__(&#39;conus&#39;, local_path, manifest_file, version)
-        # self.mask_array = self.mask_tif.ReadAsArray()
         # had to do this because conus1 full_dim_mask is all 0&#39;s
         if self.version == 1:
             self.mask_array = self.get_domain_mask() + 1
+            self.mask_array = self.mask_array * 3
+            self._patch_map = {1: &#39;land&#39;, 3: &#39;top&#39;, 5: &#39;sink&#39;, 6: &#39;bottom&#39;}
+        elif self.version == 2:
+            self._patch_map = {1: &#39;ocean&#39;, 2: &#39;land&#39;, 3: &#39;top&#39;, 4: &#39;lakes&#39;, 5: &#39;sink&#39;, 6: &#39;bottom&#39;}
+        self._border_mask = None
+
+    def get_border_mask(self):
+        if self._border_mask is None:
+            tif_filename = os.path.join(self.local_path, self.required_files.get(&#39;CELL_TYPES&#39;))
+            self._border_mask = file_io_tools.read_file(tif_filename)
+            if self.version == 1:
+                self._border_mask = self._border_mask + 1
+        return self._border_mask
+
+    def get_patch_name(self, patch_id):
+        return self._patch_map.get(patch_id)
 
     def __repr__(self):
         return f&#34;{self.__class__.__name__}(name:{self.name!r}, version:{self.version!r}, &#34; \
@@ -329,6 +359,40 @@ class Conus(ParflowDomain):
 <ul class="hlist">
 <li><a title="parflow.subset.domain.ParflowDomain" href="#parflow.subset.domain.ParflowDomain">ParflowDomain</a></li>
 </ul>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.subset.domain.Conus.get_border_mask"><code class="name flex">
+<span>def <span class="ident">get_border_mask</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_border_mask(self):
+    if self._border_mask is None:
+        tif_filename = os.path.join(self.local_path, self.required_files.get(&#39;CELL_TYPES&#39;))
+        self._border_mask = file_io_tools.read_file(tif_filename)
+        if self.version == 1:
+            self._border_mask = self._border_mask + 1
+    return self._border_mask</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.domain.Conus.get_patch_name"><code class="name flex">
+<span>def <span class="ident">get_patch_name</span></span>(<span>self, patch_id)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_patch_name(self, patch_id):
+    return self._patch_map.get(patch_id)</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="parflow.subset.domain.ParflowDomain" href="#parflow.subset.domain.ParflowDomain">ParflowDomain</a></b></code>:
@@ -732,6 +796,10 @@ class Conus(ParflowDomain):
 <ul>
 <li>
 <h4><code><a title="parflow.subset.domain.Conus" href="#parflow.subset.domain.Conus">Conus</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.subset.domain.Conus.get_border_mask" href="#parflow.subset.domain.Conus.get_border_mask">get_border_mask</a></code></li>
+<li><code><a title="parflow.subset.domain.Conus.get_patch_name" href="#parflow.subset.domain.Conus.get_patch_name">get_patch_name</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="parflow.subset.domain.ParflowDomain" href="#parflow.subset.domain.ParflowDomain">ParflowDomain</a></code></h4>

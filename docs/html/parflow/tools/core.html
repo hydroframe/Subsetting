@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.tools.core API documentation</title>
+<meta name="description" content="core module …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.tools.core</code></h1>
+</header>
+<section id="section-intro">
+<p>core module</p>
+<p>This module provide the core objects for controlling ParFlow.</p>
+<ul>
+<li>A <code><a title="parflow.tools.core.Run" href="#parflow.tools.core.Run">Run</a></code> object for configuring and running ParFlow simulations.</li>
+<li>A <code><a title="parflow.tools.core.check_parflow_execution" href="#parflow.tools.core.check_parflow_execution">check_parflow_execution()</a>(out_file)</code> function to parse output file</li>
+<li>A <code><a title="parflow.tools.core.get_current_parflow_version" href="#parflow.tools.core.get_current_parflow_version">get_current_parflow_version()</a></code> function to extract current ParFlow version</li>
+</ul>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: utf-8 -*-
+&#34;&#34;&#34;core module
+
+This module provide the core objects for controlling ParFlow.
+
+- A `Run()` object for configuring and running ParFlow simulations.
+- A `check_parflow_execution(out_file)` function to parse output file
+- A `get_current_parflow_version()` function to extract current ParFlow version
+
+&#34;&#34;&#34;
+import os
+import sys
+import argparse
+
+from . import settings
+from .fs import get_absolute_path
+from .io import write_dict
+from .terminal import Symbols as termSymbol
+
+from .database.generated import BaseRun, PFDBObj, PFDBObjListNumber
+from .export import SubsurfacePropertiesExporter
+
+
+def check_parflow_execution(out_file):
+    &#34;&#34;&#34;Helper function that can be used to parse ParFlow output file
+
+    Args:
+        out_file (str): Path to the output run file.
+
+    Returns:
+        bool: True for success, False otherwise.
+
+    &#34;&#34;&#34;
+    print(f&#39;# {&#34;=&#34;*78}&#39;)
+    execute_success = False
+    if os.path.exists(out_file):
+        with open(out_file, &#34;rt&#34;) as f:
+            contents = f.read()
+            if &#39;Problem solved&#39; in contents:
+                emoji = f&#39;{termSymbol.splash} &#39;
+                print(
+                    f&#39;# ParFlow ran successfully {emoji*3}&#39;)
+                execute_success = True
+            else:
+                emoji = f&#39;{termSymbol.x} &#39;
+                print(
+                    f&#39;# ParFlow run failed. {emoji*3} &#39;
+                    f&#39;Contents of error output file:&#39;)
+                print(&#34;-&#34;*80)
+                print(contents)
+                print(&#34;-&#34;*80)
+    else:
+        print(f&#39;# Cannot find {out_file} in {os.getcwd()}&#39;)
+    print(f&#39;# {&#34;=&#34; * 78}&#39;)
+    return execute_success
+
+# -----------------------------------------------------------------------------
+
+
+def get_current_parflow_version():
+    &#34;&#34;&#34;Helper function to extract ParFlow version
+
+    That method rely on PARFLOW_DIR environment variable to parse and
+    extract the version of your installed version of ParFlow.
+
+    Returns:
+        str: Return ParFlow version like &#39;3.6.0&#39;
+
+    &#34;&#34;&#34;
+    version = &#39;3.6.0&#39;
+    version_file = f&#39;{os.getenv(&#34;PARFLOW_DIR&#34;)}/config/pf-cmake-env.sh&#39;
+    if os.path.exists(os.path.abspath(version_file)):
+        with open(version_file, &#34;rt&#34;) as f:
+            for line in f.readlines():
+                if &#39;PARFLOW_VERSION=&#39; in line:
+                    version = line[17:22]
+            if not version:
+                print(f&#39;Cannot find version in {version_file}&#39;)
+    else:
+        print(
+            f&#39;Cannot find environment file in &#39;
+            f&#39;{os.path.abspath(version_file)}.&#39;)
+    return version
+
+# -----------------------------------------------------------------------------
+
+
+def get_process_args():
+    &#34;&#34;&#34;
+    General processing of script arguments
+    &#34;&#34;&#34;
+    parser = argparse.ArgumentParser(description=&#34;Parflow run arguments&#34;)
+
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Parflow settings&#39;)
+    group.add_argument(&#34;--parflow-directory&#34;,
+                       default=None,
+                       dest=&#34;parflow_directory&#34;,
+                       help=&#34;Path to use for PARFLOW_DIR&#34;)
+    group.add_argument(&#34;--parflow-version&#34;,
+                       default=None,
+                       dest=&#34;parflow_version&#34;,
+                       help=&#34;Override detected Parflow version&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Execution settings&#39;)
+    group.add_argument(&#34;--working-directory&#34;,
+                        default=None,
+                        dest=&#34;working_directory&#34;,
+                        help=&#34;Path to execution working directory&#34;)
+
+    group.add_argument(&#34;--skip-validation&#34;,
+                        default=False,
+                        dest=&#34;skipValidation&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Disable validation pass&#34;)
+
+    group.add_argument(&#34;--dry-run&#34;,
+                        default=False,
+                        action=&#39;store_true&#39;,
+                        dest=&#34;dry_run&#34;,
+                        help=&#34;Prevent execution&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Error handling settings&#39;)
+    group.add_argument(&#34;--show-line-error&#34;,
+                        default=False,
+                        dest=&#34;show_line_error&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Show line error&#34;)
+
+    group.add_argument(&#34;--exit-on-error&#34;,
+                        default=False,
+                        dest=&#34;exit_on_error&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Exit at error&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Additional output&#39;)
+    group.add_argument(&#34;--write-yaml&#34;,
+                        default=False,
+                        dest=&#34;writeYAML&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Enable config to be written as YAML file&#34;)
+
+    group.add_argument(&#34;--validation-verbose&#34;,
+                        default=False,
+                        dest=&#34;validation_verbose&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Only print validation results for &#34;
+                             &#34;key/value pairs with errors&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Parallel execution&#39;)
+    group.add_argument(&#34;-p&#34;, type=int, default=0,
+                        dest=&#34;p&#34;,
+                        help=&#34;P allocates the number of processes &#34;
+                             &#34;to the grid-cells in x&#34;)
+    group.add_argument(&#34;-q&#34;, type=int, default=0,
+                        dest=&#34;q&#34;,
+                        help=&#34;Q allocates the number of processes &#34;
+                             &#34;to the grid-cells in y&#34;)
+    group.add_argument(&#34;-r&#34;, type=int, default=0,
+                        dest=&#34;r&#34;,
+                        help=&#34;R allocates the number of processes &#34;
+                             &#34;to the grid-cells in z&#34;)
+
+    args, unknown = parser.parse_known_args()
+    return args
+
+# -----------------------------------------------------------------------------
+
+
+def update_run_from_args(run, args):
+    &#34;&#34;&#34;
+    Push processed args onto run properties.
+    &#34;&#34;&#34;
+    if args.parflow_directory:
+        os.environ[&#34;PARFLOW_DIR&#34;] = str(args.parflow_directory)
+        settings.set_parflow_version(get_current_parflow_version())
+
+    if args.working_directory:
+        settings.set_working_directory(args.working_directory)
+
+    if args.parflow_version:
+        settings.set_parflow_version(args.parflow_version)
+
+    if args.show_line_error:
+        settings.enable_line_error()
+
+    if args.exit_on_error:
+        settings.enable_exit_error()
+
+    if args.p and run.Process.Topology.P != args.p:
+        run.Process.Topology.P = args.p
+
+    if args.q and run.Process.Topology.Q != args.q:
+        run.Process.Topology.Q = args.q
+
+    if args.r and run.Process.Topology.R != args.r:
+        run.Process.Topology.R = args.r
+
+# -----------------------------------------------------------------------------
+
+
+class Run(BaseRun):
+    &#34;&#34;&#34;Main object that can be used to define a ParFlow simulation
+
+    Args:
+        name (str): Name for the given run.
+        basescript (str): Path to current file so the simulation
+            execution and relative path will be assumed to have
+            the script directory as their working directory.
+            If not provided, the working directory will be the
+            directory where the python executable was run from.
+
+    &#34;&#34;&#34;
+    def __init__(self, name, basescript=None):
+        super().__init__(None)
+        self._process_args_ = get_process_args()
+        self._name_ = name
+        if basescript is not None:
+            full_path = get_absolute_path(basescript)
+            if os.path.isfile(full_path):
+                settings.set_working_directory(os.path.dirname(full_path))
+            else:
+                settings.set_working_directory(full_path)
+        else:
+            settings.set_working_directory()
+
+    def set_name(self, new_name):
+        &#34;&#34;&#34;Setting new name for a run
+
+        Args:
+            new_name (str): New name for run
+        &#34;&#34;&#34;
+        self._name_ = new_name
+
+    def get_name(self):
+        &#34;&#34;&#34;Returns name of run
+        &#34;&#34;&#34;
+        return self._name_
+
+    def write(self, file_name=None, file_format=&#39;pfidb&#39;, working_directory=None):
+        &#34;&#34;&#34;Method to write database file to disk
+
+        Args:
+          file_name (str): Name of the file to write.
+              If not provided, the name of the run will be used.
+          file_format (str): File extension which also represent
+              the output format to use. (pfidb, yaml, json)
+              The default is pfidb.
+
+        Returns:
+          (str): The full path to the written file.
+          (str): The full path of the run which is what should be
+              given to ParFlow executable.
+
+        &#34;&#34;&#34;
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        f_name = os.path.join(settings.WORKING_DIRECTORY,
+                              f&#39;{self._name_}.{file_format}&#39;)
+        if file_name:
+            f_name = os.path.join(settings.WORKING_DIRECTORY,
+                                  f&#39;{file_name}.{file_format}&#39;)
+        full_file_path = os.path.abspath(f_name)
+        write_dict(self.get_key_dict(), full_file_path)
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+        return full_file_path, full_file_path[:-(len(file_format)+1)]
+
+    def write_subsurface_table(self, file_name=None, working_directory=None):
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        if file_name is None:
+            file_name = f&#39;{self._name_}_subsurface.csv&#39;
+        full_path = get_absolute_path(file_name)
+        exporter = SubsurfacePropertiesExporter(self)
+        if file_name.lower().endswith(&#39;.csv&#39;):
+            exporter.write_csv(full_path)
+        else:
+            exporter.write_txt(full_path)
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+    def clone(self, name):
+        &#34;&#34;&#34;Method to generate a clone of a run (for generating
+        run ensembles, etc.)
+
+        This will return an identical run with the given name.
+        See parflow/test/python/new_features/serial_runs/serial_runs.py
+        for an example.
+
+        Args:
+          name (str): Name of the new run.
+
+        &#34;&#34;&#34;
+        new_run = Run(name)
+        new_run.pfset(flat_map=self.get_key_dict())
+        return new_run
+
+    def run(self, working_directory=None, skip_validation=False):
+        &#34;&#34;&#34;Method to run simulation
+
+        That method will automatically run the database write,
+        validation and trigger the ParFlow execution while
+        checking ParFlow output for any error.
+
+        If an error occurred a sys.exit(1) will be issue.
+
+        Args:
+          working_directory (str): Path to write output files.
+              If not provided, the default run working directory will
+              be used. This also affect the relative FileNames.
+          skip_validation (bool): Allow user to skip validation before
+              running the simulation.
+
+        &#34;&#34;&#34;
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        settings.set_parflow_version(get_current_parflow_version())
+
+        # Any provided args should override the scripts ones
+        update_run_from_args(self, self._process_args_)
+
+        file_name, run_file = self.write()
+
+        print()
+        print(f&#39;# {&#34;=&#34;*78}&#39;)
+        print(f&#39;# ParFlow directory&#39;)
+        print(f&#39;#  - {os.getenv(&#34;PARFLOW_DIR&#34;)}&#39;)
+        print(f&#39;# ParFlow version&#39;)
+        print(f&#39;#  - {settings.PARFLOW_VERSION}&#39;)
+        print(f&#39;# Working directory&#39;)
+        print(f&#39;#  - {os.path.dirname(file_name)}&#39;)
+        print(f&#39;# ParFlow database&#39;)
+        print(f&#39;#  - {os.path.basename(file_name)}&#39;)
+        print(f&#39;# {&#34;=&#34;*78}&#39;)
+
+        # Only write YAML in run()
+        if self._process_args_.writeYAML:
+            full_path, no_extension = self.write(file_format=&#39;yaml&#39;)
+            print(f&#39;YAML output: &#34;{full_path}&#34;&#39;)
+
+        print()
+        error_count = 0
+        if not (skip_validation or self._process_args_.skipValidation):
+            verbose = self._process_args_.validation_verbose
+            error_count += self.validate(verbose=verbose)
+            print()
+
+        p = self.Process.Topology.P
+        q = self.Process.Topology.Q
+        r = self.Process.Topology.R
+        num_procs = p * q * r
+
+        success = True
+        if not self._process_args_.dry_run:
+            prev_dir = os.getcwd()
+            try:
+                os.chdir(settings.WORKING_DIRECTORY)
+                os.system(f&#39;sh $PARFLOW_DIR/bin/run {run_file} {num_procs}&#39;)
+                success = check_parflow_execution(f&#39;{run_file}.out.txt&#39;)
+            finally:
+                os.chdir(prev_dir)
+
+        print()
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+        if not success or error_count &gt; 0:
+            sys.exit(1)
+
+    def dist(self, pfb_file, **kwargs):
+        &#34;&#34;&#34;Distribute a PFB file using the P/Q/R settings from the run
+        or override them with the provided arguments.
+
+        We can also use the kwargs to set other properties such as:
+          - NX, NY, NZ...
+        &#34;&#34;&#34;
+        # Any provided args should override the scripts ones
+        update_run_from_args(self, self._process_args_)
+
+        pfb_file_full_path = get_absolute_path(pfb_file)
+        p = self.Process.Topology.P
+        q = self.Process.Topology.Q
+        r = self.Process.Topology.R
+
+        if &#39;P&#39; in kwargs:
+            p = kwargs[&#39;P&#39;]
+        if &#39;Q&#39; in kwargs:
+            q = kwargs[&#39;Q&#39;]
+        if &#39;R&#39; in kwargs:
+            r = kwargs[&#39;R&#39;]
+
+        from parflowio.pyParflowio import PFData
+        pfb_data = PFData(pfb_file_full_path)
+        pfb_data.distFile(p, q, r, pfb_file_full_path)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="parflow.tools.core.check_parflow_execution"><code class="name flex">
+<span>def <span class="ident">check_parflow_execution</span></span>(<span>out_file)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper function that can be used to parse ParFlow output file</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>out_file</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to the output run file.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True for success, False otherwise.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_parflow_execution(out_file):
+    &#34;&#34;&#34;Helper function that can be used to parse ParFlow output file
+
+    Args:
+        out_file (str): Path to the output run file.
+
+    Returns:
+        bool: True for success, False otherwise.
+
+    &#34;&#34;&#34;
+    print(f&#39;# {&#34;=&#34;*78}&#39;)
+    execute_success = False
+    if os.path.exists(out_file):
+        with open(out_file, &#34;rt&#34;) as f:
+            contents = f.read()
+            if &#39;Problem solved&#39; in contents:
+                emoji = f&#39;{termSymbol.splash} &#39;
+                print(
+                    f&#39;# ParFlow ran successfully {emoji*3}&#39;)
+                execute_success = True
+            else:
+                emoji = f&#39;{termSymbol.x} &#39;
+                print(
+                    f&#39;# ParFlow run failed. {emoji*3} &#39;
+                    f&#39;Contents of error output file:&#39;)
+                print(&#34;-&#34;*80)
+                print(contents)
+                print(&#34;-&#34;*80)
+    else:
+        print(f&#39;# Cannot find {out_file} in {os.getcwd()}&#39;)
+    print(f&#39;# {&#34;=&#34; * 78}&#39;)
+    return execute_success</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.get_current_parflow_version"><code class="name flex">
+<span>def <span class="ident">get_current_parflow_version</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper function to extract ParFlow version</p>
+<p>That method rely on PARFLOW_DIR environment variable to parse and
+extract the version of your installed version of ParFlow.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Return ParFlow version like '3.6.0'</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_current_parflow_version():
+    &#34;&#34;&#34;Helper function to extract ParFlow version
+
+    That method rely on PARFLOW_DIR environment variable to parse and
+    extract the version of your installed version of ParFlow.
+
+    Returns:
+        str: Return ParFlow version like &#39;3.6.0&#39;
+
+    &#34;&#34;&#34;
+    version = &#39;3.6.0&#39;
+    version_file = f&#39;{os.getenv(&#34;PARFLOW_DIR&#34;)}/config/pf-cmake-env.sh&#39;
+    if os.path.exists(os.path.abspath(version_file)):
+        with open(version_file, &#34;rt&#34;) as f:
+            for line in f.readlines():
+                if &#39;PARFLOW_VERSION=&#39; in line:
+                    version = line[17:22]
+            if not version:
+                print(f&#39;Cannot find version in {version_file}&#39;)
+    else:
+        print(
+            f&#39;Cannot find environment file in &#39;
+            f&#39;{os.path.abspath(version_file)}.&#39;)
+    return version</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.get_process_args"><code class="name flex">
+<span>def <span class="ident">get_process_args</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>General processing of script arguments</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_process_args():
+    &#34;&#34;&#34;
+    General processing of script arguments
+    &#34;&#34;&#34;
+    parser = argparse.ArgumentParser(description=&#34;Parflow run arguments&#34;)
+
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Parflow settings&#39;)
+    group.add_argument(&#34;--parflow-directory&#34;,
+                       default=None,
+                       dest=&#34;parflow_directory&#34;,
+                       help=&#34;Path to use for PARFLOW_DIR&#34;)
+    group.add_argument(&#34;--parflow-version&#34;,
+                       default=None,
+                       dest=&#34;parflow_version&#34;,
+                       help=&#34;Override detected Parflow version&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Execution settings&#39;)
+    group.add_argument(&#34;--working-directory&#34;,
+                        default=None,
+                        dest=&#34;working_directory&#34;,
+                        help=&#34;Path to execution working directory&#34;)
+
+    group.add_argument(&#34;--skip-validation&#34;,
+                        default=False,
+                        dest=&#34;skipValidation&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Disable validation pass&#34;)
+
+    group.add_argument(&#34;--dry-run&#34;,
+                        default=False,
+                        action=&#39;store_true&#39;,
+                        dest=&#34;dry_run&#34;,
+                        help=&#34;Prevent execution&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Error handling settings&#39;)
+    group.add_argument(&#34;--show-line-error&#34;,
+                        default=False,
+                        dest=&#34;show_line_error&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Show line error&#34;)
+
+    group.add_argument(&#34;--exit-on-error&#34;,
+                        default=False,
+                        dest=&#34;exit_on_error&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Exit at error&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Additional output&#39;)
+    group.add_argument(&#34;--write-yaml&#34;,
+                        default=False,
+                        dest=&#34;writeYAML&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Enable config to be written as YAML file&#34;)
+
+    group.add_argument(&#34;--validation-verbose&#34;,
+                        default=False,
+                        dest=&#34;validation_verbose&#34;,
+                        action=&#39;store_true&#39;,
+                        help=&#34;Only print validation results for &#34;
+                             &#34;key/value pairs with errors&#34;)
+    # ++++++++++++++++
+    group = parser.add_argument_group(&#39;Parallel execution&#39;)
+    group.add_argument(&#34;-p&#34;, type=int, default=0,
+                        dest=&#34;p&#34;,
+                        help=&#34;P allocates the number of processes &#34;
+                             &#34;to the grid-cells in x&#34;)
+    group.add_argument(&#34;-q&#34;, type=int, default=0,
+                        dest=&#34;q&#34;,
+                        help=&#34;Q allocates the number of processes &#34;
+                             &#34;to the grid-cells in y&#34;)
+    group.add_argument(&#34;-r&#34;, type=int, default=0,
+                        dest=&#34;r&#34;,
+                        help=&#34;R allocates the number of processes &#34;
+                             &#34;to the grid-cells in z&#34;)
+
+    args, unknown = parser.parse_known_args()
+    return args</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.update_run_from_args"><code class="name flex">
+<span>def <span class="ident">update_run_from_args</span></span>(<span>run, args)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Push processed args onto run properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def update_run_from_args(run, args):
+    &#34;&#34;&#34;
+    Push processed args onto run properties.
+    &#34;&#34;&#34;
+    if args.parflow_directory:
+        os.environ[&#34;PARFLOW_DIR&#34;] = str(args.parflow_directory)
+        settings.set_parflow_version(get_current_parflow_version())
+
+    if args.working_directory:
+        settings.set_working_directory(args.working_directory)
+
+    if args.parflow_version:
+        settings.set_parflow_version(args.parflow_version)
+
+    if args.show_line_error:
+        settings.enable_line_error()
+
+    if args.exit_on_error:
+        settings.enable_exit_error()
+
+    if args.p and run.Process.Topology.P != args.p:
+        run.Process.Topology.P = args.p
+
+    if args.q and run.Process.Topology.Q != args.q:
+        run.Process.Topology.Q = args.q
+
+    if args.r and run.Process.Topology.R != args.r:
+        run.Process.Topology.R = args.r</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="parflow.tools.core.Run"><code class="flex name class">
+<span>class <span class="ident">Run</span></span>
+<span>(</span><span>name, basescript=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Main object that can be used to define a ParFlow simulation</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name for the given run.</dd>
+<dt><strong><code>basescript</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to current file so the simulation
+execution and relative path will be assumed to have
+the script directory as their working directory.
+If not provided, the working directory will be the
+directory where the python executable was run from.</dd>
+</dl>
+<p>Create container object while keeping a reference to your parent</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Run(BaseRun):
+    &#34;&#34;&#34;Main object that can be used to define a ParFlow simulation
+
+    Args:
+        name (str): Name for the given run.
+        basescript (str): Path to current file so the simulation
+            execution and relative path will be assumed to have
+            the script directory as their working directory.
+            If not provided, the working directory will be the
+            directory where the python executable was run from.
+
+    &#34;&#34;&#34;
+    def __init__(self, name, basescript=None):
+        super().__init__(None)
+        self._process_args_ = get_process_args()
+        self._name_ = name
+        if basescript is not None:
+            full_path = get_absolute_path(basescript)
+            if os.path.isfile(full_path):
+                settings.set_working_directory(os.path.dirname(full_path))
+            else:
+                settings.set_working_directory(full_path)
+        else:
+            settings.set_working_directory()
+
+    def set_name(self, new_name):
+        &#34;&#34;&#34;Setting new name for a run
+
+        Args:
+            new_name (str): New name for run
+        &#34;&#34;&#34;
+        self._name_ = new_name
+
+    def get_name(self):
+        &#34;&#34;&#34;Returns name of run
+        &#34;&#34;&#34;
+        return self._name_
+
+    def write(self, file_name=None, file_format=&#39;pfidb&#39;, working_directory=None):
+        &#34;&#34;&#34;Method to write database file to disk
+
+        Args:
+          file_name (str): Name of the file to write.
+              If not provided, the name of the run will be used.
+          file_format (str): File extension which also represent
+              the output format to use. (pfidb, yaml, json)
+              The default is pfidb.
+
+        Returns:
+          (str): The full path to the written file.
+          (str): The full path of the run which is what should be
+              given to ParFlow executable.
+
+        &#34;&#34;&#34;
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        f_name = os.path.join(settings.WORKING_DIRECTORY,
+                              f&#39;{self._name_}.{file_format}&#39;)
+        if file_name:
+            f_name = os.path.join(settings.WORKING_DIRECTORY,
+                                  f&#39;{file_name}.{file_format}&#39;)
+        full_file_path = os.path.abspath(f_name)
+        write_dict(self.get_key_dict(), full_file_path)
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+        return full_file_path, full_file_path[:-(len(file_format)+1)]
+
+    def write_subsurface_table(self, file_name=None, working_directory=None):
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        if file_name is None:
+            file_name = f&#39;{self._name_}_subsurface.csv&#39;
+        full_path = get_absolute_path(file_name)
+        exporter = SubsurfacePropertiesExporter(self)
+        if file_name.lower().endswith(&#39;.csv&#39;):
+            exporter.write_csv(full_path)
+        else:
+            exporter.write_txt(full_path)
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+    def clone(self, name):
+        &#34;&#34;&#34;Method to generate a clone of a run (for generating
+        run ensembles, etc.)
+
+        This will return an identical run with the given name.
+        See parflow/test/python/new_features/serial_runs/serial_runs.py
+        for an example.
+
+        Args:
+          name (str): Name of the new run.
+
+        &#34;&#34;&#34;
+        new_run = Run(name)
+        new_run.pfset(flat_map=self.get_key_dict())
+        return new_run
+
+    def run(self, working_directory=None, skip_validation=False):
+        &#34;&#34;&#34;Method to run simulation
+
+        That method will automatically run the database write,
+        validation and trigger the ParFlow execution while
+        checking ParFlow output for any error.
+
+        If an error occurred a sys.exit(1) will be issue.
+
+        Args:
+          working_directory (str): Path to write output files.
+              If not provided, the default run working directory will
+              be used. This also affect the relative FileNames.
+          skip_validation (bool): Allow user to skip validation before
+              running the simulation.
+
+        &#34;&#34;&#34;
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        settings.set_parflow_version(get_current_parflow_version())
+
+        # Any provided args should override the scripts ones
+        update_run_from_args(self, self._process_args_)
+
+        file_name, run_file = self.write()
+
+        print()
+        print(f&#39;# {&#34;=&#34;*78}&#39;)
+        print(f&#39;# ParFlow directory&#39;)
+        print(f&#39;#  - {os.getenv(&#34;PARFLOW_DIR&#34;)}&#39;)
+        print(f&#39;# ParFlow version&#39;)
+        print(f&#39;#  - {settings.PARFLOW_VERSION}&#39;)
+        print(f&#39;# Working directory&#39;)
+        print(f&#39;#  - {os.path.dirname(file_name)}&#39;)
+        print(f&#39;# ParFlow database&#39;)
+        print(f&#39;#  - {os.path.basename(file_name)}&#39;)
+        print(f&#39;# {&#34;=&#34;*78}&#39;)
+
+        # Only write YAML in run()
+        if self._process_args_.writeYAML:
+            full_path, no_extension = self.write(file_format=&#39;yaml&#39;)
+            print(f&#39;YAML output: &#34;{full_path}&#34;&#39;)
+
+        print()
+        error_count = 0
+        if not (skip_validation or self._process_args_.skipValidation):
+            verbose = self._process_args_.validation_verbose
+            error_count += self.validate(verbose=verbose)
+            print()
+
+        p = self.Process.Topology.P
+        q = self.Process.Topology.Q
+        r = self.Process.Topology.R
+        num_procs = p * q * r
+
+        success = True
+        if not self._process_args_.dry_run:
+            prev_dir = os.getcwd()
+            try:
+                os.chdir(settings.WORKING_DIRECTORY)
+                os.system(f&#39;sh $PARFLOW_DIR/bin/run {run_file} {num_procs}&#39;)
+                success = check_parflow_execution(f&#39;{run_file}.out.txt&#39;)
+            finally:
+                os.chdir(prev_dir)
+
+        print()
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+        if not success or error_count &gt; 0:
+            sys.exit(1)
+
+    def dist(self, pfb_file, **kwargs):
+        &#34;&#34;&#34;Distribute a PFB file using the P/Q/R settings from the run
+        or override them with the provided arguments.
+
+        We can also use the kwargs to set other properties such as:
+          - NX, NY, NZ...
+        &#34;&#34;&#34;
+        # Any provided args should override the scripts ones
+        update_run_from_args(self, self._process_args_)
+
+        pfb_file_full_path = get_absolute_path(pfb_file)
+        p = self.Process.Topology.P
+        q = self.Process.Topology.Q
+        r = self.Process.Topology.R
+
+        if &#39;P&#39; in kwargs:
+            p = kwargs[&#39;P&#39;]
+        if &#39;Q&#39; in kwargs:
+            q = kwargs[&#39;Q&#39;]
+        if &#39;R&#39; in kwargs:
+            r = kwargs[&#39;R&#39;]
+
+        from parflowio.pyParflowio import PFData
+        pfb_data = PFData(pfb_file_full_path)
+        pfb_data.distFile(p, q, r, pfb_file_full_path)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="parflow.tools.database.generated.BaseRun" href="database/generated.html#parflow.tools.database.generated.BaseRun">BaseRun</a></li>
+<li><a title="parflow.tools.database.core.PFDBObj" href="database/core.html#parflow.tools.database.core.PFDBObj">PFDBObj</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.core.Run.clone"><code class="name flex">
+<span>def <span class="ident">clone</span></span>(<span>self, name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method to generate a clone of a run (for generating
+run ensembles, etc.)</p>
+<p>This will return an identical run with the given name.
+See parflow/test/python/new_features/serial_runs/serial_runs.py
+for an example.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the new run.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clone(self, name):
+    &#34;&#34;&#34;Method to generate a clone of a run (for generating
+    run ensembles, etc.)
+
+    This will return an identical run with the given name.
+    See parflow/test/python/new_features/serial_runs/serial_runs.py
+    for an example.
+
+    Args:
+      name (str): Name of the new run.
+
+    &#34;&#34;&#34;
+    new_run = Run(name)
+    new_run.pfset(flat_map=self.get_key_dict())
+    return new_run</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.Run.dist"><code class="name flex">
+<span>def <span class="ident">dist</span></span>(<span>self, pfb_file, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Distribute a PFB file using the P/Q/R settings from the run
+or override them with the provided arguments.</p>
+<p>We can also use the kwargs to set other properties such as:
+- NX, NY, NZ&hellip;</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dist(self, pfb_file, **kwargs):
+    &#34;&#34;&#34;Distribute a PFB file using the P/Q/R settings from the run
+    or override them with the provided arguments.
+
+    We can also use the kwargs to set other properties such as:
+      - NX, NY, NZ...
+    &#34;&#34;&#34;
+    # Any provided args should override the scripts ones
+    update_run_from_args(self, self._process_args_)
+
+    pfb_file_full_path = get_absolute_path(pfb_file)
+    p = self.Process.Topology.P
+    q = self.Process.Topology.Q
+    r = self.Process.Topology.R
+
+    if &#39;P&#39; in kwargs:
+        p = kwargs[&#39;P&#39;]
+    if &#39;Q&#39; in kwargs:
+        q = kwargs[&#39;Q&#39;]
+    if &#39;R&#39; in kwargs:
+        r = kwargs[&#39;R&#39;]
+
+    from parflowio.pyParflowio import PFData
+    pfb_data = PFData(pfb_file_full_path)
+    pfb_data.distFile(p, q, r, pfb_file_full_path)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.Run.get_name"><code class="name flex">
+<span>def <span class="ident">get_name</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns name of run</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_name(self):
+    &#34;&#34;&#34;Returns name of run
+    &#34;&#34;&#34;
+    return self._name_</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.Run.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, working_directory=None, skip_validation=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method to run simulation</p>
+<p>That method will automatically run the database write,
+validation and trigger the ParFlow execution while
+checking ParFlow output for any error.</p>
+<p>If an error occurred a sys.exit(1) will be issue.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>working_directory</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to write output files.
+If not provided, the default run working directory will
+be used. This also affect the relative FileNames.</dd>
+<dt><strong><code>skip_validation</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Allow user to skip validation before
+running the simulation.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def run(self, working_directory=None, skip_validation=False):
+    &#34;&#34;&#34;Method to run simulation
+
+    That method will automatically run the database write,
+    validation and trigger the ParFlow execution while
+    checking ParFlow output for any error.
+
+    If an error occurred a sys.exit(1) will be issue.
+
+    Args:
+      working_directory (str): Path to write output files.
+          If not provided, the default run working directory will
+          be used. This also affect the relative FileNames.
+      skip_validation (bool): Allow user to skip validation before
+          running the simulation.
+
+    &#34;&#34;&#34;
+    # overwrite current working directory
+    prev_dir = settings.WORKING_DIRECTORY
+    if working_directory:
+        settings.set_working_directory(working_directory)
+
+    settings.set_parflow_version(get_current_parflow_version())
+
+    # Any provided args should override the scripts ones
+    update_run_from_args(self, self._process_args_)
+
+    file_name, run_file = self.write()
+
+    print()
+    print(f&#39;# {&#34;=&#34;*78}&#39;)
+    print(f&#39;# ParFlow directory&#39;)
+    print(f&#39;#  - {os.getenv(&#34;PARFLOW_DIR&#34;)}&#39;)
+    print(f&#39;# ParFlow version&#39;)
+    print(f&#39;#  - {settings.PARFLOW_VERSION}&#39;)
+    print(f&#39;# Working directory&#39;)
+    print(f&#39;#  - {os.path.dirname(file_name)}&#39;)
+    print(f&#39;# ParFlow database&#39;)
+    print(f&#39;#  - {os.path.basename(file_name)}&#39;)
+    print(f&#39;# {&#34;=&#34;*78}&#39;)
+
+    # Only write YAML in run()
+    if self._process_args_.writeYAML:
+        full_path, no_extension = self.write(file_format=&#39;yaml&#39;)
+        print(f&#39;YAML output: &#34;{full_path}&#34;&#39;)
+
+    print()
+    error_count = 0
+    if not (skip_validation or self._process_args_.skipValidation):
+        verbose = self._process_args_.validation_verbose
+        error_count += self.validate(verbose=verbose)
+        print()
+
+    p = self.Process.Topology.P
+    q = self.Process.Topology.Q
+    r = self.Process.Topology.R
+    num_procs = p * q * r
+
+    success = True
+    if not self._process_args_.dry_run:
+        prev_dir = os.getcwd()
+        try:
+            os.chdir(settings.WORKING_DIRECTORY)
+            os.system(f&#39;sh $PARFLOW_DIR/bin/run {run_file} {num_procs}&#39;)
+            success = check_parflow_execution(f&#39;{run_file}.out.txt&#39;)
+        finally:
+            os.chdir(prev_dir)
+
+    print()
+
+    # revert working directory to original directory
+    settings.set_working_directory(prev_dir)
+
+    if not success or error_count &gt; 0:
+        sys.exit(1)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.Run.set_name"><code class="name flex">
+<span>def <span class="ident">set_name</span></span>(<span>self, new_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Setting new name for a run</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>new_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>New name for run</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_name(self, new_name):
+    &#34;&#34;&#34;Setting new name for a run
+
+    Args:
+        new_name (str): New name for run
+    &#34;&#34;&#34;
+    self._name_ = new_name</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.Run.write"><code class="name flex">
+<span>def <span class="ident">write</span></span>(<span>self, file_name=None, file_format='pfidb', working_directory=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method to write database file to disk</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>file_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the file to write.
+If not provided, the name of the run will be used.</dd>
+<dt><strong><code>file_format</code></strong> :&ensp;<code>str</code></dt>
+<dd>File extension which also represent
+the output format to use. (pfidb, yaml, json)
+The default is pfidb.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>(str): The full path to the written file.
+(str): The full path of the run which is what should be
+given to ParFlow executable.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write(self, file_name=None, file_format=&#39;pfidb&#39;, working_directory=None):
+    &#34;&#34;&#34;Method to write database file to disk
+
+    Args:
+      file_name (str): Name of the file to write.
+          If not provided, the name of the run will be used.
+      file_format (str): File extension which also represent
+          the output format to use. (pfidb, yaml, json)
+          The default is pfidb.
+
+    Returns:
+      (str): The full path to the written file.
+      (str): The full path of the run which is what should be
+          given to ParFlow executable.
+
+    &#34;&#34;&#34;
+    # overwrite current working directory
+    prev_dir = settings.WORKING_DIRECTORY
+    if working_directory:
+        settings.set_working_directory(working_directory)
+
+    f_name = os.path.join(settings.WORKING_DIRECTORY,
+                          f&#39;{self._name_}.{file_format}&#39;)
+    if file_name:
+        f_name = os.path.join(settings.WORKING_DIRECTORY,
+                              f&#39;{file_name}.{file_format}&#39;)
+    full_file_path = os.path.abspath(f_name)
+    write_dict(self.get_key_dict(), full_file_path)
+
+    # revert working directory to original directory
+    settings.set_working_directory(prev_dir)
+
+    return full_file_path, full_file_path[:-(len(file_format)+1)]</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.core.Run.write_subsurface_table"><code class="name flex">
+<span>def <span class="ident">write_subsurface_table</span></span>(<span>self, file_name=None, working_directory=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_subsurface_table(self, file_name=None, working_directory=None):
+    # overwrite current working directory
+    prev_dir = settings.WORKING_DIRECTORY
+    if working_directory:
+        settings.set_working_directory(working_directory)
+
+    if file_name is None:
+        file_name = f&#39;{self._name_}_subsurface.csv&#39;
+    full_path = get_absolute_path(file_name)
+    exporter = SubsurfacePropertiesExporter(self)
+    if file_name.lower().endswith(&#39;.csv&#39;):
+        exporter.write_csv(full_path)
+    else:
+        exporter.write_txt(full_path)
+
+    # revert working directory to original directory
+    settings.set_working_directory(prev_dir)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="parflow.tools.database.generated.BaseRun" href="database/generated.html#parflow.tools.database.generated.BaseRun">BaseRun</a></b></code>:
+<ul class="hlist">
+<li><code><a title="parflow.tools.database.generated.BaseRun.get_children_of_type" href="database/core.html#parflow.tools.database.core.PFDBObj.get_children_of_type">get_children_of_type</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.get_context_settings" href="database/core.html#parflow.tools.database.core.PFDBObj.get_context_settings">get_context_settings</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.get_full_key_name" href="database/core.html#parflow.tools.database.core.PFDBObj.get_full_key_name">get_full_key_name</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.get_key_dict" href="database/core.html#parflow.tools.database.core.PFDBObj.get_key_dict">get_key_dict</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.get_key_names" href="database/core.html#parflow.tools.database.core.PFDBObj.get_key_names">get_key_names</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.get_parflow_key" href="database/core.html#parflow.tools.database.core.PFDBObj.get_parflow_key">get_parflow_key</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.get_selection_from_location" href="database/core.html#parflow.tools.database.core.PFDBObj.get_selection_from_location">get_selection_from_location</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.help" href="database/core.html#parflow.tools.database.core.PFDBObj.help">help</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.pfset" href="database/core.html#parflow.tools.database.core.PFDBObj.pfset">pfset</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.process_dynamic" href="database/core.html#parflow.tools.database.core.PFDBObj.process_dynamic">process_dynamic</a></code></li>
+<li><code><a title="parflow.tools.database.generated.BaseRun.validate" href="database/core.html#parflow.tools.database.core.PFDBObj.validate">validate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.tools" href="index.html">parflow.tools</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="parflow.tools.core.check_parflow_execution" href="#parflow.tools.core.check_parflow_execution">check_parflow_execution</a></code></li>
+<li><code><a title="parflow.tools.core.get_current_parflow_version" href="#parflow.tools.core.get_current_parflow_version">get_current_parflow_version</a></code></li>
+<li><code><a title="parflow.tools.core.get_process_args" href="#parflow.tools.core.get_process_args">get_process_args</a></code></li>
+<li><code><a title="parflow.tools.core.update_run_from_args" href="#parflow.tools.core.update_run_from_args">update_run_from_args</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="parflow.tools.core.Run" href="#parflow.tools.core.Run">Run</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.core.Run.clone" href="#parflow.tools.core.Run.clone">clone</a></code></li>
+<li><code><a title="parflow.tools.core.Run.dist" href="#parflow.tools.core.Run.dist">dist</a></code></li>
+<li><code><a title="parflow.tools.core.Run.get_name" href="#parflow.tools.core.Run.get_name">get_name</a></code></li>
+<li><code><a title="parflow.tools.core.Run.run" href="#parflow.tools.core.Run.run">run</a></code></li>
+<li><code><a title="parflow.tools.core.Run.set_name" href="#parflow.tools.core.Run.set_name">set_name</a></code></li>
+<li><code><a title="parflow.tools.core.Run.write" href="#parflow.tools.core.Run.write">write</a></code></li>
+<li><code><a title="parflow.tools.core.Run.write_subsurface_table" href="#parflow.tools.core.Run.write_subsurface_table">write_subsurface_table</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

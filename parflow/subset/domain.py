@@ -220,10 +220,25 @@ class Conus(ParflowDomain):
         if manifest_file is None:
             manifest_file = data.conus_manifest
         super().__init__('conus', local_path, manifest_file, version)
-        # self.mask_array = self.mask_tif.ReadAsArray()
         # had to do this because conus1 full_dim_mask is all 0's
         if self.version == 1:
             self.mask_array = self.get_domain_mask() + 1
+            self.mask_array = self.mask_array * 3
+            self._patch_map = {1: 'land', 3: 'top', 5: 'sink', 6: 'bottom'}
+        elif self.version == 2:
+            self._patch_map = {1: 'ocean', 2: 'land', 3: 'top', 4: 'lakes', 5: 'sink', 6: 'bottom'}
+        self._border_mask = None
+
+    def get_border_mask(self):
+        if self._border_mask is None:
+            tif_filename = os.path.join(self.local_path, self.required_files.get('CELL_TYPES'))
+            self._border_mask = file_io_tools.read_file(tif_filename)
+            if self.version == 1:
+                self._border_mask = self._border_mask + 1
+        return self._border_mask
+
+    def get_patch_name(self, patch_id):
+        return self._patch_map.get(patch_id)
 
     def __repr__(self):
         return f"{self.__class__.__name__}(name:{self.name!r}, version:{self.version!r}, " \

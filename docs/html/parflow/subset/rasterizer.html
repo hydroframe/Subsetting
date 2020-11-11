@@ -94,7 +94,7 @@ class ShapefileRasterizer:
 
         Parameters
         ----------
-        attribute_ids : str
+        attribute_ids : list of ints
             list of attribute ID values to select (Default value = None)
         dtype : gdal.datatype
             the datatype to write (Default value = gdal.GDT_Int32)
@@ -274,7 +274,7 @@ class ShapefileRasterizer:
 
         Parameters
         ----------
-        attribute_ids : str
+        attribute_ids : list of ints
             list of attribute ID values to select (Default value = None)
         dtype : gdal.datatype
             the datatype to write (Default value = gdal.GDT_Int32)
@@ -458,7 +458,7 @@ Returns</p>
 <dd>
 <div class="desc"><h2 id="parameters">Parameters</h2>
 <dl>
-<dt><strong><code>attribute_ids</code></strong> :&ensp;<code>str</code></dt>
+<dt><strong><code>attribute_ids</code></strong> :&ensp;<code>list</code> of <code>ints</code></dt>
 <dd>list of attribute ID values to select (Default value = None)</dd>
 <dt><strong><code>dtype</code></strong> :&ensp;<code>gdal.datatype</code></dt>
 <dd>the datatype to write (Default value = gdal.GDT_Int32)</dd>
@@ -481,7 +481,7 @@ Returns</p>
 
     Parameters
     ----------
-    attribute_ids : str
+    attribute_ids : list of ints
         list of attribute ID values to select (Default value = None)
     dtype : gdal.datatype
         the datatype to write (Default value = gdal.GDT_Int32)

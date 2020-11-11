@@ -116,6 +116,16 @@ class BBox:
         y_end = y_0 + self.pad_top + self.pad_bottom + self.ny
         return y_0, y_end, x_0, x_end
 
+    def get_padding(self):
+        &#34;&#34;&#34; get the padding values for the bbox
+
+        Returns
+        -------
+        tuple of ints
+            padding values in (top, right, bot, left) format
+        &#34;&#34;&#34;
+        return tuple([self.pad_top, self.pad_right, self.pad_bottom, self.pad_left])
+
     def get_system_bbox(self):
         &#34;&#34;&#34;get 0&#39;s based bbox values
         &#34;&#34;&#34;
@@ -257,6 +267,16 @@ default=(0,0,0,0)</dd>
         y_end = y_0 + self.pad_top + self.pad_bottom + self.ny
         return y_0, y_end, x_0, x_end
 
+    def get_padding(self):
+        &#34;&#34;&#34; get the padding values for the bbox
+
+        Returns
+        -------
+        tuple of ints
+            padding values in (top, right, bot, left) format
+        &#34;&#34;&#34;
+        return tuple([self.pad_top, self.pad_right, self.pad_bottom, self.pad_left])
+
     def get_system_bbox(self):
         &#34;&#34;&#34;get 0&#39;s based bbox values
         &#34;&#34;&#34;
@@ -364,6 +384,31 @@ default=(0,0,0,0)</dd>
     return y_0, y_end, x_0, x_end</code></pre>
 </details>
 </dd>
+<dt id="parflow.subset.bbox.BBox.get_padding"><code class="name flex">
+<span>def <span class="ident">get_padding</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the padding values for the bbox</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code> of <code>ints</code></dt>
+<dd>padding values in (top, right, bot, left) format</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_padding(self):
+    &#34;&#34;&#34; get the padding values for the bbox
+
+    Returns
+    -------
+    tuple of ints
+        padding values in (top, right, bot, left) format
+    &#34;&#34;&#34;
+    return tuple([self.pad_top, self.pad_right, self.pad_bottom, self.pad_left])</code></pre>
+</details>
+</dd>
 <dt id="parflow.subset.bbox.BBox.get_system_bbox"><code class="name flex">
 <span>def <span class="ident">get_system_bbox</span></span>(<span>self)</span>
 </code></dt>
@@ -403,6 +448,7 @@ default=(0,0,0,0)</dd>
 <li><code><a title="parflow.subset.bbox.BBox.get_human_bbox" href="#parflow.subset.bbox.BBox.get_human_bbox">get_human_bbox</a></code></li>
 <li><code><a title="parflow.subset.bbox.BBox.get_inner_extents" href="#parflow.subset.bbox.BBox.get_inner_extents">get_inner_extents</a></code></li>
 <li><code><a title="parflow.subset.bbox.BBox.get_padded_extents" href="#parflow.subset.bbox.BBox.get_padded_extents">get_padded_extents</a></code></li>
+<li><code><a title="parflow.subset.bbox.BBox.get_padding" href="#parflow.subset.bbox.BBox.get_padding">get_padding</a></code></li>
 <li><code><a title="parflow.subset.bbox.BBox.get_system_bbox" href="#parflow.subset.bbox.BBox.get_system_bbox">get_system_bbox</a></code></li>
 </ul>
 </li>

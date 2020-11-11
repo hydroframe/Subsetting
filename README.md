@@ -66,6 +66,7 @@ For CONUS1 and CONUS2 domains, local copies of model input files are required.
       PME: PmE.flux.pfb
       SLOPE_X: slopex.pfb
       SLOPE_Y: slopey.pfb
+      CELL_TYPES: Domain_Blank_Mask.tif
     optional_files:
       LAND_COVER: conus1_landcover.sa
       LAT_LON: conus1_Grid_Centers_Short_Deg.format.sa
@@ -74,20 +75,15 @@ For CONUS1 and CONUS2 domains, local copies of model input files are required.
 #### CONUS2 Files
 
     required_files:
-      DOMAIN_MASK: conus_1km_PFmask2.tif
+      DOMAIN_MASK: CONUS2.0.Final1km.SinksAndSelectLakes.Mask.tif
       SUBSURFACE_DATA: 3d-grid.v3.tif
       PME: PME.tif
-      SLOPE_X: Str3Ep0_smth.rvth_1500.mx0.5.mn5.sec0.up_slopex.tif
-      SLOPE_Y: Str3Ep0_smth.rvth_1500.mx0.5.mn5.sec0.up_slopey.tif
-      SINKS: conus_1km_PFmask_manualsinks.tif
-      RESERVOIRS: conus_1km_PFmask_reservoirs.tif
-      LAKE_BORDER: conus_1km_PFmask_selectLakesborder.tif
-      LAKE_MASK: conus_1km_PFmask_selectLakesmask.tif
-      CHANNELS: 1km_upscaledNWM_ChannelOrder5_mod2.tif
-      CELL_TYPES: 1km_PF_BorderCellType.tif
+      SLOPE_X: CONUS2.0.Final1km.slopex.tif
+      SLOPE_Y: CONUS2.0.Final1km.slopey.tif
+      CELL_TYPES: CONUS2.0.Final1km.Border.Type.tif
     optional_files:
       LAND_COVER: 1km_CONUS2_landcover_IGBP.tif
-      LAT_LON: latlonCONUS2.sa
+      LAT_LON: CONUS2.0.Final.LatLong.sa
       DEM: CONUS2.0_RawDEM.tif
 
 **Local Filenames**
@@ -147,13 +143,13 @@ python -m parflow.subset.tools.rasterize_shape -i <path_to_shapefile_parts> -s <
 
 Re-project the shapefile at ~/downloads/shapfiles/WBDHU8.shp to the CONUS1 projection and extent
 ```
-python -m parflow.subset.tools.rasterize_shape -i ~/downloads/shapefiles -s WBDHU8
+python -m parflow.subset.tools.rasterize_shape -i ~/downloads/shapefiles -s WBDHU8 -r ~/conus_inputs/1/Domain_Blank_Mask.tif
 ```
 
 
 #### Use a mask to clip multiple files to PFB or TIF
 
-assumes all files are identically gridded and same as the mask file, if write_tifs=1 then you
+assumes all files are identically gridded and same as the mask file. If setting the `--tif_outs` flag then you
 must supply at least one tif with correct projection and transform information as either the mask file, 
 as a reference dataset with the -r option, or in the list of datafiles to clip
 ```

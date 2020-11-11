@@ -59,18 +59,6 @@ class Clipper(ABC):
 
 class BoxClipper(Clipper):
     &#34;&#34;&#34;Clip a rectangular data region specified by a bounding box
- self.padding = padding
-        self.no_data = no_data
-        self.ref_array = ref_array
-        if nx is None:
-            nx = self.ref_array.shape[2]
-        if ny is None:
-            ny = self.ref_array.shape[1]
-        if nz is None:
-            nz = self.ref_array.shape[0]
-        if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
-            raise Exception(&#34;Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1&#34;)
-        self.update_bbox(x, y, z, nx, ny, nz, padding)
     &#34;&#34;&#34;
     def __repr__(self):
         return f&#34;{self.__class__.__name__}(x_0:{self.x_0}, x_end:{self.x_end}, y_0:{self.y_0}, y_end:{self.y_end}, &#34; \
@@ -185,11 +173,10 @@ class BoxClipper(Clipper):
             # create a full dimensioned array of no_data_values
             ret_array = np.full(shape=(self.nz,
                                 self.ny + self.padding[0] + self.padding[2],
-                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=np.float64)
+                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=data_array.dtype)
             # assign values from the data_array into the return array, mind the padding
             ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
-            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,
-                                                                    self.x_0:self.x_end]
+            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
         else:
             ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
         return ret_array, None, None, None
@@ -293,7 +280,8 @@ class ClmClipper:
             BBox object describing the mask bounds
         &#34;&#34;&#34;
         self.bbox = bbox.get_human_bbox()
-        self.clipper = BoxClipper(ref_array=None, x=self.bbox[0], y=self.bbox[1], nx=self.bbox[2], ny=self.bbox[3],
+        padded_extents = bbox.get_padded_extents()
+        self.clipper = BoxClipper(ref_array=None, x=padded_extents[2]+1, y=padded_extents[0]+1, nx=padded_extents[3]-padded_extents[2], ny=padded_extents[1]-padded_extents[0],
                                   nz=1)
 
     def clip_latlon(self, lat_lon_file):
@@ -424,19 +412,7 @@ class ClmClipper:
 <span>(</span><span>ref_array, x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=-999)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Clip a rectangular data region specified by a bounding box
-self.padding = padding
-self.no_data = no_data
-self.ref_array = ref_array
-if nx is None:
-nx = self.ref_array.shape[2]
-if ny is None:
-ny = self.ref_array.shape[1]
-if nz is None:
-nz = self.ref_array.shape[0]
-if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
-raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1")
-self.update_bbox(x, y, z, nx, ny, nz, padding)</p>
+<div class="desc"><p>Clip a rectangular data region specified by a bounding box</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>ref_array</code></strong> :&ensp;<code>ndarray</code></dt>
@@ -474,18 +450,6 @@ self.update_bbox(x, y, z, nx, ny, nz, padding)</p>
 </summary>
 <pre><code class="python">class BoxClipper(Clipper):
     &#34;&#34;&#34;Clip a rectangular data region specified by a bounding box
- self.padding = padding
-        self.no_data = no_data
-        self.ref_array = ref_array
-        if nx is None:
-            nx = self.ref_array.shape[2]
-        if ny is None:
-            ny = self.ref_array.shape[1]
-        if nz is None:
-            nz = self.ref_array.shape[0]
-        if nx &lt; 1 or ny &lt; 1 or nz &lt; 1 or x &lt; 1 or y &lt; 1 or z &lt; 1:
-            raise Exception(&#34;Error: invalid dimension, x,y,z nx, ny, nz must be &gt;=1&#34;)
-        self.update_bbox(x, y, z, nx, ny, nz, padding)
     &#34;&#34;&#34;
     def __repr__(self):
         return f&#34;{self.__class__.__name__}(x_0:{self.x_0}, x_end:{self.x_end}, y_0:{self.y_0}, y_end:{self.y_end}, &#34; \
@@ -600,11 +564,10 @@ self.update_bbox(x, y, z, nx, ny, nz, padding)</p>
             # create a full dimensioned array of no_data_values
             ret_array = np.full(shape=(self.nz,
                                 self.ny + self.padding[0] + self.padding[2],
-                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=np.float64)
+                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=data_array.dtype)
             # assign values from the data_array into the return array, mind the padding
             ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
-            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,
-                                                                    self.x_0:self.x_end]
+            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
         else:
             ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
         return ret_array, None, None, None</code></pre>
@@ -655,11 +618,10 @@ self.update_bbox(x, y, z, nx, ny, nz, padding)</p>
         # create a full dimensioned array of no_data_values
         ret_array = np.full(shape=(self.nz,
                             self.ny + self.padding[0] + self.padding[2],
-                            self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=np.float64)
+                            self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=data_array.dtype)
         # assign values from the data_array into the return array, mind the padding
         ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
-        self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,
-                                                                self.x_0:self.x_end]
+        self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
     else:
         ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
     return ret_array, None, None, None</code></pre>
@@ -848,7 +810,8 @@ def subset(self, data_array):
             BBox object describing the mask bounds
         &#34;&#34;&#34;
         self.bbox = bbox.get_human_bbox()
-        self.clipper = BoxClipper(ref_array=None, x=self.bbox[0], y=self.bbox[1], nx=self.bbox[2], ny=self.bbox[3],
+        padded_extents = bbox.get_padded_extents()
+        self.clipper = BoxClipper(ref_array=None, x=padded_extents[2]+1, y=padded_extents[0]+1, nx=padded_extents[3]-padded_extents[2], ny=padded_extents[1]-padded_extents[0],
                                   nz=1)
 
     def clip_latlon(self, lat_lon_file):

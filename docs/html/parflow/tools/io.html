@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.tools.io API documentation</title>
+<meta name="description" content="io module …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.tools.io</code></h1>
+</header>
+<section id="section-intro">
+<p>io module</p>
+<p>Helper functions to load or write files</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: utf-8 -*-
+&#34;&#34;&#34;io module
+
+Helper functions to load or write files
+&#34;&#34;&#34;
+
+import os
+import json
+import yaml
+import numpy as np
+
+from .fs import get_absolute_path
+from .helper import sort_dict, get_or_create_dict
+
+try:
+    from yaml import CDumper as YAMLDumper
+except ImportError:
+    from yaml import Dumper as YAMLDumper
+
+# -----------------------------------------------------------------------------
+
+def load_patch_matrix_from_pfb_file(file_name, layer=None):
+    from parflowio.pyParflowio import PFData
+    data = PFData(file_name)
+    data.loadHeader()
+    data.loadData()
+    data_array = data.viewDataArray()
+
+    if data_array.ndim == 3:
+        nlayer, nrows, ncols = data_array.shape
+        if layer:
+            nlayer = layer
+        return data_array[nlayer-1, :, :]
+
+    elif data_array.ndim == 2:
+        return data_array
+
+    else:
+        print(f&#39;invalid PFB file: {file_name}&#39;)
+
+    return
+
+# -----------------------------------------------------------------------------
+
+def load_patch_matrix_from_image_file(file_name, color_to_patch=None, fall_back_id=0):
+    import imageio
+    im = imageio.imread(file_name)
+    height, width, color = im.shape
+    matrix = np.zeros((height, width), dtype=np.int16)
+    if color_to_patch is None:
+        for j in range(height):
+            for i in range(width):
+                if im[j, i, 0] != 255:
+                    matrix[j, i] = 1
+    else:
+        size1 = set()
+        size2 = set()
+        size3 = set()
+        colors = []
+        to_key_1 = lambda c: f&#39;{c[0]}&#39;
+        to_key_2 = lambda c: f&#39;{c[0]},{c[1]}&#39;
+        to_key_3 = lambda c: f&#39;{c[0]},{c[1]},{c[2]}&#39;
+
+        for key, value in color_to_patch.items():
+            hexColor = key.lstrip(&#39;#&#39;)
+            color = tuple(int(hexColor[i:i+2], 16) for i in (0, 2, 4))
+            colors.append((color, value))
+            size1.add(to_key_1(color))
+            size2.add(to_key_2(color))
+            size3.add(to_key_3(color))
+
+        to_key = None
+        if len(colors) == len(size3):
+            to_key = to_key_3
+        if len(colors) == len(size2):
+            to_key = to_key_2
+        if len(colors) == len(size1):
+            to_key = to_key_1
+
+        print(f&#39;Sizes: colors({len(colors)}), 1({len(size1)}), 2({len(size2)}), 3({len(size3)})&#39;)
+
+        if to_key is None:
+            raise Exception(&#39;You have duplicate colors&#39;)
+
+        fast_map = {}
+        for color_patch in colors:
+            fast_map[to_key(color_patch[0])] = color_patch[1]
+
+        for j in range(height):
+            for i in range(width):
+                key = to_key(im[j, i])
+                try:
+                    matrix[j, i] = fast_map[key]
+                except:
+                    matrix[j, i] = fall_back_id
+
+    return np.flip(matrix, 0)
+
+# -----------------------------------------------------------------------------
+
+def load_patch_matrix_from_asc_file(file_name):
+    ncols = -1
+    nrows = -1
+    in_header = True
+    nb_line_to_skip = 0
+    with open(file_name) as f:
+        while in_header:
+            line = f.readline()
+            try:
+                int(line)
+                in_header = False
+            except:
+                key, value = line.split()
+                if key == &#39;ncols&#39;:
+                    ncols = int(value)
+                if key == &#39;nrows&#39;:
+                    nrows = int(value)
+                nb_line_to_skip += 1
+
+    matrix = np.loadtxt(file_name, skiprows=nb_line_to_skip, dtype=np.int16)
+    matrix.shape = (nrows, ncols)
+
+    return np.flip(matrix, 0)
+
+# -----------------------------------------------------------------------------
+
+def load_patch_matrix_from_sa_file(file_name):
+    iSize = -1
+    jSize = -1
+    kSize = -1
+    with open(file_name) as f:
+        iSize, jSize, kSize = map(int, f.readline().split())
+
+    matrix = np.loadtxt(file_name, skiprows=1, dtype=np.int16)
+    matrix.shape = (jSize, iSize)
+    return matrix
+
+# -----------------------------------------------------------------------------
+
+def write_patch_matrix_as_asc(matrix, file_name, xllcorner=0.0, yllcorner=0.0, cellsize=1.0, NODATA_value=0, **kwargs):
+    &#34;&#34;&#34;Write asc for pfsol&#34;&#34;&#34;
+    height, width = matrix.shape
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(f&#39;ncols          {width}\n&#39;)
+        out.write(f&#39;nrows          {height}\n&#39;)
+        out.write(f&#39;xllcorner      {xllcorner}\n&#39;)
+        out.write(f&#39;yllcorner      {yllcorner}\n&#39;)
+        out.write(f&#39;cellsize       {cellsize}\n&#39;)
+        out.write(f&#39;NODATA_value   {NODATA_value}\n&#39;)
+        # asc are vertically flipped
+        for j in range(height):
+            for i in range(width):
+                out.write(f&#39;{matrix[height - j - 1, i]}\n&#39;)
+
+# -----------------------------------------------------------------------------
+
+def write_patch_matrix_as_sa(matrix, file_name, **kwargs):
+    &#34;&#34;&#34;Write asc for pfsol&#34;&#34;&#34;
+    nrows, ncols = matrix.shape
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(f&#39;{ncols} {nrows} 1\n&#39;)
+        it = np.nditer(matrix)
+        for value in it:
+            out.write(f&#39;{value}\n&#39;)
+
+# -----------------------------------------------------------------------------
+
+def write_dict_as_pfidb(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict in a pfidb format inside the provided file_name
+    &#34;&#34;&#34;
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(f&#39;{len(dict_obj)}\n&#39;)
+        for key in dict_obj:
+            out.write(f&#39;{len(key)}\n&#39;)
+            out.write(f&#39;{key}\n&#39;)
+            value = dict_obj[key]
+            out.write(f&#39;{len(str(value))}\n&#39;)
+            out.write(f&#39;{str(value)}\n&#39;)
+
+# -----------------------------------------------------------------------------
+
+def write_dict_as_yaml(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict in a pfidb format inside the provided file_name
+    &#34;&#34;&#34;
+    yamlObj = {}
+    overriden_keys = {}
+    for key, value in dict_obj.items():
+        keys_path = key.split(&#39;.&#39;)
+        get_or_create_dict(
+            yamlObj, keys_path[:-1], overriden_keys)[keys_path[-1]] = value
+
+    # Push value back to yaml
+    for key, value in overriden_keys.items():
+      keys_path = key.split(&#39;.&#39;)
+      valueObj = get_or_create_dict(yamlObj, keys_path, {})
+      valueObj[&#39;$_&#39;] = value
+
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(yaml.dump(sort_dict(yamlObj), Dumper=YAMLDumper))
+
+# -----------------------------------------------------------------------------
+
+def write_dict_as_json(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict in a json format inside the provided file_name
+    &#34;&#34;&#34;
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(json.dumps(dict_obj, indent=2))
+
+# -----------------------------------------------------------------------------
+
+def write_dict(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict into a file_name using the extension to
+    determine its format.
+    &#34;&#34;&#34;
+    # Always write a sorted dictionary
+    sorted_dict = sort_dict(dict_obj)
+
+    ext = file_name.split(&#39;.&#39;).pop().lower()
+    if ext in [&#39;yaml&#39;, &#39;yml&#39;]:
+        write_dict_as_yaml(sorted_dict, file_name)
+    elif ext == &#39;pfidb&#39;:
+        write_dict_as_pfidb(sorted_dict, file_name)
+    elif ext == &#39;json&#39;:
+        write_dict_as_json(sorted_dict, file_name)
+    else:
+        print(f&#39;Could not find writer for {file_name}&#39;)
+
+# -----------------------------------------------------------------------------
+
+def to_native_type(string):
+    &#34;&#34;&#34;Converting a string to a value in native format.
+    Used for converting .pfidb files
+    &#34;&#34;&#34;
+    types_to_try = [int, float]
+    for t in types_to_try:
+        try:
+            return t(string)
+        except ValueError:
+            pass
+    return string
+
+# -----------------------------------------------------------------------------
+
+def read_pfidb(file_path):
+    &#34;&#34;&#34;Load pfidb file into a Python dict
+    &#34;&#34;&#34;
+    result_dict = {}
+    action = &#39;nb_lines&#39;  # nbLines, size, string
+    size = 0
+    key = &#39;&#39;
+    value = &#39;&#39;
+    string_type_count = 0
+    full_path = get_absolute_path(file_path)
+
+    with open(full_path, &#39;r&#39;) as input_file:
+        for line in input_file:
+            if action == &#39;string&#39;:
+                if string_type_count % 2 == 0:
+                    key = line[:size]
+                else:
+                    value = line[:size]
+                    result_dict[key] = to_native_type(value)
+                string_type_count += 1
+                action = &#39;size&#39;
+
+            elif action == &#39;size&#39;:
+                size = int(line)
+                action = &#39;string&#39;
+
+            elif action == &#39;nb_lines&#39;:
+                action = &#39;size&#39;
+
+    return result_dict
+
+# -----------------------------------------------------------------------------
+
+def read_yaml(file_path):
+  &#34;&#34;&#34;Load yaml file into a Python dict
+  &#34;&#34;&#34;
+  if os.path.exists(file_path):
+    with open(file_path, &#39;r&#39;) as txt_file:
+      return yaml.safe_load(txt_file.read())
+
+  return {}</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="parflow.tools.io.load_patch_matrix_from_asc_file"><code class="name flex">
+<span>def <span class="ident">load_patch_matrix_from_asc_file</span></span>(<span>file_name)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_patch_matrix_from_asc_file(file_name):
+    ncols = -1
+    nrows = -1
+    in_header = True
+    nb_line_to_skip = 0
+    with open(file_name) as f:
+        while in_header:
+            line = f.readline()
+            try:
+                int(line)
+                in_header = False
+            except:
+                key, value = line.split()
+                if key == &#39;ncols&#39;:
+                    ncols = int(value)
+                if key == &#39;nrows&#39;:
+                    nrows = int(value)
+                nb_line_to_skip += 1
+
+    matrix = np.loadtxt(file_name, skiprows=nb_line_to_skip, dtype=np.int16)
+    matrix.shape = (nrows, ncols)
+
+    return np.flip(matrix, 0)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.load_patch_matrix_from_image_file"><code class="name flex">
+<span>def <span class="ident">load_patch_matrix_from_image_file</span></span>(<span>file_name, color_to_patch=None, fall_back_id=0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_patch_matrix_from_image_file(file_name, color_to_patch=None, fall_back_id=0):
+    import imageio
+    im = imageio.imread(file_name)
+    height, width, color = im.shape
+    matrix = np.zeros((height, width), dtype=np.int16)
+    if color_to_patch is None:
+        for j in range(height):
+            for i in range(width):
+                if im[j, i, 0] != 255:
+                    matrix[j, i] = 1
+    else:
+        size1 = set()
+        size2 = set()
+        size3 = set()
+        colors = []
+        to_key_1 = lambda c: f&#39;{c[0]}&#39;
+        to_key_2 = lambda c: f&#39;{c[0]},{c[1]}&#39;
+        to_key_3 = lambda c: f&#39;{c[0]},{c[1]},{c[2]}&#39;
+
+        for key, value in color_to_patch.items():
+            hexColor = key.lstrip(&#39;#&#39;)
+            color = tuple(int(hexColor[i:i+2], 16) for i in (0, 2, 4))
+            colors.append((color, value))
+            size1.add(to_key_1(color))
+            size2.add(to_key_2(color))
+            size3.add(to_key_3(color))
+
+        to_key = None
+        if len(colors) == len(size3):
+            to_key = to_key_3
+        if len(colors) == len(size2):
+            to_key = to_key_2
+        if len(colors) == len(size1):
+            to_key = to_key_1
+
+        print(f&#39;Sizes: colors({len(colors)}), 1({len(size1)}), 2({len(size2)}), 3({len(size3)})&#39;)
+
+        if to_key is None:
+            raise Exception(&#39;You have duplicate colors&#39;)
+
+        fast_map = {}
+        for color_patch in colors:
+            fast_map[to_key(color_patch[0])] = color_patch[1]
+
+        for j in range(height):
+            for i in range(width):
+                key = to_key(im[j, i])
+                try:
+                    matrix[j, i] = fast_map[key]
+                except:
+                    matrix[j, i] = fall_back_id
+
+    return np.flip(matrix, 0)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.load_patch_matrix_from_pfb_file"><code class="name flex">
+<span>def <span class="ident">load_patch_matrix_from_pfb_file</span></span>(<span>file_name, layer=None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_patch_matrix_from_pfb_file(file_name, layer=None):
+    from parflowio.pyParflowio import PFData
+    data = PFData(file_name)
+    data.loadHeader()
+    data.loadData()
+    data_array = data.viewDataArray()
+
+    if data_array.ndim == 3:
+        nlayer, nrows, ncols = data_array.shape
+        if layer:
+            nlayer = layer
+        return data_array[nlayer-1, :, :]
+
+    elif data_array.ndim == 2:
+        return data_array
+
+    else:
+        print(f&#39;invalid PFB file: {file_name}&#39;)
+
+    return</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.load_patch_matrix_from_sa_file"><code class="name flex">
+<span>def <span class="ident">load_patch_matrix_from_sa_file</span></span>(<span>file_name)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_patch_matrix_from_sa_file(file_name):
+    iSize = -1
+    jSize = -1
+    kSize = -1
+    with open(file_name) as f:
+        iSize, jSize, kSize = map(int, f.readline().split())
+
+    matrix = np.loadtxt(file_name, skiprows=1, dtype=np.int16)
+    matrix.shape = (jSize, iSize)
+    return matrix</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.read_pfidb"><code class="name flex">
+<span>def <span class="ident">read_pfidb</span></span>(<span>file_path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load pfidb file into a Python dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_pfidb(file_path):
+    &#34;&#34;&#34;Load pfidb file into a Python dict
+    &#34;&#34;&#34;
+    result_dict = {}
+    action = &#39;nb_lines&#39;  # nbLines, size, string
+    size = 0
+    key = &#39;&#39;
+    value = &#39;&#39;
+    string_type_count = 0
+    full_path = get_absolute_path(file_path)
+
+    with open(full_path, &#39;r&#39;) as input_file:
+        for line in input_file:
+            if action == &#39;string&#39;:
+                if string_type_count % 2 == 0:
+                    key = line[:size]
+                else:
+                    value = line[:size]
+                    result_dict[key] = to_native_type(value)
+                string_type_count += 1
+                action = &#39;size&#39;
+
+            elif action == &#39;size&#39;:
+                size = int(line)
+                action = &#39;string&#39;
+
+            elif action == &#39;nb_lines&#39;:
+                action = &#39;size&#39;
+
+    return result_dict</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.read_yaml"><code class="name flex">
+<span>def <span class="ident">read_yaml</span></span>(<span>file_path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Load yaml file into a Python dict</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_yaml(file_path):
+  &#34;&#34;&#34;Load yaml file into a Python dict
+  &#34;&#34;&#34;
+  if os.path.exists(file_path):
+    with open(file_path, &#39;r&#39;) as txt_file:
+      return yaml.safe_load(txt_file.read())
+
+  return {}</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.to_native_type"><code class="name flex">
+<span>def <span class="ident">to_native_type</span></span>(<span>string)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Converting a string to a value in native format.
+Used for converting .pfidb files</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def to_native_type(string):
+    &#34;&#34;&#34;Converting a string to a value in native format.
+    Used for converting .pfidb files
+    &#34;&#34;&#34;
+    types_to_try = [int, float]
+    for t in types_to_try:
+        try:
+            return t(string)
+        except ValueError:
+            pass
+    return string</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.write_dict"><code class="name flex">
+<span>def <span class="ident">write_dict</span></span>(<span>dict_obj, file_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write a Python dict into a file_name using the extension to
+determine its format.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_dict(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict into a file_name using the extension to
+    determine its format.
+    &#34;&#34;&#34;
+    # Always write a sorted dictionary
+    sorted_dict = sort_dict(dict_obj)
+
+    ext = file_name.split(&#39;.&#39;).pop().lower()
+    if ext in [&#39;yaml&#39;, &#39;yml&#39;]:
+        write_dict_as_yaml(sorted_dict, file_name)
+    elif ext == &#39;pfidb&#39;:
+        write_dict_as_pfidb(sorted_dict, file_name)
+    elif ext == &#39;json&#39;:
+        write_dict_as_json(sorted_dict, file_name)
+    else:
+        print(f&#39;Could not find writer for {file_name}&#39;)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.write_dict_as_json"><code class="name flex">
+<span>def <span class="ident">write_dict_as_json</span></span>(<span>dict_obj, file_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write a Python dict in a json format inside the provided file_name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_dict_as_json(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict in a json format inside the provided file_name
+    &#34;&#34;&#34;
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(json.dumps(dict_obj, indent=2))</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.write_dict_as_pfidb"><code class="name flex">
+<span>def <span class="ident">write_dict_as_pfidb</span></span>(<span>dict_obj, file_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write a Python dict in a pfidb format inside the provided file_name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_dict_as_pfidb(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict in a pfidb format inside the provided file_name
+    &#34;&#34;&#34;
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(f&#39;{len(dict_obj)}\n&#39;)
+        for key in dict_obj:
+            out.write(f&#39;{len(key)}\n&#39;)
+            out.write(f&#39;{key}\n&#39;)
+            value = dict_obj[key]
+            out.write(f&#39;{len(str(value))}\n&#39;)
+            out.write(f&#39;{str(value)}\n&#39;)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.write_dict_as_yaml"><code class="name flex">
+<span>def <span class="ident">write_dict_as_yaml</span></span>(<span>dict_obj, file_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write a Python dict in a pfidb format inside the provided file_name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_dict_as_yaml(dict_obj, file_name):
+    &#34;&#34;&#34;Write a Python dict in a pfidb format inside the provided file_name
+    &#34;&#34;&#34;
+    yamlObj = {}
+    overriden_keys = {}
+    for key, value in dict_obj.items():
+        keys_path = key.split(&#39;.&#39;)
+        get_or_create_dict(
+            yamlObj, keys_path[:-1], overriden_keys)[keys_path[-1]] = value
+
+    # Push value back to yaml
+    for key, value in overriden_keys.items():
+      keys_path = key.split(&#39;.&#39;)
+      valueObj = get_or_create_dict(yamlObj, keys_path, {})
+      valueObj[&#39;$_&#39;] = value
+
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(yaml.dump(sort_dict(yamlObj), Dumper=YAMLDumper))</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.write_patch_matrix_as_asc"><code class="name flex">
+<span>def <span class="ident">write_patch_matrix_as_asc</span></span>(<span>matrix, file_name, xllcorner=0.0, yllcorner=0.0, cellsize=1.0, NODATA_value=0, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write asc for pfsol</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_patch_matrix_as_asc(matrix, file_name, xllcorner=0.0, yllcorner=0.0, cellsize=1.0, NODATA_value=0, **kwargs):
+    &#34;&#34;&#34;Write asc for pfsol&#34;&#34;&#34;
+    height, width = matrix.shape
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(f&#39;ncols          {width}\n&#39;)
+        out.write(f&#39;nrows          {height}\n&#39;)
+        out.write(f&#39;xllcorner      {xllcorner}\n&#39;)
+        out.write(f&#39;yllcorner      {yllcorner}\n&#39;)
+        out.write(f&#39;cellsize       {cellsize}\n&#39;)
+        out.write(f&#39;NODATA_value   {NODATA_value}\n&#39;)
+        # asc are vertically flipped
+        for j in range(height):
+            for i in range(width):
+                out.write(f&#39;{matrix[height - j - 1, i]}\n&#39;)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.io.write_patch_matrix_as_sa"><code class="name flex">
+<span>def <span class="ident">write_patch_matrix_as_sa</span></span>(<span>matrix, file_name, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write asc for pfsol</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_patch_matrix_as_sa(matrix, file_name, **kwargs):
+    &#34;&#34;&#34;Write asc for pfsol&#34;&#34;&#34;
+    nrows, ncols = matrix.shape
+    with open(file_name, &#39;w&#39;) as out:
+        out.write(f&#39;{ncols} {nrows} 1\n&#39;)
+        it = np.nditer(matrix)
+        for value in it:
+            out.write(f&#39;{value}\n&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.tools" href="index.html">parflow.tools</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="parflow.tools.io.load_patch_matrix_from_asc_file" href="#parflow.tools.io.load_patch_matrix_from_asc_file">load_patch_matrix_from_asc_file</a></code></li>
+<li><code><a title="parflow.tools.io.load_patch_matrix_from_image_file" href="#parflow.tools.io.load_patch_matrix_from_image_file">load_patch_matrix_from_image_file</a></code></li>
+<li><code><a title="parflow.tools.io.load_patch_matrix_from_pfb_file" href="#parflow.tools.io.load_patch_matrix_from_pfb_file">load_patch_matrix_from_pfb_file</a></code></li>
+<li><code><a title="parflow.tools.io.load_patch_matrix_from_sa_file" href="#parflow.tools.io.load_patch_matrix_from_sa_file">load_patch_matrix_from_sa_file</a></code></li>
+<li><code><a title="parflow.tools.io.read_pfidb" href="#parflow.tools.io.read_pfidb">read_pfidb</a></code></li>
+<li><code><a title="parflow.tools.io.read_yaml" href="#parflow.tools.io.read_yaml">read_yaml</a></code></li>
+<li><code><a title="parflow.tools.io.to_native_type" href="#parflow.tools.io.to_native_type">to_native_type</a></code></li>
+<li><code><a title="parflow.tools.io.write_dict" href="#parflow.tools.io.write_dict">write_dict</a></code></li>
+<li><code><a title="parflow.tools.io.write_dict_as_json" href="#parflow.tools.io.write_dict_as_json">write_dict_as_json</a></code></li>
+<li><code><a title="parflow.tools.io.write_dict_as_pfidb" href="#parflow.tools.io.write_dict_as_pfidb">write_dict_as_pfidb</a></code></li>
+<li><code><a title="parflow.tools.io.write_dict_as_yaml" href="#parflow.tools.io.write_dict_as_yaml">write_dict_as_yaml</a></code></li>
+<li><code><a title="parflow.tools.io.write_patch_matrix_as_asc" href="#parflow.tools.io.write_patch_matrix_as_asc">write_patch_matrix_as_asc</a></code></li>
+<li><code><a title="parflow.tools.io.write_patch_matrix_as_sa" href="#parflow.tools.io.write_patch_matrix_as_sa">write_patch_matrix_as_sa</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

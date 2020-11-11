@@ -1,0 +1,2284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>parflow.tools.database.core API documentation</title>
+<meta name="description" content="This module aims to provide the core components that are required to build
+a Parflow input deck." />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>parflow.tools.database.core</code></h1>
+</header>
+<section id="section-intro">
+<p>This module aims to provide the core components that are required to build
+a Parflow input deck.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">r&#34;&#34;&#34;
+This module aims to provide the core components that are required to build
+a Parflow input deck.
+&#34;&#34;&#34;
+import sys
+import yaml
+
+try:
+    from yaml import CDumper as YAMLDumper
+except ImportError:
+    from yaml import Dumper as YAMLDumper
+
+from parflow.tools import settings
+from parflow.tools.fs import get_text_file_content
+from parflow.tools.helper import map_to_child, map_to_children_of_type, map_to_parent, map_to_self
+from parflow.tools.helper import sort_dict_by_priority
+from parflow.tools.io import read_pfidb
+
+from .domains import validate_value_to_string, validate_value_with_exception
+from .handlers import decorate_value
+
+# -----------------------------------------------------------------------------
+# Accessor helpers
+# -----------------------------------------------------------------------------
+
+def validate_helper(container_obj, name, value, indent):
+    &#34;&#34;&#34;Helper function for validating a value
+    &#34;&#34;&#34;
+    nbErrors = 0
+    validation_string = &#39;&#39;
+    has_default = True if &#39;default&#39; in container_obj._details_[name] else False
+    history = None
+    if &#39;history&#39; in container_obj._details_[name] and len(container_obj._details_[name][&#39;history&#39;]):
+        history = container_obj._details_[name][&#39;history&#39;]
+    if &#39;default&#39; in container_obj._details_[name] \
+            and value == container_obj._details_[name][&#39;default&#39;] \
+            and &#39;MandatoryValue&#39; not in container_obj._details_[name][&#39;domains&#39;]:
+        pass
+    else:
+        nbErrors, validation_string = \
+            validate_value_to_string(
+                container_obj, value, has_default, container_obj._details_[name][&#39;domains&#39;],
+                container_obj.get_context_settings(), history, indent)
+
+    return nbErrors, validation_string
+
+# -----------------------------------------------------------------------------
+
+
+def detail_helper(container, name, value):
+    &#34;&#34;&#34;Helper function that extract elements of the field&#39;s detail
+    &#34;&#34;&#34;
+    domains = None
+    handlers = None
+    history = None
+    crosscheck = None
+    if name in container._details_:
+        if &#39;domains&#39; in container._details_[name]:
+            domains = container._details_[name][&#39;domains&#39;]
+
+        if &#39;handlers&#39; in container._details_[name]:
+            handlers = container._details_[name][&#39;handlers&#39;]
+
+        if &#39;history&#39; in container._details_[name]:
+            history = container._details_[name][&#39;history&#39;]
+
+        else:
+            history = []
+            container._details_[name][&#39;history&#39;] = history
+        history.append(value)
+
+        if &#39;crosscheck&#39; in container._details_[name]:
+            crosscheck = container._details_[name][&#39;crosscheck&#39;]
+
+    return domains, handlers, history, crosscheck
+
+# -----------------------------------------------------------------------------
+# Internal field name helpers
+# -----------------------------------------------------------------------------
+
+def is_private_key(name):
+    &#34;&#34;&#34;Test if the given key is a key or a private member
+
+    Return True if it is a private member
+    &#34;&#34;&#34;
+    return name[0] == &#39;_&#39; and name[-1] == &#39;_&#39;
+
+# -----------------------------------------------------------------------------
+
+def is_not_private_key(name):
+    &#34;&#34;&#34;Test if the given key is a key or a private member
+
+    Return True if it is a key
+    &#34;&#34;&#34;
+    return not is_private_key(name)
+
+# -----------------------------------------------------------------------------
+
+def convert_value_for_string_dict(value):
+    &#34;&#34;&#34;Ensure that the output value is a valid string
+    &#34;&#34;&#34;
+    if isinstance(value, str):
+        return value
+
+    if hasattr(value, &#39;__iter__&#39;):
+        return &#39; &#39;.join([str(v) for v in value])
+
+    return value
+
+# -----------------------------------------------------------------------------
+
+def extract_keys_from_object(dict_to_fill, instance, parent_namespace=&#39;&#39;):
+    &#34;&#34;&#34;Method that walk PFDBObj object and record their key and value
+    inside a Python dict.
+    &#34;&#34;&#34;
+    if hasattr(instance, &#39;_pfstore_&#39;):
+        for key, value in instance._pfstore_.items():
+            dict_to_fill[key] = convert_value_for_string_dict(value)
+
+    for key in instance.get_key_names(skip_default=True):
+        value = instance[key]
+        if value is None:
+            continue
+
+        full_qualified_key = instance.get_parflow_key(parent_namespace, key)
+        if isinstance(value, PFDBObj):
+            if hasattr(value, &#39;_value_&#39;):
+                has_details = hasattr(value, &#39;_details_&#39;) \
+                    and &#39;_value_&#39; in value._details_
+                has_default = has_details \
+                    and &#39;default&#39; in value._details_[&#39;_value_&#39;]
+                has_domain = has_details \
+                    and &#39;domains&#39; in value._details_[&#39;_value_&#39;]
+                is_mandatory = has_domain \
+                    and &#39;MandatoryValue&#39; in value._details_[&#39;_value_&#39;][&#39;domains&#39;]
+                is_default = has_default \
+                    and value._value_ == value._details_[&#39;_value_&#39;][&#39;default&#39;]
+                is_set = has_details \
+                    and &#39;history&#39; in value._details_[&#39;_value_&#39;] \
+                    and len(value._details_[&#39;_value_&#39;][&#39;history&#39;]) &gt; 0
+
+                if is_mandatory or not is_default or is_set:
+                    dict_to_fill[full_qualified_key] = \
+                        convert_value_for_string_dict(value._value_)
+            extract_keys_from_object(dict_to_fill, value, full_qualified_key)
+        else:
+            dict_to_fill[full_qualified_key] = \
+                convert_value_for_string_dict(value)
+
+# -----------------------------------------------------------------------------
+
+def extract_keys_from_dict(dict_to_fill, dictObj, parent_namespace=&#39;&#39;):
+    &#34;&#34;&#34;Helper function to extract a flat key/value dictionary for
+    a given PFDBObj inside dict_to_fill.
+    &#34;&#34;&#34;
+    for key, value in dictObj.items():
+        if len(parent_namespace) and key == &#39;$_&#39; or key == &#39;_value_&#39;:
+            dict_to_fill[parent_namespace] = value
+            continue
+
+        if value is None or is_private_key(key):
+            continue
+
+        full_qualified_key = f&#39;{parent_namespace}.{key}&#39; if parent_namespace else key
+        if isinstance(value, dict):
+            # Need to handle _value_ and $_
+            if hasattr(value, &#39;_value_&#39;):
+                dict_to_fill[full_qualified_key] = convert_value_for_string_dict(
+                    value._value_)
+            if hasattr(value, &#39;$_&#39;):
+                dict_to_fill[full_qualified_key] = convert_value_for_string_dict(
+                    value._value_)
+            extract_keys_from_dict(dict_to_fill, value, full_qualified_key)
+        else:
+            dict_to_fill[full_qualified_key] = convert_value_for_string_dict(
+                value)
+
+# -----------------------------------------------------------------------------
+
+def flatten_hierarchical_map(hierarchical_map):
+    &#34;&#34;&#34;Helper function that take a hierarchical map and return a flat
+    version of it.
+    &#34;&#34;&#34;
+    flat_map = {}
+    extract_keys_from_dict(flat_map, hierarchical_map, parent_namespace=&#39;&#39;)
+    return flat_map
+
+# -----------------------------------------------------------------------------
+# Main DB Object
+# -----------------------------------------------------------------------------
+
+class PFDBObj:
+    &#34;&#34;&#34;Core ParFlow Database Object node
+    &#34;&#34;&#34;
+    def __init__(self, parent=None):
+        &#34;&#34;&#34;
+        Create container object while keeping a reference to your parent
+        &#34;&#34;&#34;
+        self._parent_ = parent
+        self._prefix_ = None
+
+    # ---------------------------------------------------------------------------
+
+    def __setitem__(self, key, value):
+        &#34;&#34;&#34;Allow a[x] for assignment as well&#34;&#34;&#34;
+        self.__setattr__(key, value)
+
+    # ---------------------------------------------------------------------------
+
+    def __setattr__(self, name, value):
+        &#34;&#34;&#34;
+        Helper method that aims to streamline dot notation assignment
+        &#34;&#34;&#34;
+        domains = None
+        handlers = None
+        history = None
+        value_object_assignment = False
+        if is_not_private_key(name) and hasattr(self, &#39;_details_&#39;):
+            if name in self._details_:
+                domains, handlers, history, crosscheck = detail_helper(
+                    self, name, value)
+            elif hasattr(self, name) and isinstance(self.__dict__[name], PFDBObj):
+                # Handle value object assignment
+                value_object_assignment = True
+                value_obj = self.__dict__[name]
+                domains, handlers, history, crosscheck = detail_helper(
+                    value_obj, &#39;_value_&#39;, value)
+            else:
+                print(
+                    f&#39;Field {name} is not part of the expected schema {self.__class__}&#39;)
+                if settings.EXIT_ON_ERROR:
+                    raise ValueError(
+                        f&#39;Field &#34;{name}&#34; is not part of the expected schema {self.__class__}&#39;)
+
+        # Run domain validation
+        if settings.PRINT_LINE_ERROR:
+            validate_value_with_exception(
+                value, domains, settings.EXIT_ON_ERROR)
+
+        if value_object_assignment:
+            self.__dict__[name].__dict__[&#39;_value_&#39;] = \
+                decorate_value(value, self, handlers)
+        else:
+            # Decorate value if need be (i.e. Geom.names: &#39;a b c&#39;)
+            self.__dict__[name] = decorate_value(value, self, handlers)
+
+    # ---------------------------------------------------------------------------
+
+    def __len__(self):
+        &#34;&#34;&#34;
+        Return the count of nested fields.
+          - If a field is not set but is Mandatory it will count as 1
+          - If a field is not set, it will count as 0
+          - A container does not count. (0)
+        &#34;&#34;&#34;
+        value_count = 0
+
+        if hasattr(self, &#39;_value_&#39;) and self._value_ is not None:
+            value_count += 1
+
+        for name in self.get_key_names(True):
+            obj = self.__dict__[name]
+            if isinstance(obj, PFDBObj):
+                value_count += len(obj)
+            elif obj is not None:
+                value_count += 1
+            elif hasattr(self, &#39;_details_&#39;) and name in self._details_ \
+                    and &#39;domains&#39; in self._details_[name]:
+                if &#39;MandatoryValue&#39; in self._details_[name][&#39;domains&#39;]:
+                    value_count += 1
+
+        return value_count
+
+    # ---------------------------------------------------------------------------
+
+    def __getitem__(self, key):
+        &#34;&#34;&#34;
+        Used for obj[] lookup:
+           - Need to handle key with prefix
+           - Need to handle key with missing prefix
+           - Need to handle int key
+        &#34;&#34;&#34;
+        key_str = str(key)
+
+        if hasattr(self, key_str):
+            return getattr(self, key_str)
+
+        prefix = &#39;&#39;
+        if hasattr(self, &#39;_details_&#39;) and &#39;_prefix_&#39; in self._details_:
+            prefix = self._details_[&#39;_prefix_&#39;]
+
+        key_str = f&#39;{prefix}{key_str}&#39;
+        if hasattr(self, key_str):
+            return getattr(self, key_str)
+
+        print(f&#39;Could not find key {key}/{key_str} in {self.__dict__.keys()}&#39;)
+        return getattr(self, key_str)
+
+    # ---------------------------------------------------------------------------
+
+    def help(self, key=None):
+        &#34;&#34;&#34;
+        Dynamic help function for runtime evaluation
+        &#34;&#34;&#34;
+        if key is not None:
+            if key in self._details_:
+                if &#39;help&#39; in self._details_[key]:
+                    print(self._details_[key][&#39;help&#39;])
+            else:
+                obj = self.__dict__[key]
+                if hasattr(obj, &#39;__doc__&#39;):
+                    print(obj.__doc__)
+
+                if hasattr(obj, &#39;_details_&#39;) and &#39;_value_&#39; in obj._details_ \
+                        and &#39;help&#39; in obj._details_[&#39;_value_&#39;]:
+                    print(obj._details_[&#39;_value_&#39;][&#39;help&#39;])
+
+        elif hasattr(self, &#39;__doc__&#39;):
+            print(self.__doc__)
+            if hasattr(self, &#39;_details_&#39;) and &#39;_value_&#39; in self._details_ \
+                    and &#39;help&#39; in self._details_[&#39;_value_&#39;]:
+                print(self._details_[&#39;_value_&#39;][&#39;help&#39;])
+
+    # ---------------------------------------------------------------------------
+
+    def get_key_dict(self):
+        &#34;&#34;&#34;Method that will return a flat map of all the ParFlow keys.
+
+        Returns:
+          dict: Return Python dict with all the key set listed without
+              any hierarchy.
+        &#34;&#34;&#34;
+        key_dict = {}
+        extract_keys_from_object(key_dict, self)
+        return key_dict
+
+    # ---------------------------------------------------------------------------
+
+    def get_key_names(self, skip_default=False):
+        &#34;&#34;&#34;
+        Gets the key names necessary for the run while skiping unset ones
+        &#34;&#34;&#34;
+        for name in self.__dict__:
+            if name is None:
+                print(&#39;need to fix the children instantiator&#39;)
+                continue
+
+            if is_private_key(name):
+                continue
+
+            obj = self.__dict__[name]
+            if isinstance(obj, PFDBObj):
+                if len(obj):
+                    yield name
+
+            else:
+                has_details = hasattr(self, &#39;_details_&#39;) \
+                    and name in self._details_
+                has_default = has_details \
+                    and &#39;default&#39; in self._details_[name]
+                has_domain = has_details \
+                    and &#39;domains&#39; in self._details_[name]
+                is_mandatory = has_domain \
+                    and &#39;MandatoryValue&#39; in self._details_[name][&#39;domains&#39;]
+                is_default = has_default \
+                    and obj == self._details_[name][&#39;default&#39;]
+                is_set = has_details \
+                    and &#39;history&#39; in self._details_[name] \
+                    and len(self._details_[name][&#39;history&#39;]) &gt; 0
+
+                if obj is not None:
+                    if skip_default:
+                        if not is_default or is_mandatory or is_set:
+                            yield name
+                    else:
+                        yield name
+
+                elif is_mandatory:
+                    yield name
+
+    # ---------------------------------------------------------------------------
+
+    def validate(self, indent=1, verbose=False, enable_print=True, working_directory=None):
+        &#34;&#34;&#34;
+        Method to validate sub hierarchy
+        &#34;&#34;&#34;
+        if len(self) == 0:
+            return 0
+
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        error_count = 0
+        indent_str = &#39;  &#39;*indent
+        for name in self.get_key_names(skip_default=True):
+            obj = self.__dict__[name]
+            if isinstance(obj, PFDBObj):
+                if len(obj):
+                    if hasattr(obj, &#39;_value_&#39;):
+                        value = obj._value_
+                        add_errors, validation_string = validate_helper(
+                            obj, &#39;_value_&#39;, value, indent)
+
+                        if enable_print and (add_errors or verbose):
+                            print(f&#39;{indent_str}{name}: {validation_string}&#39;)
+
+                        error_count += add_errors
+                    elif enable_print:
+                        if verbose or obj.validate(enable_print=False):
+                            print(f&#39;{indent_str}{name}:&#39;)
+
+                    error_count += obj.validate(indent + 1,
+                                                verbose=verbose,
+                                                enable_print=enable_print)
+
+            elif hasattr(self, &#39;_details_&#39;) and name in self._details_:
+                add_errors, validation_string = validate_helper(
+                    self, name, obj, indent)
+                if enable_print and (verbose or add_errors):
+                    print(f&#39;{indent_str}{name}: {validation_string}&#39;)
+                error_count += add_errors
+            elif obj is not None:
+                if enable_print and verbose:
+                    print(f&#39;{indent_str}{name}: {obj}&#39;)
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+        return error_count
+
+    # ---------------------------------------------------------------------------
+
+    def get_full_key_name(self):
+        &#34;&#34;&#34;
+        Helper method returning the full name of a given ParFlow key.
+        &#34;&#34;&#34;
+        full_path = []
+        current_location = self
+        count = 0
+        while current_location._parent_ is not None:
+            count += 1
+            parent = current_location._parent_
+            for name in parent.__dict__:
+                value = parent.__dict__[name]
+                if value == current_location:
+                    if current_location._prefix_:
+                        full_path.append(name[len(current_location._prefix_):])
+                    else:
+                        full_path.append(name)
+            current_location = parent
+            if count &gt; len(full_path):
+                return f&#39;not found {count}: {&#34;.&#34;.join(full_path)}&#39;
+
+        full_path.reverse()
+        return &#39;.&#39;.join(full_path)
+
+    # ---------------------------------------------------------------------------
+
+    def get_parflow_key(self, parent_namespace, key):
+        &#34;&#34;&#34;
+        Helper method returning the key to use for Parflow on a given field key.
+        This allow to handle differences between what can be defined in Python vs Parflow key.
+        &#34;&#34;&#34;
+        value = self.__dict__[key]
+        prefix = &#39;&#39;
+        if isinstance(value, PFDBObj):
+            if value._prefix_ and key.startswith(value._prefix_):
+                prefix = value._prefix_
+        else:
+            if key in self._details_:
+                detail = self._details_[key]
+                if &#39;_prefix_&#39; in detail:
+                    prefix = detail[&#34;_prefix_&#34;]
+
+        if parent_namespace:
+            return f&#39;{parent_namespace}.{key[len(prefix):]}&#39;
+
+        return key[len(prefix):]
+
+    # ---------------------------------------------------------------------------
+
+    def get_children_of_type(self, class_name):
+        &#34;&#34;&#34;Return a list of PFDBObj of a given type that are part of
+        our children.
+        &#34;&#34;&#34;
+        results = []
+        for (key, value) in self.__dict__.items():
+            if is_private_key(key):
+                continue
+            if value.__class__.__name__ == class_name:
+                results.append(value)
+
+        return results
+
+    # ---------------------------------------------------------------------------
+
+    def get_selection_from_location(self, location=&#39;.&#39;):
+        &#34;&#34;&#34;
+        Return a PFDBObj object based on a location.
+
+        i.e.:
+          run.Process.Topology.get_selection_from_location(&#39;.&#39;) =&gt; run.Process.Topology
+          run.Process.Topology.get_selection_from_location(&#39;..&#39;) =&gt; run.Process
+          run.Process.Topology.get_selection_from_location(&#39;../../Geom&#39;) =&gt; run.Geom
+          run.Process.Topology.get_selection_from_location(&#39;/Geom&#39;) =&gt; run.Geom
+        &#34;&#34;&#34;
+        current_location = self
+        path_items = location.split(&#39;/&#39;)
+        if location[0] == &#39;/&#39;:
+            while current_location._parent_ is not None:
+                current_location = current_location._parent_
+
+        next_list = [current_location]
+        for path_item in path_items:
+            if path_item == &#39;&#39;:
+                continue
+
+            current_list = next_list
+            next_list = []
+
+            if path_item == &#39;..&#39;:
+                next_list.extend(map(map_to_parent, current_list))
+            elif path_item == &#39;.&#39;:
+                next_list.extend(map(map_to_self, current_list))
+            elif path_item[0] == &#39;{&#39;:
+                multiList = map(map_to_children_of_type(
+                    path_item[1:-1]), current_list)
+                next_list = [item for sublist in multiList for item in sublist]
+            else:
+                next_list.extend(map(map_to_child(path_item), current_list))
+                if len(next_list) and isinstance(next_list[0], list):
+                    next_list = [
+                        item for sublist in next_list for item in sublist]
+
+        return next_list
+
+    # ---------------------------------------------------------------------------
+
+    def get_context_settings(self):
+        &#34;&#34;&#34;
+        Return global settings for our current parflow run.
+        This is useful when providing global information for domains or else.
+        &#34;&#34;&#34;
+        return {
+            &#39;print_line_error&#39;: settings.PRINT_LINE_ERROR,
+            &#39;exit_on_error&#39;: settings.EXIT_ON_ERROR,
+            &#39;working_directory&#39;: settings.WORKING_DIRECTORY,
+            &#39;pf_version&#39;: settings.PARFLOW_VERSION
+        }
+
+    # ---------------------------------------------------------------------------
+
+    def pfset(self, key=&#39;&#39;, value=None, yamlFile=None, yamlContent=None,
+              pfidbFile=None, hierarchical_map=None, flat_map=None,
+              exit_if_undefined=False):
+        &#34;&#34;&#34;
+        Allow to define any parflow key so it can be exported.
+        Many formats are supported:
+            - key/value: To set a single value relative to our current
+                PFDBObj.
+            - yamlFile: YAML file path to load and import using the
+                current PFDBObj as root.
+            - yamlContent: YAML string to load and import using the
+                current PFDBObj as root.
+            - hierarchical_map: Nested dict containing several key/value
+                pair using the current PFDBObj as root.
+            - flat_map: Flat dict with parflow key/value pair to set
+                using the current PFDBObj as root.
+        &#34;&#34;&#34;
+        if yamlFile:
+            yamlContent = get_text_file_content(yamlFile)
+
+        if yamlContent:
+            hierarchical_map = yaml.safe_load(yamlContent)
+
+        if pfidbFile:
+            flat_map = read_pfidb(pfidbFile)
+
+        if hierarchical_map:
+            flat_map = flatten_hierarchical_map(hierarchical_map)
+
+        if flat_map:
+            sorted_flat_map = sort_dict_by_priority(flat_map)
+            for key, value in sorted_flat_map.items():
+                self.pfset(key=key, value=value,
+                           exit_if_undefined=exit_if_undefined)
+
+        if not key:
+            return
+
+        key_stored = False
+        tokens = key.split(&#39;.&#39;)
+        if len(tokens) &gt; 1:
+            container = self.get_selection_from_location(
+                &#39;/&#39;.join(tokens[:-1]))[0]
+            if container is not None:
+                container[tokens[-1]] = value
+                key_stored = True
+        elif len(tokens) == 1:
+            self[tokens[0]] = value
+            key_stored = True
+
+        if not key_stored:
+            # store key on the side
+            if &#39;_pfstore_&#39; not in self.__dict__:
+                self.__dict__[&#39;_pfstore_&#39;] = {}
+            parentNamespace = self.get_full_key_name()
+            fullkeyName = f&#34;{parentNamespace}&#34; \
+                          f&#34;{&#39;.&#39; if parentNamespace else &#39;&#39;}{key}&#34;
+            self.__dict__[&#39;_pfstore_&#39;][fullkeyName] = value
+            rootPath = self.get_full_key_name()
+            print(f&#34;Caution: Using internal store of &#34;
+                  f&#34;{rootPath if rootPath else &#39;run&#39;} &#34;
+                  f&#34;to save {fullkeyName} = {value}&#34;)
+            if exit_if_undefined:
+                sys.exit(1)
+
+    # ---------------------------------------------------------------------------
+
+    def get(self, key=&#39;&#39;, skip_default=False):
+        value = None
+        tokens = key.split(&#39;.&#39;)
+        details = None
+        if len(tokens) &gt; 1:
+            container = self.get_selection_from_location(
+                &#39;/&#39;.join(tokens[:-1]))[0]
+            if container is not None:
+                value = container[tokens[-1]] if \
+                    tokens[-1] in container.__dict__ else None
+            if value is not None and not isinstance(value, PFDBObj):
+                details = container._details_[tokens[-1]]
+        elif len(tokens) == 1:
+            if len(tokens[0]) &gt; 0:
+                value = self[tokens[0]] if tokens[0] in self.__dict__ else None
+                details = self._details_[tokens[0]] if \
+                    tokens[0] in self._details_ else None
+            else:
+                value = self
+
+        if value is None:
+            return None
+
+        if isinstance(value, PFDBObj):
+            if skip_default:
+                details = value._details_[&#39;_value_&#39;]
+                if &#39;history&#39; not in details or len(details[&#39;history&#39;]) == 0:
+                    return None
+            return value._value_
+
+        if skip_default and details:
+            if &#39;history&#39; not in details or len(details[&#39;history&#39;]) == 0:
+                return None
+
+        return value
+
+    # ---------------------------------------------------------------------------
+
+    def process_dynamic(self):
+        &#34;&#34;&#34;
+        Processing the dynamically defined (user-defined) key names
+        &#34;&#34;&#34;
+        from . import generated
+        for (class_name, selection) in self._dynamic_.items():
+            klass = getattr(generated, class_name)
+            names = self.get_selection_from_location(selection)
+            for name in names:
+                if name is not None:
+                    self.__dict__[name] = klass(self)
+
+# -----------------------------------------------------------------------------
+# Main DB Object
+# -----------------------------------------------------------------------------
+
+
+class PFDBObjListNumber(PFDBObj):
+    &#34;&#34;&#34;Class for leaf list values&#34;&#34;&#34;
+
+    def __setattr__(self, name, value):
+        &#34;&#34;&#34;Helper method that aims to streamline dot notation assignment
+        &#34;&#34;&#34;
+        key_str = str(name)
+        if is_private_key(key_str):
+            self.__dict__[key_str] = value
+            return
+
+        if self._prefix_:
+            if key_str.startswith(self._prefix_):
+                self.__dict__[key_str] = value
+            else:
+                self.__dict__[f&#39;{self._prefix_}{key_str}&#39;] = value
+            return
+
+        self.__dict__[key_str] = value
+
+    def get_parflow_key(self, parent_namespace, key):
+        &#34;&#34;&#34;Helper method returning the key to use for Parflow on
+        a given field key. This allows handling of differences
+        between what can be defined in Python vs Parflow key.
+        &#34;&#34;&#34;
+        prefix = self._prefix_ if self._prefix_ else &#39;&#39;
+
+        if parent_namespace:
+            return f&#39;{parent_namespace}.{key[len(prefix):]}&#39;
+
+        return key[len(prefix):]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="parflow.tools.database.core.convert_value_for_string_dict"><code class="name flex">
+<span>def <span class="ident">convert_value_for_string_dict</span></span>(<span>value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Ensure that the output value is a valid string</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def convert_value_for_string_dict(value):
+    &#34;&#34;&#34;Ensure that the output value is a valid string
+    &#34;&#34;&#34;
+    if isinstance(value, str):
+        return value
+
+    if hasattr(value, &#39;__iter__&#39;):
+        return &#39; &#39;.join([str(v) for v in value])
+
+    return value</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.detail_helper"><code class="name flex">
+<span>def <span class="ident">detail_helper</span></span>(<span>container, name, value)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper function that extract elements of the field's detail</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def detail_helper(container, name, value):
+    &#34;&#34;&#34;Helper function that extract elements of the field&#39;s detail
+    &#34;&#34;&#34;
+    domains = None
+    handlers = None
+    history = None
+    crosscheck = None
+    if name in container._details_:
+        if &#39;domains&#39; in container._details_[name]:
+            domains = container._details_[name][&#39;domains&#39;]
+
+        if &#39;handlers&#39; in container._details_[name]:
+            handlers = container._details_[name][&#39;handlers&#39;]
+
+        if &#39;history&#39; in container._details_[name]:
+            history = container._details_[name][&#39;history&#39;]
+
+        else:
+            history = []
+            container._details_[name][&#39;history&#39;] = history
+        history.append(value)
+
+        if &#39;crosscheck&#39; in container._details_[name]:
+            crosscheck = container._details_[name][&#39;crosscheck&#39;]
+
+    return domains, handlers, history, crosscheck</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.extract_keys_from_dict"><code class="name flex">
+<span>def <span class="ident">extract_keys_from_dict</span></span>(<span>dict_to_fill, dictObj, parent_namespace='')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper function to extract a flat key/value dictionary for
+a given PFDBObj inside dict_to_fill.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_keys_from_dict(dict_to_fill, dictObj, parent_namespace=&#39;&#39;):
+    &#34;&#34;&#34;Helper function to extract a flat key/value dictionary for
+    a given PFDBObj inside dict_to_fill.
+    &#34;&#34;&#34;
+    for key, value in dictObj.items():
+        if len(parent_namespace) and key == &#39;$_&#39; or key == &#39;_value_&#39;:
+            dict_to_fill[parent_namespace] = value
+            continue
+
+        if value is None or is_private_key(key):
+            continue
+
+        full_qualified_key = f&#39;{parent_namespace}.{key}&#39; if parent_namespace else key
+        if isinstance(value, dict):
+            # Need to handle _value_ and $_
+            if hasattr(value, &#39;_value_&#39;):
+                dict_to_fill[full_qualified_key] = convert_value_for_string_dict(
+                    value._value_)
+            if hasattr(value, &#39;$_&#39;):
+                dict_to_fill[full_qualified_key] = convert_value_for_string_dict(
+                    value._value_)
+            extract_keys_from_dict(dict_to_fill, value, full_qualified_key)
+        else:
+            dict_to_fill[full_qualified_key] = convert_value_for_string_dict(
+                value)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.extract_keys_from_object"><code class="name flex">
+<span>def <span class="ident">extract_keys_from_object</span></span>(<span>dict_to_fill, instance, parent_namespace='')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that walk PFDBObj object and record their key and value
+inside a Python dict.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_keys_from_object(dict_to_fill, instance, parent_namespace=&#39;&#39;):
+    &#34;&#34;&#34;Method that walk PFDBObj object and record their key and value
+    inside a Python dict.
+    &#34;&#34;&#34;
+    if hasattr(instance, &#39;_pfstore_&#39;):
+        for key, value in instance._pfstore_.items():
+            dict_to_fill[key] = convert_value_for_string_dict(value)
+
+    for key in instance.get_key_names(skip_default=True):
+        value = instance[key]
+        if value is None:
+            continue
+
+        full_qualified_key = instance.get_parflow_key(parent_namespace, key)
+        if isinstance(value, PFDBObj):
+            if hasattr(value, &#39;_value_&#39;):
+                has_details = hasattr(value, &#39;_details_&#39;) \
+                    and &#39;_value_&#39; in value._details_
+                has_default = has_details \
+                    and &#39;default&#39; in value._details_[&#39;_value_&#39;]
+                has_domain = has_details \
+                    and &#39;domains&#39; in value._details_[&#39;_value_&#39;]
+                is_mandatory = has_domain \
+                    and &#39;MandatoryValue&#39; in value._details_[&#39;_value_&#39;][&#39;domains&#39;]
+                is_default = has_default \
+                    and value._value_ == value._details_[&#39;_value_&#39;][&#39;default&#39;]
+                is_set = has_details \
+                    and &#39;history&#39; in value._details_[&#39;_value_&#39;] \
+                    and len(value._details_[&#39;_value_&#39;][&#39;history&#39;]) &gt; 0
+
+                if is_mandatory or not is_default or is_set:
+                    dict_to_fill[full_qualified_key] = \
+                        convert_value_for_string_dict(value._value_)
+            extract_keys_from_object(dict_to_fill, value, full_qualified_key)
+        else:
+            dict_to_fill[full_qualified_key] = \
+                convert_value_for_string_dict(value)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.flatten_hierarchical_map"><code class="name flex">
+<span>def <span class="ident">flatten_hierarchical_map</span></span>(<span>hierarchical_map)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper function that take a hierarchical map and return a flat
+version of it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def flatten_hierarchical_map(hierarchical_map):
+    &#34;&#34;&#34;Helper function that take a hierarchical map and return a flat
+    version of it.
+    &#34;&#34;&#34;
+    flat_map = {}
+    extract_keys_from_dict(flat_map, hierarchical_map, parent_namespace=&#39;&#39;)
+    return flat_map</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.is_not_private_key"><code class="name flex">
+<span>def <span class="ident">is_not_private_key</span></span>(<span>name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Test if the given key is a key or a private member</p>
+<p>Return True if it is a key</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_not_private_key(name):
+    &#34;&#34;&#34;Test if the given key is a key or a private member
+
+    Return True if it is a key
+    &#34;&#34;&#34;
+    return not is_private_key(name)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.is_private_key"><code class="name flex">
+<span>def <span class="ident">is_private_key</span></span>(<span>name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Test if the given key is a key or a private member</p>
+<p>Return True if it is a private member</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_private_key(name):
+    &#34;&#34;&#34;Test if the given key is a key or a private member
+
+    Return True if it is a private member
+    &#34;&#34;&#34;
+    return name[0] == &#39;_&#39; and name[-1] == &#39;_&#39;</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.validate_helper"><code class="name flex">
+<span>def <span class="ident">validate_helper</span></span>(<span>container_obj, name, value, indent)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper function for validating a value</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_helper(container_obj, name, value, indent):
+    &#34;&#34;&#34;Helper function for validating a value
+    &#34;&#34;&#34;
+    nbErrors = 0
+    validation_string = &#39;&#39;
+    has_default = True if &#39;default&#39; in container_obj._details_[name] else False
+    history = None
+    if &#39;history&#39; in container_obj._details_[name] and len(container_obj._details_[name][&#39;history&#39;]):
+        history = container_obj._details_[name][&#39;history&#39;]
+    if &#39;default&#39; in container_obj._details_[name] \
+            and value == container_obj._details_[name][&#39;default&#39;] \
+            and &#39;MandatoryValue&#39; not in container_obj._details_[name][&#39;domains&#39;]:
+        pass
+    else:
+        nbErrors, validation_string = \
+            validate_value_to_string(
+                container_obj, value, has_default, container_obj._details_[name][&#39;domains&#39;],
+                container_obj.get_context_settings(), history, indent)
+
+    return nbErrors, validation_string</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="parflow.tools.database.core.PFDBObj"><code class="flex name class">
+<span>class <span class="ident">PFDBObj</span></span>
+<span>(</span><span>parent=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Core ParFlow Database Object node</p>
+<p>Create container object while keeping a reference to your parent</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PFDBObj:
+    &#34;&#34;&#34;Core ParFlow Database Object node
+    &#34;&#34;&#34;
+    def __init__(self, parent=None):
+        &#34;&#34;&#34;
+        Create container object while keeping a reference to your parent
+        &#34;&#34;&#34;
+        self._parent_ = parent
+        self._prefix_ = None
+
+    # ---------------------------------------------------------------------------
+
+    def __setitem__(self, key, value):
+        &#34;&#34;&#34;Allow a[x] for assignment as well&#34;&#34;&#34;
+        self.__setattr__(key, value)
+
+    # ---------------------------------------------------------------------------
+
+    def __setattr__(self, name, value):
+        &#34;&#34;&#34;
+        Helper method that aims to streamline dot notation assignment
+        &#34;&#34;&#34;
+        domains = None
+        handlers = None
+        history = None
+        value_object_assignment = False
+        if is_not_private_key(name) and hasattr(self, &#39;_details_&#39;):
+            if name in self._details_:
+                domains, handlers, history, crosscheck = detail_helper(
+                    self, name, value)
+            elif hasattr(self, name) and isinstance(self.__dict__[name], PFDBObj):
+                # Handle value object assignment
+                value_object_assignment = True
+                value_obj = self.__dict__[name]
+                domains, handlers, history, crosscheck = detail_helper(
+                    value_obj, &#39;_value_&#39;, value)
+            else:
+                print(
+                    f&#39;Field {name} is not part of the expected schema {self.__class__}&#39;)
+                if settings.EXIT_ON_ERROR:
+                    raise ValueError(
+                        f&#39;Field &#34;{name}&#34; is not part of the expected schema {self.__class__}&#39;)
+
+        # Run domain validation
+        if settings.PRINT_LINE_ERROR:
+            validate_value_with_exception(
+                value, domains, settings.EXIT_ON_ERROR)
+
+        if value_object_assignment:
+            self.__dict__[name].__dict__[&#39;_value_&#39;] = \
+                decorate_value(value, self, handlers)
+        else:
+            # Decorate value if need be (i.e. Geom.names: &#39;a b c&#39;)
+            self.__dict__[name] = decorate_value(value, self, handlers)
+
+    # ---------------------------------------------------------------------------
+
+    def __len__(self):
+        &#34;&#34;&#34;
+        Return the count of nested fields.
+          - If a field is not set but is Mandatory it will count as 1
+          - If a field is not set, it will count as 0
+          - A container does not count. (0)
+        &#34;&#34;&#34;
+        value_count = 0
+
+        if hasattr(self, &#39;_value_&#39;) and self._value_ is not None:
+            value_count += 1
+
+        for name in self.get_key_names(True):
+            obj = self.__dict__[name]
+            if isinstance(obj, PFDBObj):
+                value_count += len(obj)
+            elif obj is not None:
+                value_count += 1
+            elif hasattr(self, &#39;_details_&#39;) and name in self._details_ \
+                    and &#39;domains&#39; in self._details_[name]:
+                if &#39;MandatoryValue&#39; in self._details_[name][&#39;domains&#39;]:
+                    value_count += 1
+
+        return value_count
+
+    # ---------------------------------------------------------------------------
+
+    def __getitem__(self, key):
+        &#34;&#34;&#34;
+        Used for obj[] lookup:
+           - Need to handle key with prefix
+           - Need to handle key with missing prefix
+           - Need to handle int key
+        &#34;&#34;&#34;
+        key_str = str(key)
+
+        if hasattr(self, key_str):
+            return getattr(self, key_str)
+
+        prefix = &#39;&#39;
+        if hasattr(self, &#39;_details_&#39;) and &#39;_prefix_&#39; in self._details_:
+            prefix = self._details_[&#39;_prefix_&#39;]
+
+        key_str = f&#39;{prefix}{key_str}&#39;
+        if hasattr(self, key_str):
+            return getattr(self, key_str)
+
+        print(f&#39;Could not find key {key}/{key_str} in {self.__dict__.keys()}&#39;)
+        return getattr(self, key_str)
+
+    # ---------------------------------------------------------------------------
+
+    def help(self, key=None):
+        &#34;&#34;&#34;
+        Dynamic help function for runtime evaluation
+        &#34;&#34;&#34;
+        if key is not None:
+            if key in self._details_:
+                if &#39;help&#39; in self._details_[key]:
+                    print(self._details_[key][&#39;help&#39;])
+            else:
+                obj = self.__dict__[key]
+                if hasattr(obj, &#39;__doc__&#39;):
+                    print(obj.__doc__)
+
+                if hasattr(obj, &#39;_details_&#39;) and &#39;_value_&#39; in obj._details_ \
+                        and &#39;help&#39; in obj._details_[&#39;_value_&#39;]:
+                    print(obj._details_[&#39;_value_&#39;][&#39;help&#39;])
+
+        elif hasattr(self, &#39;__doc__&#39;):
+            print(self.__doc__)
+            if hasattr(self, &#39;_details_&#39;) and &#39;_value_&#39; in self._details_ \
+                    and &#39;help&#39; in self._details_[&#39;_value_&#39;]:
+                print(self._details_[&#39;_value_&#39;][&#39;help&#39;])
+
+    # ---------------------------------------------------------------------------
+
+    def get_key_dict(self):
+        &#34;&#34;&#34;Method that will return a flat map of all the ParFlow keys.
+
+        Returns:
+          dict: Return Python dict with all the key set listed without
+              any hierarchy.
+        &#34;&#34;&#34;
+        key_dict = {}
+        extract_keys_from_object(key_dict, self)
+        return key_dict
+
+    # ---------------------------------------------------------------------------
+
+    def get_key_names(self, skip_default=False):
+        &#34;&#34;&#34;
+        Gets the key names necessary for the run while skiping unset ones
+        &#34;&#34;&#34;
+        for name in self.__dict__:
+            if name is None:
+                print(&#39;need to fix the children instantiator&#39;)
+                continue
+
+            if is_private_key(name):
+                continue
+
+            obj = self.__dict__[name]
+            if isinstance(obj, PFDBObj):
+                if len(obj):
+                    yield name
+
+            else:
+                has_details = hasattr(self, &#39;_details_&#39;) \
+                    and name in self._details_
+                has_default = has_details \
+                    and &#39;default&#39; in self._details_[name]
+                has_domain = has_details \
+                    and &#39;domains&#39; in self._details_[name]
+                is_mandatory = has_domain \
+                    and &#39;MandatoryValue&#39; in self._details_[name][&#39;domains&#39;]
+                is_default = has_default \
+                    and obj == self._details_[name][&#39;default&#39;]
+                is_set = has_details \
+                    and &#39;history&#39; in self._details_[name] \
+                    and len(self._details_[name][&#39;history&#39;]) &gt; 0
+
+                if obj is not None:
+                    if skip_default:
+                        if not is_default or is_mandatory or is_set:
+                            yield name
+                    else:
+                        yield name
+
+                elif is_mandatory:
+                    yield name
+
+    # ---------------------------------------------------------------------------
+
+    def validate(self, indent=1, verbose=False, enable_print=True, working_directory=None):
+        &#34;&#34;&#34;
+        Method to validate sub hierarchy
+        &#34;&#34;&#34;
+        if len(self) == 0:
+            return 0
+
+        # overwrite current working directory
+        prev_dir = settings.WORKING_DIRECTORY
+        if working_directory:
+            settings.set_working_directory(working_directory)
+
+        error_count = 0
+        indent_str = &#39;  &#39;*indent
+        for name in self.get_key_names(skip_default=True):
+            obj = self.__dict__[name]
+            if isinstance(obj, PFDBObj):
+                if len(obj):
+                    if hasattr(obj, &#39;_value_&#39;):
+                        value = obj._value_
+                        add_errors, validation_string = validate_helper(
+                            obj, &#39;_value_&#39;, value, indent)
+
+                        if enable_print and (add_errors or verbose):
+                            print(f&#39;{indent_str}{name}: {validation_string}&#39;)
+
+                        error_count += add_errors
+                    elif enable_print:
+                        if verbose or obj.validate(enable_print=False):
+                            print(f&#39;{indent_str}{name}:&#39;)
+
+                    error_count += obj.validate(indent + 1,
+                                                verbose=verbose,
+                                                enable_print=enable_print)
+
+            elif hasattr(self, &#39;_details_&#39;) and name in self._details_:
+                add_errors, validation_string = validate_helper(
+                    self, name, obj, indent)
+                if enable_print and (verbose or add_errors):
+                    print(f&#39;{indent_str}{name}: {validation_string}&#39;)
+                error_count += add_errors
+            elif obj is not None:
+                if enable_print and verbose:
+                    print(f&#39;{indent_str}{name}: {obj}&#39;)
+
+        # revert working directory to original directory
+        settings.set_working_directory(prev_dir)
+
+        return error_count
+
+    # ---------------------------------------------------------------------------
+
+    def get_full_key_name(self):
+        &#34;&#34;&#34;
+        Helper method returning the full name of a given ParFlow key.
+        &#34;&#34;&#34;
+        full_path = []
+        current_location = self
+        count = 0
+        while current_location._parent_ is not None:
+            count += 1
+            parent = current_location._parent_
+            for name in parent.__dict__:
+                value = parent.__dict__[name]
+                if value == current_location:
+                    if current_location._prefix_:
+                        full_path.append(name[len(current_location._prefix_):])
+                    else:
+                        full_path.append(name)
+            current_location = parent
+            if count &gt; len(full_path):
+                return f&#39;not found {count}: {&#34;.&#34;.join(full_path)}&#39;
+
+        full_path.reverse()
+        return &#39;.&#39;.join(full_path)
+
+    # ---------------------------------------------------------------------------
+
+    def get_parflow_key(self, parent_namespace, key):
+        &#34;&#34;&#34;
+        Helper method returning the key to use for Parflow on a given field key.
+        This allow to handle differences between what can be defined in Python vs Parflow key.
+        &#34;&#34;&#34;
+        value = self.__dict__[key]
+        prefix = &#39;&#39;
+        if isinstance(value, PFDBObj):
+            if value._prefix_ and key.startswith(value._prefix_):
+                prefix = value._prefix_
+        else:
+            if key in self._details_:
+                detail = self._details_[key]
+                if &#39;_prefix_&#39; in detail:
+                    prefix = detail[&#34;_prefix_&#34;]
+
+        if parent_namespace:
+            return f&#39;{parent_namespace}.{key[len(prefix):]}&#39;
+
+        return key[len(prefix):]
+
+    # ---------------------------------------------------------------------------
+
+    def get_children_of_type(self, class_name):
+        &#34;&#34;&#34;Return a list of PFDBObj of a given type that are part of
+        our children.
+        &#34;&#34;&#34;
+        results = []
+        for (key, value) in self.__dict__.items():
+            if is_private_key(key):
+                continue
+            if value.__class__.__name__ == class_name:
+                results.append(value)
+
+        return results
+
+    # ---------------------------------------------------------------------------
+
+    def get_selection_from_location(self, location=&#39;.&#39;):
+        &#34;&#34;&#34;
+        Return a PFDBObj object based on a location.
+
+        i.e.:
+          run.Process.Topology.get_selection_from_location(&#39;.&#39;) =&gt; run.Process.Topology
+          run.Process.Topology.get_selection_from_location(&#39;..&#39;) =&gt; run.Process
+          run.Process.Topology.get_selection_from_location(&#39;../../Geom&#39;) =&gt; run.Geom
+          run.Process.Topology.get_selection_from_location(&#39;/Geom&#39;) =&gt; run.Geom
+        &#34;&#34;&#34;
+        current_location = self
+        path_items = location.split(&#39;/&#39;)
+        if location[0] == &#39;/&#39;:
+            while current_location._parent_ is not None:
+                current_location = current_location._parent_
+
+        next_list = [current_location]
+        for path_item in path_items:
+            if path_item == &#39;&#39;:
+                continue
+
+            current_list = next_list
+            next_list = []
+
+            if path_item == &#39;..&#39;:
+                next_list.extend(map(map_to_parent, current_list))
+            elif path_item == &#39;.&#39;:
+                next_list.extend(map(map_to_self, current_list))
+            elif path_item[0] == &#39;{&#39;:
+                multiList = map(map_to_children_of_type(
+                    path_item[1:-1]), current_list)
+                next_list = [item for sublist in multiList for item in sublist]
+            else:
+                next_list.extend(map(map_to_child(path_item), current_list))
+                if len(next_list) and isinstance(next_list[0], list):
+                    next_list = [
+                        item for sublist in next_list for item in sublist]
+
+        return next_list
+
+    # ---------------------------------------------------------------------------
+
+    def get_context_settings(self):
+        &#34;&#34;&#34;
+        Return global settings for our current parflow run.
+        This is useful when providing global information for domains or else.
+        &#34;&#34;&#34;
+        return {
+            &#39;print_line_error&#39;: settings.PRINT_LINE_ERROR,
+            &#39;exit_on_error&#39;: settings.EXIT_ON_ERROR,
+            &#39;working_directory&#39;: settings.WORKING_DIRECTORY,
+            &#39;pf_version&#39;: settings.PARFLOW_VERSION
+        }
+
+    # ---------------------------------------------------------------------------
+
+    def pfset(self, key=&#39;&#39;, value=None, yamlFile=None, yamlContent=None,
+              pfidbFile=None, hierarchical_map=None, flat_map=None,
+              exit_if_undefined=False):
+        &#34;&#34;&#34;
+        Allow to define any parflow key so it can be exported.
+        Many formats are supported:
+            - key/value: To set a single value relative to our current
+                PFDBObj.
+            - yamlFile: YAML file path to load and import using the
+                current PFDBObj as root.
+            - yamlContent: YAML string to load and import using the
+                current PFDBObj as root.
+            - hierarchical_map: Nested dict containing several key/value
+                pair using the current PFDBObj as root.
+            - flat_map: Flat dict with parflow key/value pair to set
+                using the current PFDBObj as root.
+        &#34;&#34;&#34;
+        if yamlFile:
+            yamlContent = get_text_file_content(yamlFile)
+
+        if yamlContent:
+            hierarchical_map = yaml.safe_load(yamlContent)
+
+        if pfidbFile:
+            flat_map = read_pfidb(pfidbFile)
+
+        if hierarchical_map:
+            flat_map = flatten_hierarchical_map(hierarchical_map)
+
+        if flat_map:
+            sorted_flat_map = sort_dict_by_priority(flat_map)
+            for key, value in sorted_flat_map.items():
+                self.pfset(key=key, value=value,
+                           exit_if_undefined=exit_if_undefined)
+
+        if not key:
+            return
+
+        key_stored = False
+        tokens = key.split(&#39;.&#39;)
+        if len(tokens) &gt; 1:
+            container = self.get_selection_from_location(
+                &#39;/&#39;.join(tokens[:-1]))[0]
+            if container is not None:
+                container[tokens[-1]] = value
+                key_stored = True
+        elif len(tokens) == 1:
+            self[tokens[0]] = value
+            key_stored = True
+
+        if not key_stored:
+            # store key on the side
+            if &#39;_pfstore_&#39; not in self.__dict__:
+                self.__dict__[&#39;_pfstore_&#39;] = {}
+            parentNamespace = self.get_full_key_name()
+            fullkeyName = f&#34;{parentNamespace}&#34; \
+                          f&#34;{&#39;.&#39; if parentNamespace else &#39;&#39;}{key}&#34;
+            self.__dict__[&#39;_pfstore_&#39;][fullkeyName] = value
+            rootPath = self.get_full_key_name()
+            print(f&#34;Caution: Using internal store of &#34;
+                  f&#34;{rootPath if rootPath else &#39;run&#39;} &#34;
+                  f&#34;to save {fullkeyName} = {value}&#34;)
+            if exit_if_undefined:
+                sys.exit(1)
+
+    # ---------------------------------------------------------------------------
+
+    def get(self, key=&#39;&#39;, skip_default=False):
+        value = None
+        tokens = key.split(&#39;.&#39;)
+        details = None
+        if len(tokens) &gt; 1:
+            container = self.get_selection_from_location(
+                &#39;/&#39;.join(tokens[:-1]))[0]
+            if container is not None:
+                value = container[tokens[-1]] if \
+                    tokens[-1] in container.__dict__ else None
+            if value is not None and not isinstance(value, PFDBObj):
+                details = container._details_[tokens[-1]]
+        elif len(tokens) == 1:
+            if len(tokens[0]) &gt; 0:
+                value = self[tokens[0]] if tokens[0] in self.__dict__ else None
+                details = self._details_[tokens[0]] if \
+                    tokens[0] in self._details_ else None
+            else:
+                value = self
+
+        if value is None:
+            return None
+
+        if isinstance(value, PFDBObj):
+            if skip_default:
+                details = value._details_[&#39;_value_&#39;]
+                if &#39;history&#39; not in details or len(details[&#39;history&#39;]) == 0:
+                    return None
+            return value._value_
+
+        if skip_default and details:
+            if &#39;history&#39; not in details or len(details[&#39;history&#39;]) == 0:
+                return None
+
+        return value
+
+    # ---------------------------------------------------------------------------
+
+    def process_dynamic(self):
+        &#34;&#34;&#34;
+        Processing the dynamically defined (user-defined) key names
+        &#34;&#34;&#34;
+        from . import generated
+        for (class_name, selection) in self._dynamic_.items():
+            klass = getattr(generated, class_name)
+            names = self.get_selection_from_location(selection)
+            for name in names:
+                if name is not None:
+                    self.__dict__[name] = klass(self)</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="parflow.tools.database.core.PFDBObjListNumber" href="#parflow.tools.database.core.PFDBObjListNumber">PFDBObjListNumber</a></li>
+<li><a title="parflow.tools.database.generated.Alpha" href="generated.html#parflow.tools.database.generated.Alpha">Alpha</a></li>
+<li><a title="parflow.tools.database.generated.BCItem" href="generated.html#parflow.tools.database.generated.BCItem">BCItem</a></li>
+<li><a title="parflow.tools.database.generated.BCItemBCPressure" href="generated.html#parflow.tools.database.generated.BCItemBCPressure">BCItemBCPressure</a></li>
+<li><a title="parflow.tools.database.generated.BCItemBCSaturation" href="generated.html#parflow.tools.database.generated.BCItemBCSaturation">BCItemBCSaturation</a></li>
+<li><a title="parflow.tools.database.generated.BCPressIntPhaseItem" href="generated.html#parflow.tools.database.generated.BCPressIntPhaseItem">BCPressIntPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.BCPressIntPointItem" href="generated.html#parflow.tools.database.generated.BCPressIntPointItem">BCPressIntPointItem</a></li>
+<li><a title="parflow.tools.database.generated.BCPressure" href="generated.html#parflow.tools.database.generated.BCPressure">BCPressure</a></li>
+<li><a title="parflow.tools.database.generated.BCPressureIntervalItem" href="generated.html#parflow.tools.database.generated.BCPressureIntervalItem">BCPressureIntervalItem</a></li>
+<li><a title="parflow.tools.database.generated.BCSatPhaseItem" href="generated.html#parflow.tools.database.generated.BCSatPhaseItem">BCSatPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.BCSatPhasePointItem" href="generated.html#parflow.tools.database.generated.BCSatPhasePointItem">BCSatPhasePointItem</a></li>
+<li><a title="parflow.tools.database.generated.BCSaturation" href="generated.html#parflow.tools.database.generated.BCSaturation">BCSaturation</a></li>
+<li><a title="parflow.tools.database.generated.BaseRun" href="generated.html#parflow.tools.database.generated.BaseRun">BaseRun</a></li>
+<li><a title="parflow.tools.database.generated.CLM" href="generated.html#parflow.tools.database.generated.CLM">CLM</a></li>
+<li><a title="parflow.tools.database.generated.CapPressure" href="generated.html#parflow.tools.database.generated.CapPressure">CapPressure</a></li>
+<li><a title="parflow.tools.database.generated.CapPressurePhase" href="generated.html#parflow.tools.database.generated.CapPressurePhase">CapPressurePhase</a></li>
+<li><a title="parflow.tools.database.generated.CapPressurePhaseItem" href="generated.html#parflow.tools.database.generated.CapPressurePhaseItem">CapPressurePhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.Cell" href="generated.html#parflow.tools.database.generated.Cell">Cell</a></li>
+<li><a title="parflow.tools.database.generated.CellNzItem" href="generated.html#parflow.tools.database.generated.CellNzItem">CellNzItem</a></li>
+<li><a title="parflow.tools.database.generated.CellNzItemDzScale" href="generated.html#parflow.tools.database.generated.CellNzItemDzScale">CellNzItemDzScale</a></li>
+<li><a title="parflow.tools.database.generated.ComputationalGrid" href="generated.html#parflow.tools.database.generated.ComputationalGrid">ComputationalGrid</a></li>
+<li><a title="parflow.tools.database.generated.Concentration" href="generated.html#parflow.tools.database.generated.Concentration">Concentration</a></li>
+<li><a title="parflow.tools.database.generated.ConcentrationPhaseContItem" href="generated.html#parflow.tools.database.generated.ConcentrationPhaseContItem">ConcentrationPhaseContItem</a></li>
+<li><a title="parflow.tools.database.generated.ConcentrationPhaseItem" href="generated.html#parflow.tools.database.generated.ConcentrationPhaseItem">ConcentrationPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.Conditioning" href="generated.html#parflow.tools.database.generated.Conditioning">Conditioning</a></li>
+<li><a title="parflow.tools.database.generated.ContNameItem" href="generated.html#parflow.tools.database.generated.ContNameItem">ContNameItem</a></li>
+<li><a title="parflow.tools.database.generated.Contaminants" href="generated.html#parflow.tools.database.generated.Contaminants">Contaminants</a></li>
+<li><a title="parflow.tools.database.generated.Cycle" href="generated.html#parflow.tools.database.generated.Cycle">Cycle</a></li>
+<li><a title="parflow.tools.database.generated.CycleIntItem" href="generated.html#parflow.tools.database.generated.CycleIntItem">CycleIntItem</a></li>
+<li><a title="parflow.tools.database.generated.CycleItem" href="generated.html#parflow.tools.database.generated.CycleItem">CycleItem</a></li>
+<li><a title="parflow.tools.database.generated.Degradation" href="generated.html#parflow.tools.database.generated.Degradation">Degradation</a></li>
+<li><a title="parflow.tools.database.generated.Density" href="generated.html#parflow.tools.database.generated.Density">Density</a></li>
+<li><a title="parflow.tools.database.generated.Domain" href="generated.html#parflow.tools.database.generated.Domain">Domain</a></li>
+<li><a title="parflow.tools.database.generated.Elevation" href="generated.html#parflow.tools.database.generated.Elevation">Elevation</a></li>
+<li><a title="parflow.tools.database.generated.EvapTrans" href="generated.html#parflow.tools.database.generated.EvapTrans">EvapTrans</a></li>
+<li><a title="parflow.tools.database.generated.Extraction" href="generated.html#parflow.tools.database.generated.Extraction">Extraction</a></li>
+<li><a title="parflow.tools.database.generated.ExtractionFluxPhaseItem" href="generated.html#parflow.tools.database.generated.ExtractionFluxPhaseItem">ExtractionFluxPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.FBx" href="generated.html#parflow.tools.database.generated.FBx">FBx</a></li>
+<li><a title="parflow.tools.database.generated.FBy" href="generated.html#parflow.tools.database.generated.FBy">FBy</a></li>
+<li><a title="parflow.tools.database.generated.FBz" href="generated.html#parflow.tools.database.generated.FBz">FBz</a></li>
+<li><a title="parflow.tools.database.generated.Function1" href="generated.html#parflow.tools.database.generated.Function1">Function1</a></li>
+<li><a title="parflow.tools.database.generated.Geom" href="generated.html#parflow.tools.database.generated.Geom">Geom</a></li>
+<li><a title="parflow.tools.database.generated.GeomContItem" href="generated.html#parflow.tools.database.generated.GeomContItem">GeomContItem</a></li>
+<li><a title="parflow.tools.database.generated.GeomContItemRetardation" href="generated.html#parflow.tools.database.generated.GeomContItemRetardation">GeomContItemRetardation</a></li>
+<li><a title="parflow.tools.database.generated.GeomFBx" href="generated.html#parflow.tools.database.generated.GeomFBx">GeomFBx</a></li>
+<li><a title="parflow.tools.database.generated.GeomFBy" href="generated.html#parflow.tools.database.generated.GeomFBy">GeomFBy</a></li>
+<li><a title="parflow.tools.database.generated.GeomFBz" href="generated.html#parflow.tools.database.generated.GeomFBz">GeomFBz</a></li>
+<li><a title="parflow.tools.database.generated.GeomICPressure" href="generated.html#parflow.tools.database.generated.GeomICPressure">GeomICPressure</a></li>
+<li><a title="parflow.tools.database.generated.GeomICSaturation" href="generated.html#parflow.tools.database.generated.GeomICSaturation">GeomICSaturation</a></li>
+<li><a title="parflow.tools.database.generated.GeomICSaturationPhaseItem" href="generated.html#parflow.tools.database.generated.GeomICSaturationPhaseItem">GeomICSaturationPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.GeomInput" href="generated.html#parflow.tools.database.generated.GeomInput">GeomInput</a></li>
+<li><a title="parflow.tools.database.generated.GeomInputItem" href="generated.html#parflow.tools.database.generated.GeomInputItem">GeomInputItem</a></li>
+<li><a title="parflow.tools.database.generated.GeomItem" href="generated.html#parflow.tools.database.generated.GeomItem">GeomItem</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemAlpha" href="generated.html#parflow.tools.database.generated.GeomItemAlpha">GeomItemAlpha</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemCapPressure" href="generated.html#parflow.tools.database.generated.GeomItemCapPressure">GeomItemCapPressure</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemDzScale" href="generated.html#parflow.tools.database.generated.GeomItemDzScale">GeomItemDzScale</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemHeatCapacity" href="generated.html#parflow.tools.database.generated.GeomItemHeatCapacity">GeomItemHeatCapacity</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemLower" href="generated.html#parflow.tools.database.generated.GeomItemLower">GeomItemLower</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemN" href="generated.html#parflow.tools.database.generated.GeomItemN">GeomItemN</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemPerm" href="generated.html#parflow.tools.database.generated.GeomItemPerm">GeomItemPerm</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemPorosity" href="generated.html#parflow.tools.database.generated.GeomItemPorosity">GeomItemPorosity</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemRelPerm" href="generated.html#parflow.tools.database.generated.GeomItemRelPerm">GeomItemRelPerm</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemSaturation" href="generated.html#parflow.tools.database.generated.GeomItemSaturation">GeomItemSaturation</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemSpecificStorage" href="generated.html#parflow.tools.database.generated.GeomItemSpecificStorage">GeomItemSpecificStorage</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemThermalConductivity" href="generated.html#parflow.tools.database.generated.GeomItemThermalConductivity">GeomItemThermalConductivity</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemUpper" href="generated.html#parflow.tools.database.generated.GeomItemUpper">GeomItemUpper</a></li>
+<li><a title="parflow.tools.database.generated.GeomPerm" href="generated.html#parflow.tools.database.generated.GeomPerm">GeomPerm</a></li>
+<li><a title="parflow.tools.database.generated.HeatCapacity" href="generated.html#parflow.tools.database.generated.HeatCapacity">HeatCapacity</a></li>
+<li><a title="parflow.tools.database.generated.ICPressure" href="generated.html#parflow.tools.database.generated.ICPressure">ICPressure</a></li>
+<li><a title="parflow.tools.database.generated.ICSaturation" href="generated.html#parflow.tools.database.generated.ICSaturation">ICSaturation</a></li>
+<li><a title="parflow.tools.database.generated.Injection" href="generated.html#parflow.tools.database.generated.Injection">Injection</a></li>
+<li><a title="parflow.tools.database.generated.InjectionConcentrationPhaseContaminantItem" href="generated.html#parflow.tools.database.generated.InjectionConcentrationPhaseContaminantItem">InjectionConcentrationPhaseContaminantItem</a></li>
+<li><a title="parflow.tools.database.generated.InjectionConcentrationPhaseItem" href="generated.html#parflow.tools.database.generated.InjectionConcentrationPhaseItem">InjectionConcentrationPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.InjectionFluxPhaseItem" href="generated.html#parflow.tools.database.generated.InjectionFluxPhaseItem">InjectionFluxPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.InternalBC" href="generated.html#parflow.tools.database.generated.InternalBC">InternalBC</a></li>
+<li><a title="parflow.tools.database.generated.InternalBCItem" href="generated.html#parflow.tools.database.generated.InternalBCItem">InternalBCItem</a></li>
+<li><a title="parflow.tools.database.generated.InternalEnergy" href="generated.html#parflow.tools.database.generated.InternalEnergy">InternalEnergy</a></li>
+<li><a title="parflow.tools.database.generated.KDry" href="generated.html#parflow.tools.database.generated.KDry">KDry</a></li>
+<li><a title="parflow.tools.database.generated.KWet" href="generated.html#parflow.tools.database.generated.KWet">KWet</a></li>
+<li><a title="parflow.tools.database.generated.KnownSolution" href="generated.html#parflow.tools.database.generated.KnownSolution">KnownSolution</a></li>
+<li><a title="parflow.tools.database.generated.Linear" href="generated.html#parflow.tools.database.generated.Linear">Linear</a></li>
+<li><a title="parflow.tools.database.generated.Lower" href="generated.html#parflow.tools.database.generated.Lower">Lower</a></li>
+<li><a title="parflow.tools.database.generated.ManningGeom" href="generated.html#parflow.tools.database.generated.ManningGeom">ManningGeom</a></li>
+<li><a title="parflow.tools.database.generated.Mannings" href="generated.html#parflow.tools.database.generated.Mannings">Mannings</a></li>
+<li><a title="parflow.tools.database.generated.ManningsGeomItem" href="generated.html#parflow.tools.database.generated.ManningsGeomItem">ManningsGeomItem</a></li>
+<li><a title="parflow.tools.database.generated.Mobility" href="generated.html#parflow.tools.database.generated.Mobility">Mobility</a></li>
+<li><a title="parflow.tools.database.generated.N" href="generated.html#parflow.tools.database.generated.N">N</a></li>
+<li><a title="parflow.tools.database.generated.NetCDF" href="generated.html#parflow.tools.database.generated.NetCDF">NetCDF</a></li>
+<li><a title="parflow.tools.database.generated.NetcdfEvapTrans" href="generated.html#parflow.tools.database.generated.NetcdfEvapTrans">NetcdfEvapTrans</a></li>
+<li><a title="parflow.tools.database.generated.Nonlinear" href="generated.html#parflow.tools.database.generated.Nonlinear">Nonlinear</a></li>
+<li><a title="parflow.tools.database.generated.OverlandDiffusive" href="generated.html#parflow.tools.database.generated.OverlandDiffusive">OverlandDiffusive</a></li>
+<li><a title="parflow.tools.database.generated.OverlandKinematic" href="generated.html#parflow.tools.database.generated.OverlandKinematic">OverlandKinematic</a></li>
+<li><a title="parflow.tools.database.generated.Patch" href="generated.html#parflow.tools.database.generated.Patch">Patch</a></li>
+<li><a title="parflow.tools.database.generated.Perm" href="generated.html#parflow.tools.database.generated.Perm">Perm</a></li>
+<li><a title="parflow.tools.database.generated.Phase" href="generated.html#parflow.tools.database.generated.Phase">Phase</a></li>
+<li><a title="parflow.tools.database.generated.PhaseConcen" href="generated.html#parflow.tools.database.generated.PhaseConcen">PhaseConcen</a></li>
+<li><a title="parflow.tools.database.generated.PhaseConcenContaminantGeomItem" href="generated.html#parflow.tools.database.generated.PhaseConcenContaminantGeomItem">PhaseConcenContaminantGeomItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseConcenContaminantItem" href="generated.html#parflow.tools.database.generated.PhaseConcenContaminantItem">PhaseConcenContaminantItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseConcenContaminantItemGeom" href="generated.html#parflow.tools.database.generated.PhaseConcenContaminantItemGeom">PhaseConcenContaminantItemGeom</a></li>
+<li><a title="parflow.tools.database.generated.PhaseConcenPhaseNameItem" href="generated.html#parflow.tools.database.generated.PhaseConcenPhaseNameItem">PhaseConcenPhaseNameItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseNameHeatGeomItem" href="generated.html#parflow.tools.database.generated.PhaseNameHeatGeomItem">PhaseNameHeatGeomItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseNameItem" href="generated.html#parflow.tools.database.generated.PhaseNameItem">PhaseNameItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseNameItemGeom" href="generated.html#parflow.tools.database.generated.PhaseNameItemGeom">PhaseNameItemGeom</a></li>
+<li><a title="parflow.tools.database.generated.PhaseNameItemHeatCapacity" href="generated.html#parflow.tools.database.generated.PhaseNameItemHeatCapacity">PhaseNameItemHeatCapacity</a></li>
+<li><a title="parflow.tools.database.generated.PhaseRelPermVanGenuchten" href="generated.html#parflow.tools.database.generated.PhaseRelPermVanGenuchten">PhaseRelPermVanGenuchten</a></li>
+<li><a title="parflow.tools.database.generated.PhaseSaturationVanGenuchten" href="generated.html#parflow.tools.database.generated.PhaseSaturationVanGenuchten">PhaseSaturationVanGenuchten</a></li>
+<li><a title="parflow.tools.database.generated.PhaseSourceGeomItem" href="generated.html#parflow.tools.database.generated.PhaseSourceGeomItem">PhaseSourceGeomItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseSourceNameItem" href="generated.html#parflow.tools.database.generated.PhaseSourceNameItem">PhaseSourceNameItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseSourceNameItemGeom" href="generated.html#parflow.tools.database.generated.PhaseSourceNameItemGeom">PhaseSourceNameItemGeom</a></li>
+<li><a title="parflow.tools.database.generated.PhaseSourcePhaseGeomItem" href="generated.html#parflow.tools.database.generated.PhaseSourcePhaseGeomItem">PhaseSourcePhaseGeomItem</a></li>
+<li><a title="parflow.tools.database.generated.PhaseSources" href="generated.html#parflow.tools.database.generated.PhaseSources">PhaseSources</a></li>
+<li><a title="parflow.tools.database.generated.PhaseSourcesGeom" href="generated.html#parflow.tools.database.generated.PhaseSourcesGeom">PhaseSourcesGeom</a></li>
+<li><a title="parflow.tools.database.generated.Porosity" href="generated.html#parflow.tools.database.generated.Porosity">Porosity</a></li>
+<li><a title="parflow.tools.database.generated.PrecondMethodItem" href="generated.html#parflow.tools.database.generated.PrecondMethodItem">PrecondMethodItem</a></li>
+<li><a title="parflow.tools.database.generated.Preconditioner" href="generated.html#parflow.tools.database.generated.Preconditioner">Preconditioner</a></li>
+<li><a title="parflow.tools.database.generated.Process" href="generated.html#parflow.tools.database.generated.Process">Process</a></li>
+<li><a title="parflow.tools.database.generated.RelPerm" href="generated.html#parflow.tools.database.generated.RelPerm">RelPerm</a></li>
+<li><a title="parflow.tools.database.generated.Retardation" href="generated.html#parflow.tools.database.generated.Retardation">Retardation</a></li>
+<li><a title="parflow.tools.database.generated.SILO" href="generated.html#parflow.tools.database.generated.SILO">SILO</a></li>
+<li><a title="parflow.tools.database.generated.SRes" href="generated.html#parflow.tools.database.generated.SRes">SRes</a></li>
+<li><a title="parflow.tools.database.generated.SSat" href="generated.html#parflow.tools.database.generated.SSat">SSat</a></li>
+<li><a title="parflow.tools.database.generated.Saturation" href="generated.html#parflow.tools.database.generated.Saturation">Saturation</a></li>
+<li><a title="parflow.tools.database.generated.Solver" href="generated.html#parflow.tools.database.generated.Solver">Solver</a></li>
+<li><a title="parflow.tools.database.generated.SpecificStorage" href="generated.html#parflow.tools.database.generated.SpecificStorage">SpecificStorage</a></li>
+<li><a title="parflow.tools.database.generated.TensorByGeom" href="generated.html#parflow.tools.database.generated.TensorByGeom">TensorByGeom</a></li>
+<li><a title="parflow.tools.database.generated.TerrainFollowingGrid" href="generated.html#parflow.tools.database.generated.TerrainFollowingGrid">TerrainFollowingGrid</a></li>
+<li><a title="parflow.tools.database.generated.ThermalConductivity" href="generated.html#parflow.tools.database.generated.ThermalConductivity">ThermalConductivity</a></li>
+<li><a title="parflow.tools.database.generated.TimeStep" href="generated.html#parflow.tools.database.generated.TimeStep">TimeStep</a></li>
+<li><a title="parflow.tools.database.generated.TimingInfo" href="generated.html#parflow.tools.database.generated.TimingInfo">TimingInfo</a></li>
+<li><a title="parflow.tools.database.generated.TopoSlopes" href="generated.html#parflow.tools.database.generated.TopoSlopes">TopoSlopes</a></li>
+<li><a title="parflow.tools.database.generated.TopoSlopesX" href="generated.html#parflow.tools.database.generated.TopoSlopesX">TopoSlopesX</a></li>
+<li><a title="parflow.tools.database.generated.TopoSlopesXGeom" href="generated.html#parflow.tools.database.generated.TopoSlopesXGeom">TopoSlopesXGeom</a></li>
+<li><a title="parflow.tools.database.generated.TopoSlopesXItem" href="generated.html#parflow.tools.database.generated.TopoSlopesXItem">TopoSlopesXItem</a></li>
+<li><a title="parflow.tools.database.generated.TopoSlopesY" href="generated.html#parflow.tools.database.generated.TopoSlopesY">TopoSlopesY</a></li>
+<li><a title="parflow.tools.database.generated.TopoSlopesYGeom" href="generated.html#parflow.tools.database.generated.TopoSlopesYGeom">TopoSlopesYGeom</a></li>
+<li><a title="parflow.tools.database.generated.TopoSlopesYItem" href="generated.html#parflow.tools.database.generated.TopoSlopesYItem">TopoSlopesYItem</a></li>
+<li><a title="parflow.tools.database.generated.Topology" href="generated.html#parflow.tools.database.generated.Topology">Topology</a></li>
+<li><a title="parflow.tools.database.generated.Viscosity" href="generated.html#parflow.tools.database.generated.Viscosity">Viscosity</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalFluxPhaseItem" href="generated.html#parflow.tools.database.generated.WellIntervalFluxPhaseItem">WellIntervalFluxPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItem" href="generated.html#parflow.tools.database.generated.WellIntervalItem">WellIntervalItem</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemConcentration" href="generated.html#parflow.tools.database.generated.WellIntervalItemConcentration">WellIntervalItemConcentration</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemExtractionFlux" href="generated.html#parflow.tools.database.generated.WellIntervalItemExtractionFlux">WellIntervalItemExtractionFlux</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemExtractionPressure" href="generated.html#parflow.tools.database.generated.WellIntervalItemExtractionPressure">WellIntervalItemExtractionPressure</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemFlux" href="generated.html#parflow.tools.database.generated.WellIntervalItemFlux">WellIntervalItemFlux</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemInjectionFlux" href="generated.html#parflow.tools.database.generated.WellIntervalItemInjectionFlux">WellIntervalItemInjectionFlux</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemInjectionPressure" href="generated.html#parflow.tools.database.generated.WellIntervalItemInjectionPressure">WellIntervalItemInjectionPressure</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemPressure" href="generated.html#parflow.tools.database.generated.WellIntervalItemPressure">WellIntervalItemPressure</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalItemSaturation" href="generated.html#parflow.tools.database.generated.WellIntervalItemSaturation">WellIntervalItemSaturation</a></li>
+<li><a title="parflow.tools.database.generated.WellIntervalSaturationPhaseItem" href="generated.html#parflow.tools.database.generated.WellIntervalSaturationPhaseItem">WellIntervalSaturationPhaseItem</a></li>
+<li><a title="parflow.tools.database.generated.WellItem" href="generated.html#parflow.tools.database.generated.WellItem">WellItem</a></li>
+<li><a title="parflow.tools.database.generated.Wells" href="generated.html#parflow.tools.database.generated.Wells">Wells</a></li>
+<li><a title="parflow.tools.database.generated.dzScale" href="generated.html#parflow.tools.database.generated.dzScale">dzScale</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.core.PFDBObj.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>self, key='', skip_default=False)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get(self, key=&#39;&#39;, skip_default=False):
+    value = None
+    tokens = key.split(&#39;.&#39;)
+    details = None
+    if len(tokens) &gt; 1:
+        container = self.get_selection_from_location(
+            &#39;/&#39;.join(tokens[:-1]))[0]
+        if container is not None:
+            value = container[tokens[-1]] if \
+                tokens[-1] in container.__dict__ else None
+        if value is not None and not isinstance(value, PFDBObj):
+            details = container._details_[tokens[-1]]
+    elif len(tokens) == 1:
+        if len(tokens[0]) &gt; 0:
+            value = self[tokens[0]] if tokens[0] in self.__dict__ else None
+            details = self._details_[tokens[0]] if \
+                tokens[0] in self._details_ else None
+        else:
+            value = self
+
+    if value is None:
+        return None
+
+    if isinstance(value, PFDBObj):
+        if skip_default:
+            details = value._details_[&#39;_value_&#39;]
+            if &#39;history&#39; not in details or len(details[&#39;history&#39;]) == 0:
+                return None
+        return value._value_
+
+    if skip_default and details:
+        if &#39;history&#39; not in details or len(details[&#39;history&#39;]) == 0:
+            return None
+
+    return value</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.get_children_of_type"><code class="name flex">
+<span>def <span class="ident">get_children_of_type</span></span>(<span>self, class_name)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a list of PFDBObj of a given type that are part of
+our children.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_children_of_type(self, class_name):
+    &#34;&#34;&#34;Return a list of PFDBObj of a given type that are part of
+    our children.
+    &#34;&#34;&#34;
+    results = []
+    for (key, value) in self.__dict__.items():
+        if is_private_key(key):
+            continue
+        if value.__class__.__name__ == class_name:
+            results.append(value)
+
+    return results</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.get_context_settings"><code class="name flex">
+<span>def <span class="ident">get_context_settings</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return global settings for our current parflow run.
+This is useful when providing global information for domains or else.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_context_settings(self):
+    &#34;&#34;&#34;
+    Return global settings for our current parflow run.
+    This is useful when providing global information for domains or else.
+    &#34;&#34;&#34;
+    return {
+        &#39;print_line_error&#39;: settings.PRINT_LINE_ERROR,
+        &#39;exit_on_error&#39;: settings.EXIT_ON_ERROR,
+        &#39;working_directory&#39;: settings.WORKING_DIRECTORY,
+        &#39;pf_version&#39;: settings.PARFLOW_VERSION
+    }</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.get_full_key_name"><code class="name flex">
+<span>def <span class="ident">get_full_key_name</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper method returning the full name of a given ParFlow key.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_full_key_name(self):
+    &#34;&#34;&#34;
+    Helper method returning the full name of a given ParFlow key.
+    &#34;&#34;&#34;
+    full_path = []
+    current_location = self
+    count = 0
+    while current_location._parent_ is not None:
+        count += 1
+        parent = current_location._parent_
+        for name in parent.__dict__:
+            value = parent.__dict__[name]
+            if value == current_location:
+                if current_location._prefix_:
+                    full_path.append(name[len(current_location._prefix_):])
+                else:
+                    full_path.append(name)
+        current_location = parent
+        if count &gt; len(full_path):
+            return f&#39;not found {count}: {&#34;.&#34;.join(full_path)}&#39;
+
+    full_path.reverse()
+    return &#39;.&#39;.join(full_path)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.get_key_dict"><code class="name flex">
+<span>def <span class="ident">get_key_dict</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method that will return a flat map of all the ParFlow keys.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Return Python dict with all the key set listed without
+any hierarchy.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_key_dict(self):
+    &#34;&#34;&#34;Method that will return a flat map of all the ParFlow keys.
+
+    Returns:
+      dict: Return Python dict with all the key set listed without
+          any hierarchy.
+    &#34;&#34;&#34;
+    key_dict = {}
+    extract_keys_from_object(key_dict, self)
+    return key_dict</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.get_key_names"><code class="name flex">
+<span>def <span class="ident">get_key_names</span></span>(<span>self, skip_default=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the key names necessary for the run while skiping unset ones</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_key_names(self, skip_default=False):
+    &#34;&#34;&#34;
+    Gets the key names necessary for the run while skiping unset ones
+    &#34;&#34;&#34;
+    for name in self.__dict__:
+        if name is None:
+            print(&#39;need to fix the children instantiator&#39;)
+            continue
+
+        if is_private_key(name):
+            continue
+
+        obj = self.__dict__[name]
+        if isinstance(obj, PFDBObj):
+            if len(obj):
+                yield name
+
+        else:
+            has_details = hasattr(self, &#39;_details_&#39;) \
+                and name in self._details_
+            has_default = has_details \
+                and &#39;default&#39; in self._details_[name]
+            has_domain = has_details \
+                and &#39;domains&#39; in self._details_[name]
+            is_mandatory = has_domain \
+                and &#39;MandatoryValue&#39; in self._details_[name][&#39;domains&#39;]
+            is_default = has_default \
+                and obj == self._details_[name][&#39;default&#39;]
+            is_set = has_details \
+                and &#39;history&#39; in self._details_[name] \
+                and len(self._details_[name][&#39;history&#39;]) &gt; 0
+
+            if obj is not None:
+                if skip_default:
+                    if not is_default or is_mandatory or is_set:
+                        yield name
+                else:
+                    yield name
+
+            elif is_mandatory:
+                yield name</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.get_parflow_key"><code class="name flex">
+<span>def <span class="ident">get_parflow_key</span></span>(<span>self, parent_namespace, key)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper method returning the key to use for Parflow on a given field key.
+This allow to handle differences between what can be defined in Python vs Parflow key.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_parflow_key(self, parent_namespace, key):
+    &#34;&#34;&#34;
+    Helper method returning the key to use for Parflow on a given field key.
+    This allow to handle differences between what can be defined in Python vs Parflow key.
+    &#34;&#34;&#34;
+    value = self.__dict__[key]
+    prefix = &#39;&#39;
+    if isinstance(value, PFDBObj):
+        if value._prefix_ and key.startswith(value._prefix_):
+            prefix = value._prefix_
+    else:
+        if key in self._details_:
+            detail = self._details_[key]
+            if &#39;_prefix_&#39; in detail:
+                prefix = detail[&#34;_prefix_&#34;]
+
+    if parent_namespace:
+        return f&#39;{parent_namespace}.{key[len(prefix):]}&#39;
+
+    return key[len(prefix):]</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.get_selection_from_location"><code class="name flex">
+<span>def <span class="ident">get_selection_from_location</span></span>(<span>self, location='.')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a PFDBObj object based on a location.</p>
+<p>i.e.:
+run.Process.Topology.get_selection_from_location('.') =&gt; run.Process.Topology
+run.Process.Topology.get_selection_from_location('..') =&gt; run.Process
+run.Process.Topology.get_selection_from_location('../../Geom') =&gt; run.Geom
+run.Process.Topology.get_selection_from_location('/Geom') =&gt; run.Geom</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_selection_from_location(self, location=&#39;.&#39;):
+    &#34;&#34;&#34;
+    Return a PFDBObj object based on a location.
+
+    i.e.:
+      run.Process.Topology.get_selection_from_location(&#39;.&#39;) =&gt; run.Process.Topology
+      run.Process.Topology.get_selection_from_location(&#39;..&#39;) =&gt; run.Process
+      run.Process.Topology.get_selection_from_location(&#39;../../Geom&#39;) =&gt; run.Geom
+      run.Process.Topology.get_selection_from_location(&#39;/Geom&#39;) =&gt; run.Geom
+    &#34;&#34;&#34;
+    current_location = self
+    path_items = location.split(&#39;/&#39;)
+    if location[0] == &#39;/&#39;:
+        while current_location._parent_ is not None:
+            current_location = current_location._parent_
+
+    next_list = [current_location]
+    for path_item in path_items:
+        if path_item == &#39;&#39;:
+            continue
+
+        current_list = next_list
+        next_list = []
+
+        if path_item == &#39;..&#39;:
+            next_list.extend(map(map_to_parent, current_list))
+        elif path_item == &#39;.&#39;:
+            next_list.extend(map(map_to_self, current_list))
+        elif path_item[0] == &#39;{&#39;:
+            multiList = map(map_to_children_of_type(
+                path_item[1:-1]), current_list)
+            next_list = [item for sublist in multiList for item in sublist]
+        else:
+            next_list.extend(map(map_to_child(path_item), current_list))
+            if len(next_list) and isinstance(next_list[0], list):
+                next_list = [
+                    item for sublist in next_list for item in sublist]
+
+    return next_list</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.help"><code class="name flex">
+<span>def <span class="ident">help</span></span>(<span>self, key=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Dynamic help function for runtime evaluation</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def help(self, key=None):
+    &#34;&#34;&#34;
+    Dynamic help function for runtime evaluation
+    &#34;&#34;&#34;
+    if key is not None:
+        if key in self._details_:
+            if &#39;help&#39; in self._details_[key]:
+                print(self._details_[key][&#39;help&#39;])
+        else:
+            obj = self.__dict__[key]
+            if hasattr(obj, &#39;__doc__&#39;):
+                print(obj.__doc__)
+
+            if hasattr(obj, &#39;_details_&#39;) and &#39;_value_&#39; in obj._details_ \
+                    and &#39;help&#39; in obj._details_[&#39;_value_&#39;]:
+                print(obj._details_[&#39;_value_&#39;][&#39;help&#39;])
+
+    elif hasattr(self, &#39;__doc__&#39;):
+        print(self.__doc__)
+        if hasattr(self, &#39;_details_&#39;) and &#39;_value_&#39; in self._details_ \
+                and &#39;help&#39; in self._details_[&#39;_value_&#39;]:
+            print(self._details_[&#39;_value_&#39;][&#39;help&#39;])</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.pfset"><code class="name flex">
+<span>def <span class="ident">pfset</span></span>(<span>self, key='', value=None, yamlFile=None, yamlContent=None, pfidbFile=None, hierarchical_map=None, flat_map=None, exit_if_undefined=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Allow to define any parflow key so it can be exported.
+Many formats are supported:
+- key/value: To set a single value relative to our current
+PFDBObj.
+- yamlFile: YAML file path to load and import using the
+current PFDBObj as root.
+- yamlContent: YAML string to load and import using the
+current PFDBObj as root.
+- hierarchical_map: Nested dict containing several key/value
+pair using the current PFDBObj as root.
+- flat_map: Flat dict with parflow key/value pair to set
+using the current PFDBObj as root.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def pfset(self, key=&#39;&#39;, value=None, yamlFile=None, yamlContent=None,
+          pfidbFile=None, hierarchical_map=None, flat_map=None,
+          exit_if_undefined=False):
+    &#34;&#34;&#34;
+    Allow to define any parflow key so it can be exported.
+    Many formats are supported:
+        - key/value: To set a single value relative to our current
+            PFDBObj.
+        - yamlFile: YAML file path to load and import using the
+            current PFDBObj as root.
+        - yamlContent: YAML string to load and import using the
+            current PFDBObj as root.
+        - hierarchical_map: Nested dict containing several key/value
+            pair using the current PFDBObj as root.
+        - flat_map: Flat dict with parflow key/value pair to set
+            using the current PFDBObj as root.
+    &#34;&#34;&#34;
+    if yamlFile:
+        yamlContent = get_text_file_content(yamlFile)
+
+    if yamlContent:
+        hierarchical_map = yaml.safe_load(yamlContent)
+
+    if pfidbFile:
+        flat_map = read_pfidb(pfidbFile)
+
+    if hierarchical_map:
+        flat_map = flatten_hierarchical_map(hierarchical_map)
+
+    if flat_map:
+        sorted_flat_map = sort_dict_by_priority(flat_map)
+        for key, value in sorted_flat_map.items():
+            self.pfset(key=key, value=value,
+                       exit_if_undefined=exit_if_undefined)
+
+    if not key:
+        return
+
+    key_stored = False
+    tokens = key.split(&#39;.&#39;)
+    if len(tokens) &gt; 1:
+        container = self.get_selection_from_location(
+            &#39;/&#39;.join(tokens[:-1]))[0]
+        if container is not None:
+            container[tokens[-1]] = value
+            key_stored = True
+    elif len(tokens) == 1:
+        self[tokens[0]] = value
+        key_stored = True
+
+    if not key_stored:
+        # store key on the side
+        if &#39;_pfstore_&#39; not in self.__dict__:
+            self.__dict__[&#39;_pfstore_&#39;] = {}
+        parentNamespace = self.get_full_key_name()
+        fullkeyName = f&#34;{parentNamespace}&#34; \
+                      f&#34;{&#39;.&#39; if parentNamespace else &#39;&#39;}{key}&#34;
+        self.__dict__[&#39;_pfstore_&#39;][fullkeyName] = value
+        rootPath = self.get_full_key_name()
+        print(f&#34;Caution: Using internal store of &#34;
+              f&#34;{rootPath if rootPath else &#39;run&#39;} &#34;
+              f&#34;to save {fullkeyName} = {value}&#34;)
+        if exit_if_undefined:
+            sys.exit(1)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.process_dynamic"><code class="name flex">
+<span>def <span class="ident">process_dynamic</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Processing the dynamically defined (user-defined) key names</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def process_dynamic(self):
+    &#34;&#34;&#34;
+    Processing the dynamically defined (user-defined) key names
+    &#34;&#34;&#34;
+    from . import generated
+    for (class_name, selection) in self._dynamic_.items():
+        klass = getattr(generated, class_name)
+        names = self.get_selection_from_location(selection)
+        for name in names:
+            if name is not None:
+                self.__dict__[name] = klass(self)</code></pre>
+</details>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObj.validate"><code class="name flex">
+<span>def <span class="ident">validate</span></span>(<span>self, indent=1, verbose=False, enable_print=True, working_directory=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Method to validate sub hierarchy</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate(self, indent=1, verbose=False, enable_print=True, working_directory=None):
+    &#34;&#34;&#34;
+    Method to validate sub hierarchy
+    &#34;&#34;&#34;
+    if len(self) == 0:
+        return 0
+
+    # overwrite current working directory
+    prev_dir = settings.WORKING_DIRECTORY
+    if working_directory:
+        settings.set_working_directory(working_directory)
+
+    error_count = 0
+    indent_str = &#39;  &#39;*indent
+    for name in self.get_key_names(skip_default=True):
+        obj = self.__dict__[name]
+        if isinstance(obj, PFDBObj):
+            if len(obj):
+                if hasattr(obj, &#39;_value_&#39;):
+                    value = obj._value_
+                    add_errors, validation_string = validate_helper(
+                        obj, &#39;_value_&#39;, value, indent)
+
+                    if enable_print and (add_errors or verbose):
+                        print(f&#39;{indent_str}{name}: {validation_string}&#39;)
+
+                    error_count += add_errors
+                elif enable_print:
+                    if verbose or obj.validate(enable_print=False):
+                        print(f&#39;{indent_str}{name}:&#39;)
+
+                error_count += obj.validate(indent + 1,
+                                            verbose=verbose,
+                                            enable_print=enable_print)
+
+        elif hasattr(self, &#39;_details_&#39;) and name in self._details_:
+            add_errors, validation_string = validate_helper(
+                self, name, obj, indent)
+            if enable_print and (verbose or add_errors):
+                print(f&#39;{indent_str}{name}: {validation_string}&#39;)
+            error_count += add_errors
+        elif obj is not None:
+            if enable_print and verbose:
+                print(f&#39;{indent_str}{name}: {obj}&#39;)
+
+    # revert working directory to original directory
+    settings.set_working_directory(prev_dir)
+
+    return error_count</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="parflow.tools.database.core.PFDBObjListNumber"><code class="flex name class">
+<span>class <span class="ident">PFDBObjListNumber</span></span>
+<span>(</span><span>parent=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Class for leaf list values</p>
+<p>Create container object while keeping a reference to your parent</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PFDBObjListNumber(PFDBObj):
+    &#34;&#34;&#34;Class for leaf list values&#34;&#34;&#34;
+
+    def __setattr__(self, name, value):
+        &#34;&#34;&#34;Helper method that aims to streamline dot notation assignment
+        &#34;&#34;&#34;
+        key_str = str(name)
+        if is_private_key(key_str):
+            self.__dict__[key_str] = value
+            return
+
+        if self._prefix_:
+            if key_str.startswith(self._prefix_):
+                self.__dict__[key_str] = value
+            else:
+                self.__dict__[f&#39;{self._prefix_}{key_str}&#39;] = value
+            return
+
+        self.__dict__[key_str] = value
+
+    def get_parflow_key(self, parent_namespace, key):
+        &#34;&#34;&#34;Helper method returning the key to use for Parflow on
+        a given field key. This allows handling of differences
+        between what can be defined in Python vs Parflow key.
+        &#34;&#34;&#34;
+        prefix = self._prefix_ if self._prefix_ else &#39;&#39;
+
+        if parent_namespace:
+            return f&#39;{parent_namespace}.{key[len(prefix):]}&#39;
+
+        return key[len(prefix):]</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="parflow.tools.database.core.PFDBObj" href="#parflow.tools.database.core.PFDBObj">PFDBObj</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="parflow.tools.database.generated.Coeff" href="generated.html#parflow.tools.database.generated.Coeff">Coeff</a></li>
+<li><a title="parflow.tools.database.generated.GeomItemCoeff" href="generated.html#parflow.tools.database.generated.GeomItemCoeff">GeomItemCoeff</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="parflow.tools.database.core.PFDBObjListNumber.get_parflow_key"><code class="name flex">
+<span>def <span class="ident">get_parflow_key</span></span>(<span>self, parent_namespace, key)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper method returning the key to use for Parflow on
+a given field key. This allows handling of differences
+between what can be defined in Python vs Parflow key.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_parflow_key(self, parent_namespace, key):
+    &#34;&#34;&#34;Helper method returning the key to use for Parflow on
+    a given field key. This allows handling of differences
+    between what can be defined in Python vs Parflow key.
+    &#34;&#34;&#34;
+    prefix = self._prefix_ if self._prefix_ else &#39;&#39;
+
+    if parent_namespace:
+        return f&#39;{parent_namespace}.{key[len(prefix):]}&#39;
+
+    return key[len(prefix):]</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="parflow.tools.database.core.PFDBObj" href="#parflow.tools.database.core.PFDBObj">PFDBObj</a></b></code>:
+<ul class="hlist">
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_children_of_type" href="#parflow.tools.database.core.PFDBObj.get_children_of_type">get_children_of_type</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_context_settings" href="#parflow.tools.database.core.PFDBObj.get_context_settings">get_context_settings</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_full_key_name" href="#parflow.tools.database.core.PFDBObj.get_full_key_name">get_full_key_name</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_key_dict" href="#parflow.tools.database.core.PFDBObj.get_key_dict">get_key_dict</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_key_names" href="#parflow.tools.database.core.PFDBObj.get_key_names">get_key_names</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_selection_from_location" href="#parflow.tools.database.core.PFDBObj.get_selection_from_location">get_selection_from_location</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.help" href="#parflow.tools.database.core.PFDBObj.help">help</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.pfset" href="#parflow.tools.database.core.PFDBObj.pfset">pfset</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.process_dynamic" href="#parflow.tools.database.core.PFDBObj.process_dynamic">process_dynamic</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.validate" href="#parflow.tools.database.core.PFDBObj.validate">validate</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="parflow.tools.database" href="index.html">parflow.tools.database</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="parflow.tools.database.core.convert_value_for_string_dict" href="#parflow.tools.database.core.convert_value_for_string_dict">convert_value_for_string_dict</a></code></li>
+<li><code><a title="parflow.tools.database.core.detail_helper" href="#parflow.tools.database.core.detail_helper">detail_helper</a></code></li>
+<li><code><a title="parflow.tools.database.core.extract_keys_from_dict" href="#parflow.tools.database.core.extract_keys_from_dict">extract_keys_from_dict</a></code></li>
+<li><code><a title="parflow.tools.database.core.extract_keys_from_object" href="#parflow.tools.database.core.extract_keys_from_object">extract_keys_from_object</a></code></li>
+<li><code><a title="parflow.tools.database.core.flatten_hierarchical_map" href="#parflow.tools.database.core.flatten_hierarchical_map">flatten_hierarchical_map</a></code></li>
+<li><code><a title="parflow.tools.database.core.is_not_private_key" href="#parflow.tools.database.core.is_not_private_key">is_not_private_key</a></code></li>
+<li><code><a title="parflow.tools.database.core.is_private_key" href="#parflow.tools.database.core.is_private_key">is_private_key</a></code></li>
+<li><code><a title="parflow.tools.database.core.validate_helper" href="#parflow.tools.database.core.validate_helper">validate_helper</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="parflow.tools.database.core.PFDBObj" href="#parflow.tools.database.core.PFDBObj">PFDBObj</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.core.PFDBObj.get" href="#parflow.tools.database.core.PFDBObj.get">get</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_children_of_type" href="#parflow.tools.database.core.PFDBObj.get_children_of_type">get_children_of_type</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_context_settings" href="#parflow.tools.database.core.PFDBObj.get_context_settings">get_context_settings</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_full_key_name" href="#parflow.tools.database.core.PFDBObj.get_full_key_name">get_full_key_name</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_key_dict" href="#parflow.tools.database.core.PFDBObj.get_key_dict">get_key_dict</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_key_names" href="#parflow.tools.database.core.PFDBObj.get_key_names">get_key_names</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_parflow_key" href="#parflow.tools.database.core.PFDBObj.get_parflow_key">get_parflow_key</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.get_selection_from_location" href="#parflow.tools.database.core.PFDBObj.get_selection_from_location">get_selection_from_location</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.help" href="#parflow.tools.database.core.PFDBObj.help">help</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.pfset" href="#parflow.tools.database.core.PFDBObj.pfset">pfset</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.process_dynamic" href="#parflow.tools.database.core.PFDBObj.process_dynamic">process_dynamic</a></code></li>
+<li><code><a title="parflow.tools.database.core.PFDBObj.validate" href="#parflow.tools.database.core.PFDBObj.validate">validate</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="parflow.tools.database.core.PFDBObjListNumber" href="#parflow.tools.database.core.PFDBObjListNumber">PFDBObjListNumber</a></code></h4>
+<ul class="">
+<li><code><a title="parflow.tools.database.core.PFDBObjListNumber.get_parflow_key" href="#parflow.tools.database.core.PFDBObjListNumber.get_parflow_key">get_parflow_key</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

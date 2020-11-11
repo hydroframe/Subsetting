@@ -179,7 +179,7 @@ def locate_tifs(file_list) -&gt; list:
         list of files where the extension is .tif
 
     &#34;&#34;&#34;
-    return [s for s in file_list if &#39;.tif&#39; in s.lower()]
+    return list([s for s in file_list if &#39;.tif&#39; in s.lower()])
 
 
 def clip_inputs(clipper, input_list, out_dir=&#39;.&#39;, pfb_outs=1, tif_outs=0, no_data=NO_DATA) -&gt; None:
@@ -218,6 +218,7 @@ def clip_inputs(clipper, input_list, out_dir=&#39;.&#39;, pfb_outs=1, tif_outs=0
         if tif_outs and new_geom is not None and ref_proj is not None:
             file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f&#39;{filename}_clip.tif&#39;),
                                                  return_arr, new_geom, ref_proj, no_data=no_data)
+        del return_arr
 
 
 def get_file_list(input_dir, glob_pattern=None, files=None) -&gt; list:
@@ -241,7 +242,7 @@ def get_file_list(input_dir, glob_pattern=None, files=None) -&gt; list:
         file_list = input_dir.glob(glob_pattern)
     elif files is not None:
         file_list = [input_dir / filename for filename in files]
-    return file_list
+    return list(file_list)
 
 
 def main():
@@ -250,20 +251,13 @@ def main():
     start_date = datetime.utcnow()
     logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(sys.argv[:])}&#39;)
     args = parse_args(sys.argv[1:])
-
-
-    # TODO: Identify args.input path
+    # get the input path and data file list
     input_path = Path(args.input_path)
-    # TODO: Identify glob_pattern
-    if args.glob_pattern:
-        data_files = input_path.glob(args.glob_pattern)
-    else:
-        data_files = [input_path / filename for filename in args.data_files]
-    # TODO: Locate input files using Path.glob(glob_str) https://docs.python.org/3/library/pathlib.html#module-pathlib
+    data_files = get_file_list(input_dir=input_path, files=args.data_files, glob_pattern=args.glob_pattern)
     # If tif out specified, look for a reference tif
     if args.write_tifs and not args.ref_file:
         if &#39;tif&#39; not in args.mask_file.lower():
-            input_tifs = locate_tifs(args.data_files)
+            input_tifs = locate_tifs(data_files)
             if len(input_tifs) &lt; 1:
                 raise Exception(&#39;Must include at least one geotif input or a ref_file when tif_outs is selected&#39;)
     if args.mask_file:
@@ -272,7 +266,7 @@ def main():
         box_clip(file_io_tools.read_bbox(args.bbox_file), data_files, args.out_dir, args.write_pfbs,
                  args.write_tifs)
     elif args.bbox_def:
-        box_clip(args.bbox_def, args.data_files, args.out_dir, args.write_pfbs, args.write_tifs)
+        box_clip(args.bbox_def, data_files, args.out_dir, args.write_pfbs, args.write_tifs)
     end_date = datetime.utcnow()
     logging.info(f&#39;completed process at {end_date} for a runtime of {end_date-start_date}&#39;)
 
@@ -408,7 +402,8 @@ if __name__ == &#39;__main__&#39;:
             file_io_tools.write_pfb(return_arr, os.path.join(out_dir, f&#39;{filename}_clip.pfb&#39;))
         if tif_outs and new_geom is not None and ref_proj is not None:
             file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f&#39;{filename}_clip.tif&#39;),
-                                                 return_arr, new_geom, ref_proj, no_data=no_data)</code></pre>
+                                                 return_arr, new_geom, ref_proj, no_data=no_data)
+        del return_arr</code></pre>
 </details>
 </dd>
 <dt id="parflow.subset.tools.bulk_clipper.get_file_list"><code class="name flex">
@@ -455,7 +450,7 @@ if __name__ == &#39;__main__&#39;:
         file_list = input_dir.glob(glob_pattern)
     elif files is not None:
         file_list = [input_dir / filename for filename in files]
-    return file_list</code></pre>
+    return list(file_list)</code></pre>
 </details>
 </dd>
 <dt id="parflow.subset.tools.bulk_clipper.locate_tifs"><code class="name flex">
@@ -491,7 +486,7 @@ if __name__ == &#39;__main__&#39;:
         list of files where the extension is .tif
 
     &#34;&#34;&#34;
-    return [s for s in file_list if &#39;.tif&#39; in s.lower()]</code></pre>
+    return list([s for s in file_list if &#39;.tif&#39; in s.lower()])</code></pre>
 </details>
 </dd>
 <dt id="parflow.subset.tools.bulk_clipper.main"><code class="name flex">
@@ -509,20 +504,13 @@ if __name__ == &#39;__main__&#39;:
     start_date = datetime.utcnow()
     logging.info(f&#39;start process at {start_date} from command {&#34; &#34;.join(sys.argv[:])}&#39;)
     args = parse_args(sys.argv[1:])
-
-
-    # TODO: Identify args.input path
+    # get the input path and data file list
     input_path = Path(args.input_path)
-    # TODO: Identify glob_pattern
-    if args.glob_pattern:
-        data_files = input_path.glob(args.glob_pattern)
-    else:
-        data_files = [input_path / filename for filename in args.data_files]
-    # TODO: Locate input files using Path.glob(glob_str) https://docs.python.org/3/library/pathlib.html#module-pathlib
+    data_files = get_file_list(input_dir=input_path, files=args.data_files, glob_pattern=args.glob_pattern)
     # If tif out specified, look for a reference tif
     if args.write_tifs and not args.ref_file:
         if &#39;tif&#39; not in args.mask_file.lower():
-            input_tifs = locate_tifs(args.data_files)
+            input_tifs = locate_tifs(data_files)
             if len(input_tifs) &lt; 1:
                 raise Exception(&#39;Must include at least one geotif input or a ref_file when tif_outs is selected&#39;)
     if args.mask_file:
@@ -531,7 +519,7 @@ if __name__ == &#39;__main__&#39;:
         box_clip(file_io_tools.read_bbox(args.bbox_file), data_files, args.out_dir, args.write_pfbs,
                  args.write_tifs)
     elif args.bbox_def:
-        box_clip(args.bbox_def, args.data_files, args.out_dir, args.write_pfbs, args.write_tifs)
+        box_clip(args.bbox_def, data_files, args.out_dir, args.write_pfbs, args.write_tifs)
     end_date = datetime.utcnow()
     logging.info(f&#39;completed process at {end_date} for a runtime of {end_date-start_date}&#39;)</code></pre>
 </details>

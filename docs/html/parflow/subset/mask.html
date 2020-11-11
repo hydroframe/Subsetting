@@ -78,7 +78,10 @@ class SubsetMask:
             masked numpy array with full_dim_mask edges at outer area
 
         &#34;&#34;&#34;
-        mx = ma.masked_where(self.mask_array &lt; self.bbox_val, self.mask_array)
+        if np.amin(self.mask_array) == 0:
+            mx = ma.masked_where(self.mask_array &lt;= self.bbox_val, self.mask_array)
+        else:
+            mx = ma.masked_where(self.mask_array &lt; self.bbox_val, self.mask_array)
         logging.info(f&#39;SubsetMask located outer bbox in full_dim_mask array&#39;)
         return mx
 
@@ -191,7 +194,21 @@ class SubsetMask:
             A bounding box describing the mask location and size in the domain
         &#34;&#34;&#34;
         return BBox(self.inner_mask_edges[2] + 1, self.inner_mask_edges[0] + 1,
-                    self.inner_mask_shape[1], self.inner_mask_shape[0])
+                    self.inner_mask_shape[1], self.inner_mask_shape[0], pad=self.get_padding())
+
+    def get_padding(self):
+        &#34;&#34;&#34;get the padding information for the mask this is the difference between the bounding box value and inner data
+
+        Returns
+        -------
+        tuple of ints
+            the padding (top, right, bot, left) around the data value
+        &#34;&#34;&#34;
+        padding = [0, 0, 0, 0]
+        indexes = [1, 3, 0, 2]
+        for i in range(4):
+            padding[i] = abs(self.bbox_edges[indexes[i]] - self.inner_mask_edges[indexes[i]])
+        return tuple(padding)
 
     def get_human_bbox(self):
         &#34;&#34;&#34;
@@ -349,7 +366,10 @@ class SubsetMask:
             masked numpy array with full_dim_mask edges at outer area
 
         &#34;&#34;&#34;
-        mx = ma.masked_where(self.mask_array &lt; self.bbox_val, self.mask_array)
+        if np.amin(self.mask_array) == 0:
+            mx = ma.masked_where(self.mask_array &lt;= self.bbox_val, self.mask_array)
+        else:
+            mx = ma.masked_where(self.mask_array &lt; self.bbox_val, self.mask_array)
         logging.info(f&#39;SubsetMask located outer bbox in full_dim_mask array&#39;)
         return mx
 
@@ -462,7 +482,21 @@ class SubsetMask:
             A bounding box describing the mask location and size in the domain
         &#34;&#34;&#34;
         return BBox(self.inner_mask_edges[2] + 1, self.inner_mask_edges[0] + 1,
-                    self.inner_mask_shape[1], self.inner_mask_shape[0])
+                    self.inner_mask_shape[1], self.inner_mask_shape[0], pad=self.get_padding())
+
+    def get_padding(self):
+        &#34;&#34;&#34;get the padding information for the mask this is the difference between the bounding box value and inner data
+
+        Returns
+        -------
+        tuple of ints
+            the padding (top, right, bot, left) around the data value
+        &#34;&#34;&#34;
+        padding = [0, 0, 0, 0]
+        indexes = [1, 3, 0, 2]
+        for i in range(4):
+            padding[i] = abs(self.bbox_edges[indexes[i]] - self.inner_mask_edges[indexes[i]])
+        return tuple(padding)
 
     def get_human_bbox(self):
         &#34;&#34;&#34;
@@ -789,7 +823,7 @@ CSS style (top,right,bottom,left)</dd>
         A bounding box describing the mask location and size in the domain
     &#34;&#34;&#34;
     return BBox(self.inner_mask_edges[2] + 1, self.inner_mask_edges[0] + 1,
-                self.inner_mask_shape[1], self.inner_mask_shape[0])</code></pre>
+                self.inner_mask_shape[1], self.inner_mask_shape[0], pad=self.get_padding())</code></pre>
 </details>
 </dd>
 <dt id="parflow.subset.mask.SubsetMask.get_human_bbox"><code class="name flex">
@@ -817,6 +851,35 @@ Returns</p>
 
     &#34;&#34;&#34;
     return self.get_bbox().get_human_bbox()</code></pre>
+</details>
+</dd>
+<dt id="parflow.subset.mask.SubsetMask.get_padding"><code class="name flex">
+<span>def <span class="ident">get_padding</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the padding information for the mask this is the difference between the bounding box value and inner data</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple</code> of <code>ints</code></dt>
+<dd>the padding (top, right, bot, left) around the data value</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_padding(self):
+    &#34;&#34;&#34;get the padding information for the mask this is the difference between the bounding box value and inner data
+
+    Returns
+    -------
+    tuple of ints
+        the padding (top, right, bot, left) around the data value
+    &#34;&#34;&#34;
+    padding = [0, 0, 0, 0]
+    indexes = [1, 3, 0, 2]
+    for i in range(4):
+        padding[i] = abs(self.bbox_edges[indexes[i]] - self.inner_mask_edges[indexes[i]])
+    return tuple(padding)</code></pre>
 </details>
 </dd>
 <dt id="parflow.subset.mask.SubsetMask.write_bbox"><code class="name flex">
@@ -950,6 +1013,7 @@ Returns</p>
 <li><code><a title="parflow.subset.mask.SubsetMask.find_mask_edges" href="#parflow.subset.mask.SubsetMask.find_mask_edges">find_mask_edges</a></code></li>
 <li><code><a title="parflow.subset.mask.SubsetMask.get_bbox" href="#parflow.subset.mask.SubsetMask.get_bbox">get_bbox</a></code></li>
 <li><code><a title="parflow.subset.mask.SubsetMask.get_human_bbox" href="#parflow.subset.mask.SubsetMask.get_human_bbox">get_human_bbox</a></code></li>
+<li><code><a title="parflow.subset.mask.SubsetMask.get_padding" href="#parflow.subset.mask.SubsetMask.get_padding">get_padding</a></code></li>
 <li><code><a title="parflow.subset.mask.SubsetMask.inner_mask_shape" href="#parflow.subset.mask.SubsetMask.inner_mask_shape">inner_mask_shape</a></code></li>
 <li><code><a title="parflow.subset.mask.SubsetMask.mask_shape" href="#parflow.subset.mask.SubsetMask.mask_shape">mask_shape</a></code></li>
 <li><code><a title="parflow.subset.mask.SubsetMask.write_bbox" href="#parflow.subset.mask.SubsetMask.write_bbox">write_bbox</a></code></li>

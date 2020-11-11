@@ -75,7 +75,9 @@ def read_file(infile):
         pfdata = PFData(file_string_path)
         pfdata.loadHeader()
         pfdata.loadData()
-        res_arr = pfdata.getDataAsArray()
+        res_arr = pfdata.moveDataArray()
+        pfdata.close()
+        del pfdata
     else:
         raise ValueError(&#39;can not read file type &#39; + ext)
 
@@ -128,7 +130,7 @@ def write_pfb(data, outfile, x0=0, y0=0, z0=0, dx=1000, dz=1000):
     &#34;&#34;&#34;
     logging.info(f&#39;wrote pfb file {outfile}, (z,y,x)={data.shape}&#39;)
     pf_data = PFData()
-    pf_data.setDataArray(np.ascontiguousarray(data, np.float64))
+    pf_data.setDataArray(data)
     pf_data.setDX(dx)
     pf_data.setDY(dx)
     pf_data.setDZ(dz)
@@ -136,6 +138,7 @@ def write_pfb(data, outfile, x0=0, y0=0, z0=0, dx=1000, dz=1000):
     pf_data.setY(y0)
     pf_data.setZ(z0)
     pf_data.writeFile(outfile)
+    del pf_data
 
 
 def write_bbox(bbox, outfile):
@@ -365,7 +368,9 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
         pfdata = PFData(file_string_path)
         pfdata.loadHeader()
         pfdata.loadData()
-        res_arr = pfdata.getDataAsArray()
+        res_arr = pfdata.moveDataArray()
+        pfdata.close()
+        del pfdata
     else:
         raise ValueError(&#39;can not read file type &#39; + ext)
 
@@ -674,14 +679,15 @@ where to write the file</p>
     &#34;&#34;&#34;
     logging.info(f&#39;wrote pfb file {outfile}, (z,y,x)={data.shape}&#39;)
     pf_data = PFData()
-    pf_data.setDataArray(np.ascontiguousarray(data, np.float64))
+    pf_data.setDataArray(data)
     pf_data.setDX(dx)
     pf_data.setDY(dx)
     pf_data.setDZ(dz)
     pf_data.setX(x0)
     pf_data.setY(y0)
     pf_data.setZ(z0)
-    pf_data.writeFile(outfile)</code></pre>
+    pf_data.writeFile(outfile)
+    del pf_data</code></pre>
 </details>
 </dd>
 </dl>

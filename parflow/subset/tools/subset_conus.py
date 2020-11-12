@@ -228,9 +228,6 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files='.', out_di
         run_script.write(file_name=os.path.join(out_dir, out_name), file_format='pfidb')
         run_script.write(file_name=os.path.join(out_dir, out_name), file_format='yaml')
         run_script.write(file_name=os.path.join(out_dir, out_name), file_format='json')
-        run_script.dist(slopey_file)
-        run_script.dist(slopex_file)
-        run_script.run(working_directory=out_dir)
         return run_script
 
 

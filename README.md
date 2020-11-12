@@ -12,7 +12,7 @@ line scripts to:
 ## Prerequisites
 
 ### Packages
-* [parflowio](https://pypi.org/parflowio/)
+* [parflowio](https://pypi.org/project/parflowio/)
 * [gdal](https://gdal.org/download.html)
 * [numpy](https://numpy.org/install/)
 * [pyyaml](https://pypi.org/project/PyYAML/)

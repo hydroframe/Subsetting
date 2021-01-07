@@ -25,4 +25,4 @@ conus:
     optional_files:
       LAND_COVER: 1km_CONUS2_landcover_IGBP.tif
       LAT_LON: CONUS2.0.Final.LatLong.sa
-      DEM: CONUS2.0_RawDEM.tif
+      DEM: CONUS2.0.Final1km.ProcessedDEM.pfb

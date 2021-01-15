@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import numpy as np
+import shapefile
 from parflow.subset.utils.arguments import is_valid_path, is_positive_integer, is_valid_file
 from parflow.subset.clipper import MaskClipper
 from parflow.subset.domain import Conus
@@ -20,6 +21,7 @@ from parflow.subset.data import parkinglot_template, conus_manifest
 from parflow.tools.builders import SolidFileBuilder
 from parflow.subset import TIF_NO_DATA_VALUE_OUT
 from parflow.subset.data import parking_lot_template
+from parflow.subset.utils import huc2shape
 
 def parse_args(args):
     """Parse the command line arguments
@@ -40,12 +42,17 @@ def parse_args(args):
     """
     Required Arguments
     """
+    exclusive_group = parser.add_mutually_exclusive_group(required=True)
+
     parser.add_argument("--input_path", "-i", dest="input_path", required=True,
                         type=lambda x: is_valid_path(parser, x),
                         help="the input path to the shapefile file set")
 
-    parser.add_argument("--shapefile", "-s", dest="shapefile", required=True,
-                        help="the name of the shapefile file set")
+    exclusive_group.add_argument("--shapefile", "-s", dest="shapefile", required=False, default=None,
+                                help="the name of the shapefile file set")
+
+    exclusive_group.add_argument("--watershed", "-w", dest="hucs", required=False, nargs="+", default=None,
+                                 help="one or more HUC 12 values that identify a contiguous watershed")
 
     parser.add_argument("--conus_files", "-f", dest="conus_files", required=True,
                         help="local path to the CONUS inputs to subset",
@@ -76,9 +83,9 @@ def parse_args(args):
                         action='store_true',
                         help="also clip inputs for CLM")
 
-    parser.add_argument("--run_script", "-w", dest="run_script", required=False,
+    parser.add_argument("--run_script", "-r", dest="run_script", required=False,
                         action='store_true',
-                        help="generate the .tcl script for this subset")
+                        help="generate the run script for this subset")
 
     parser.add_argument("--padding", "-p", dest="padding", nargs=4, metavar=('Top', 'Right', 'Bottom', 'Left'),
                         required=False, default=(0, 0, 0, 0), type=int,
@@ -144,6 +151,7 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files='.', out_di
 
     if attribute_ids is None:
         attribute_ids = [1]
+
     # Step 1, rasterize shapefile
 
     rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
@@ -198,6 +206,8 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files='.', out_di
     # Step 5. Generate Run Script
 
     if run_script == 1:
+        # the Run object reads sys.argv, and this is problematic because they share a common flag -r
+        sys.argv = ['Run']
         slopex_file = os.path.join(out_dir, f'{Path(conus.required_files.get("SLOPE_X")).stem}_clip.pfb')
         slopey_file = os.path.join(out_dir, f'{Path(conus.required_files.get("SLOPE_Y")).stem}_clip.pfb')
         solid_file = os.path.join(out_dir, f'{out_name}.pfsol')
@@ -239,10 +249,35 @@ def main():
     args = parse_args(cmd_line_args[1:])
     logging.basicConfig(filename=os.path.join(args.out_dir, 'subset_conus.log'), filemode='w', level=logging.INFO)
     logging.info(f'start process at {start_date} from command {" ".join(cmd_line_args[:])}')
-    subset_conus(input_path=args.input_path, shapefile=args.shapefile, conus_version=args.conus_version,
-                 conus_files=args.conus_files, out_dir=args.out_dir, out_name=args.out_name, clip_clm=args.clip_clm,
-                 run_script=args.run_script, padding=args.padding, attribute_ids=args.attribute_ids,
-                 attribute_name=args.attribute_name, write_tifs=args.write_tifs, manifest_file=args.manifest_file)
+    shape = args.shapefile
+    ids = args.attribute_ids
+    out_name = args.out_name
+    attribute_name = args.attribute_name
+    if args.hucs is not None:
+        if args.out_name is None:
+            out_name = 'watershedClip'
+
+        # query the geometries and build the watershed shape object
+        watershed = huc2shape.build_shape_object(args.hucs)
+
+        shape = out_name
+        attribute_name = 'ID'
+        # write the watershed shape object to *.shp
+        watershed.write_shapefile((Path(args.input_path) / (shape  + '.shp')).as_posix())
+
+        # collect all the ID values in the generated shapefile
+        ids = []
+        with shapefile.Reader((Path(args.input_path) / (shape  + '.shp')).as_posix()) as shp:
+            for record in shp.records():
+                ids.append(str(record[0]))
+
+
+
+
+    subset_conus(input_path=args.input_path, shapefile=shape, conus_version=args.conus_version,
+                 conus_files=args.conus_files, out_dir=args.out_dir, out_name=out_name, clip_clm=args.clip_clm,
+                 run_script=args.run_script, padding=args.padding, attribute_ids=ids,
+                 attribute_name=attribute_name, write_tifs=args.write_tifs, manifest_file=args.manifest_file)
 
     end_date = datetime.utcnow()
     logging.info(f'completed process at {end_date} for a runtime of {end_date - start_date}')

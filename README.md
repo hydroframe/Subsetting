@@ -109,12 +109,13 @@ chmod +x run_tests.sh
 
 #### Create subset from CONUS models from a shapefile
 ```
-python -m parflow.subset.tools.subset_conus --input_path -i INPUT_PATH --shapefile -s
-                                     SHAPEFILE --conus_files -f CONUS_FILES
+python -m parflow.subset.tools.subset_conus --input_path -i INPUT_PATH (--shapefile -s
+                                     SHAPEFILE | --watershed -w HUCIDS) 
+                                     --conus_files -f CONUS_FILES
                                      [--manifest -m MANIFEST_FILE]
                                      [--version -v {1,2}] [--out_dir -o OUT_DIR]
                                      [--out_name -n OUT_NAME] [--clip_clm -c]
-                                     [--write_tcl -w]
+                                     [--run_script -r]
                                      [--padding -p Top Right Bottom Left]
                                      [--attribute_ids -a ATTRIBUTE_IDS [ATTRIBUTE_IDS ...]]
                                      [--attribute_name -e ATTRIBUTE_NAME]
@@ -125,7 +126,7 @@ python -m parflow.subset.tools.subset_conus --input_path -i INPUT_PATH --shapefi
 
 Create a subset of the CONUS1 domain with CLM inputs based on the shapefile at ~/downloads/shapfiles/WBDHU8.shp and write the .tcl file to run the model
 ```
-python -m parflow.subset.tools.subset_conus -i ~/downloads/shapefiles -s WBDHU8 -f ~/downloads/conus1 -v 1 -w -n watershedA_conus1_clip
+python -m parflow.subset.tools.subset_conus -i ~/downloads/shapefiles -s WBDHU8 -f ~/downloads/conus1 -v 1 -r -n watershedA_conus1_clip
 ```
 
 #### Rasterize a shapefile for use as a mask
@@ -200,7 +201,7 @@ Many optional arguments are available for subset_conus and rasterize_shape. Belo
 -v [conus verson=1] The version of the ParFlow CONUS model to subset from (1 or 2), defaults to version 1
 -o [path_to_write_outputs=.] The path to write the output files, defaults to current directory
 -c [clip_clim] Whether or not to clip the CLM lat/lon and vegm data. Defaults to False.
--w [write_tcl] Whether or not to write the .tcl file to run the ParFlow model. Defaults to False
+-r [run_script] Whether or not to write the ParFlow control file to run the ParFlow model. Defaults to False
 -p [padding for mask areas] specified clockwise from top (top, right, bottom, left). Default (0,0,0,0)
 -e [shapefile_attribute_name='OBJECTID'] The name of the attribute table column to uniquely ID objects. 
 -a [shapefile_attribute_ids=[1]] The list of objects in the shapefile to rasterize. Default [1]

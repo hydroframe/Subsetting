@@ -20,6 +20,7 @@ class SubsetConusCLITests(unittest.TestCase):
         self.good_shape_file_name = test_files.huc10190004.get('shapefile').stem
         self.partial_shapefile_path = test_files.partial_shape_file.parent
         self.partial_shapefile_name = test_files.partial_shape_file.stem
+        self.good_huc_ids = ['050902010302', '050600030504']
 
     def test_good_start(self):
         args = subset_conus.parse_args(
@@ -63,14 +64,33 @@ class SubsetConusCLITests(unittest.TestCase):
         self.assertEqual(os.fspath(self.partial_shapefile_path), args.input_path)
         self.assertEqual(self.partial_shapefile_name, args.shapefile)
 
-    def test_cli_all_options_non_default(self):
+    def test_cli_all_options_shape_non_default(self):
         argstring = f'-i {self.good_shape_file_path} -s {self.good_shape_file_name} ' \
-                    f'-f . -v 2 -o .. -n output_name -c -w -p 1 2 3 4 -a 2 3 -e ID -t'.split(' ')
+                    f'-f . -v 2 -o .. -n output_name -c -r -p 1 2 3 4 -a 2 3 -e ID -t'.split(' ')
         args = subset_conus.parse_args(argstring)
         self.assertTrue(args.write_tifs)
         self.assertTrue(args.run_script)
         self.assertTrue(args.clip_clm)
         self.assertEqual(self.good_shape_file_name, args.shapefile)
+        self.assertIsNone(args.hucs)
+        self.assertEqual(os.fspath(self.good_shape_file_path), args.input_path)
+        self.assertEqual(2, args.conus_version)
+        self.assertEqual('.', args.conus_files)
+        self.assertEqual('..', args.out_dir)
+        self.assertEqual('output_name', args.out_name)
+        self.assertSequenceEqual((1, 2, 3, 4), args.padding)
+        self.assertSequenceEqual([2, 3], args.attribute_ids)
+        self.assertEqual('ID', args.attribute_name)
+
+    def test_cli_all_options_watershed_non_default(self):
+        argstring = f'-i {self.good_shape_file_path} -w {self.good_huc_ids[0]} {self.good_huc_ids[1]} ' \
+                    f'-f . -v 2 -o .. -n output_name -c -r -p 1 2 3 4 -a 2 3 -e ID -t'.split(' ')
+        args = subset_conus.parse_args(argstring)
+        self.assertTrue(args.write_tifs)
+        self.assertTrue(args.run_script)
+        self.assertTrue(args.clip_clm)
+        self.assertIsNone(None, args.shapefile)
+        self.assertListEqual(self.good_huc_ids, args.hucs)
         self.assertEqual(os.fspath(self.good_shape_file_path), args.input_path)
         self.assertEqual(2, args.conus_version)
         self.assertEqual('.', args.conus_files)

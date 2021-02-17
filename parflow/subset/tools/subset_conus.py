@@ -22,6 +22,7 @@ from parflow.tools.builders import SolidFileBuilder
 from parflow.subset import TIF_NO_DATA_VALUE_OUT
 from parflow.subset.data import parking_lot_template
 from parflow.subset.utils import huc2shape
+from parflow.subset.mask import SubsetMask
 
 def parse_args(args):
     """Parse the command line arguments
@@ -108,17 +109,22 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def subset_conus(input_path, shapefile, conus_version=1, conus_files='.', out_dir='.', out_name=None, clip_clm=False,
-                 run_script=False, padding=(0, 0, 0, 0), attribute_name='OBJECTID', attribute_ids=None, write_tifs=False,
-                 manifest_file=conus_manifest):
+def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=1, conus_version=1, conus_files='.',
+                 out_dir='.', out_name=None, clip_clm=False, run_script=False, padding=(0, 0, 0, 0),
+                 attribute_name='OBJECTID', attribute_ids=None, write_tifs=False, manifest_file=conus_manifest):
     """subset a conus domain inputs for running a regional model
 
     Parameters
     ----------
-    input_path : str
-        path to input shapefile parts to use as mask
-    shapefile : str
-        name of shapefile to use as mask
+    input_path : str, optional
+        path to input shapefile parts to use as mask. Only applicable if shapefile is also provided.
+    shapefile : str, optional
+        name of shapefile to use as mask. Required if subset_tif is not provided.
+    subset_tif : str, optional
+        path to tiff file containing mask. Required if shapefile is not provided.
+    mask_value : int, optional
+        integer value specifying the data value in the tiff file to consider as the masking value.
+        Only applicable if subset_tif is provided.
     conus_version : int, optional
         version of the CONUS domain to use (1 or 2) (Default value = 1)
     conus_files : str, optional
@@ -145,23 +151,29 @@ def subset_conus(input_path, shapefile, conus_version=1, conus_files='.', out_di
     run_script : parflow.tools.Run
         The Run object which can be used to execute the ParFlow model subset that was created by subset_conus
     """
+    assert any((shapefile, subset_tif)) and not all((shapefile, subset_tif)), \
+        'Specify either a shapefile or a subset_tif file.'
+
     if out_name is None:
-        out_name = shapefile
+        out_name = shapefile or os.path.splitext(os.path.basename(subset_tif))[0]
     conus = Conus(version=conus_version, local_path=conus_files, manifest_file=manifest_file)
 
     if attribute_ids is None:
         attribute_ids = [1]
 
     # Step 1, rasterize shapefile
+    if shapefile is not None:
+        rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
+                                         no_data=TIF_NO_DATA_VALUE_OUT, output_path=out_dir, )
+        mask_array = rasterizer.rasterize_shapefile_to_disk(out_name=f'{out_name}_raster_from_shapefile.tif',
+                                               padding=padding,
+                                               attribute_name=attribute_name,
+                                               attribute_ids=attribute_ids)
 
-    rasterizer = ShapefileRasterizer(input_path, shapefile, reference_dataset=conus.get_domain_tif(),
-                                     no_data=TIF_NO_DATA_VALUE_OUT, output_path=out_dir, )
-    mask_array = rasterizer.rasterize_shapefile_to_disk(out_name=f'{out_name}_raster_from_shapefile.tif',
-                                           padding=padding,
-                                           attribute_name=attribute_name,
-                                           attribute_ids=attribute_ids)
-
-    subset_mask = rasterizer.subset_mask
+        subset_mask = rasterizer.subset_mask
+    else:
+        subset_mask = SubsetMask(tif_file=subset_tif, mask_value=mask_value)
+        mask_array = subset_mask.mask_array
 
     # Step 2, Generate solid file
     clip = MaskClipper(subset_mask, no_data_threshold=-1)

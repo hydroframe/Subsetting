@@ -18,7 +18,7 @@ class SubsetMask:
                f"no_data_value:{self.no_data_value!r}, inner_mask_edges:{self.inner_mask_edges!r}, " \
                f"bbox_edges:{self.bbox_edges!r}"
 
-    def __init__(self, tif_file, bbox_val=0):
+    def __init__(self, tif_file, bbox_val=0, mask_value=1):
         """Create a new instance of SubsetMask
 
         Parameters
@@ -27,12 +27,17 @@ class SubsetMask:
             path to tiff file containing mask
         bbox_val : int, optional
             integer value specifying the data value for bounding box cells
+        mask_value : int, optional
+            integer value specifying the data value in the tiff file to consider as the masking value
         Returns
         -------
         SubsetMask
         """
         self.mask_tif = read_geotiff(tif_file)
         self.mask_array = read_file(tif_file)
+        self.mask_array = np.where(self.mask_array == mask_value, 1, 0)
+        if not np.any(self.mask_array):
+            raise Exception('Unable to create mask without a single masking location')
         self.bbox_val = bbox_val
         self.inner_mask = self._find_inner_object()  # tight crop
         self.bbox_mask = self._find_bbox()  # bbox crop

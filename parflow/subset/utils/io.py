@@ -6,7 +6,10 @@ import logging
 from pathlib import Path
 import pandas as pd
 import numpy as np
-import gdal
+try:
+    from osgeo import gdal
+except ImportError:
+    import gdal
 from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from parflowio.pyParflowio import PFData
 from parflow.subset.bbox import BBox

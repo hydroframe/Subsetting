@@ -2,8 +2,17 @@ import requests
 import itertools
 import urllib.parse
 import xml.etree.ElementTree as ET
-from osgeo import ogr
-from osgeo import osr
+
+try:
+    from osgeo import ogr
+except ImportError:
+    import ogr
+
+try:
+    from osgeo import osr
+except ImportError:
+    import osr
+
 from shapely import geometry
 '''
 date: 04.17.2020

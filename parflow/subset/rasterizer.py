@@ -1,6 +1,14 @@
 """Classes for converting inputs to gridded masks"""
-import gdal
-import ogr
+try:
+    from osgeo import gdal
+except ImportError:
+    import gdal
+
+try:
+    from osgeo import ogr
+except ImportError:
+    import ogr
+
 import os
 import logging
 from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA

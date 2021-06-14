@@ -152,7 +152,8 @@ def locate_tifs(file_list) -> list:
     return list([s for s in file_list if '.tif' in s.lower()])
 
 
-def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_data=NO_DATA) -> None:
+def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_data=NO_DATA, output_suffix='_clip')\
+        -> None:
     """clip a list of files using a clipper object
 
     Parameters
@@ -169,7 +170,8 @@ def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_dat
         write tif files as outputs (optional) (Default value = 0)
     no_data : int, optional
         no_data value for tifs (optional) (Default value = NO_DATA)
-
+    output_suffix : str, optional
+        filename suffix to add to all output pfb/tif files
     Returns
     -------
     None
@@ -184,9 +186,9 @@ def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_dat
         filename = Path(data_file).stem
         return_arr, new_geom, _, _ = clipper.subset(file_io_tools.read_file(data_file))
         if pfb_outs:
-            file_io_tools.write_pfb(return_arr, os.path.join(out_dir, f'{filename}_clip.pfb'))
+            file_io_tools.write_pfb(return_arr, os.path.join(out_dir, f'{filename}{output_suffix}.pfb'))
         if tif_outs and new_geom is not None and ref_proj is not None:
-            file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{filename}_clip.tif'),
+            file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{filename}{output_suffix}.tif'),
                                                  return_arr, new_geom, ref_proj, no_data=no_data)
         del return_arr
 

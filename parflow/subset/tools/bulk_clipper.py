@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import logging
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from parflow.subset.clipper import MaskClipper, BoxClipper
 from parflow.subset.utils.arguments import is_valid_file, is_valid_path
 from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
@@ -152,7 +153,8 @@ def locate_tifs(file_list) -> list:
     return list([s for s in file_list if '.tif' in s.lower()])
 
 
-def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_data=NO_DATA) -> None:
+def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_data=NO_DATA, output_suffix='_clip',
+                n_workers=1) -> None:
     """clip a list of files using a clipper object
 
     Parameters
@@ -169,7 +171,10 @@ def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_dat
         write tif files as outputs (optional) (Default value = 0)
     no_data : int, optional
         no_data value for tifs (optional) (Default value = NO_DATA)
-
+    output_suffix : str, optional
+        filename suffix to add to all output pfb/tif files
+    n_workers: int, optional
+        No. of parallel workers to launch for clipping files (Default value = 1)
     Returns
     -------
     None
@@ -179,16 +184,24 @@ def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_dat
         # identify projection
         ref_proj = clipper.subset_mask.mask_tif.GetProjection()
 
-    # loop over and clip
-    for data_file in input_list:
+    def _clip(data_file):
         filename = Path(data_file).stem
         return_arr, new_geom, _, _ = clipper.subset(file_io_tools.read_file(data_file))
         if pfb_outs:
-            file_io_tools.write_pfb(return_arr, os.path.join(out_dir, f'{filename}_clip.pfb'))
+            file_io_tools.write_pfb(return_arr, os.path.join(out_dir, f'{filename}{output_suffix}.pfb'))
         if tif_outs and new_geom is not None and ref_proj is not None:
-            file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{filename}_clip.tif'),
+            file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{filename}{output_suffix}.tif'),
                                                  return_arr, new_geom, ref_proj, no_data=no_data)
         del return_arr
+
+    with ThreadPoolExecutor(max_workers=min(n_workers, len(input_list))) as executor:
+        to_do = []
+        for data_file in input_list:
+            future = executor.submit(_clip, data_file)
+            to_do.append(future)
+
+        for _ in as_completed(to_do):
+            pass
 
 
 def get_file_list(input_dir, glob_pattern=None, files=None) -> list:

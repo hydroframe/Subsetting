@@ -3,6 +3,7 @@ import logging
 from abc import ABC, abstractmethod
 import numpy as np
 import numpy.ma as ma
+from parflow.tools.io import read_clm
 from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from parflow.subset.utils import io as file_io_tools
 
@@ -322,6 +323,54 @@ class ClmClipper:
         output[rows, cols] = 1
         return sa_formatted, output
 
+    def clip_vegm(self, vegm_file):
+        """Clip a vegm .dat file to the bounding box of the mask
+
+        Parameters
+        ----------
+        vegm_file : str
+            Path to the vegm .dat file to clip
+
+        Returns
+        -------
+        output : numpy.ndarray
+            vegm formatted representation of the data (2d)
+        """
+        vegm_data = read_clm(vegm_file, type='vegm')
+
+        # parflow returns an ndarray from read_clm which is (x, y) in dimensions
+        # transpose so that we're dealing with (z, y, x) dimensions
+        vegm_data = np.transpose(vegm_data)
+
+        # We will be subsetting exactly 23 z values corresponding to all vegm columns
+        # Save old values from self.clipper so we can reapply them later
+        _z_0 = self.clipper.z_0
+        _nz = self.clipper.nz
+
+        self.clipper.update_bbox(z=1, nz=23)
+        clipped_data, _, _, _ = self.clipper.subset(data_array=vegm_data)
+
+        # Reapply old values - note that the z-parameter in update_bbox is 1-indexed, so _z_0 + 1
+        self.clipper.update_bbox(z=_z_0+1, nz=_nz)
+
+        # The following lines of code have to do with generating the first 2 (x, y) columns needed
+        # for the vegm .dat file
+        ny, nx = clipped_data.shape[1:]
+        # y-indices, then x-indices
+        indices = np.indices((ny, nx)) + 1
+        # x-indices, then y-indices
+        indices = indices[::-1, :, :]
+        # prepend x-indices, y-indices to transform shape (23, y, x) => (25, y, x)
+        clipped_data = np.vstack([indices, clipped_data])
+
+        # Convert to (x, y, 25) in shape and merge the first 2 axes to create a (x*y, 25) ndarray.
+        # The result corresponds to the parameters in other methods of this class:
+        #    the 2D output 'output' of clip_land_cover
+        #    the 2D input 'land_cover_data' of write_land_cover
+        clipped_data = clipped_data.transpose().reshape(-1, 25)
+
+        return clipped_data
+
     def write_land_cover(self, land_cover_data, out_file):
         """Write the land cover file in vegm format
 
@@ -342,6 +391,7 @@ class ClmClipper:
                      '10', '11',
                      '12', '13', '14', '15', '16', '17', '18']
         header = '\n'.join([heading, ' '.join(col_names)])
+
         file_io_tools.write_array_to_text_file(out_file=out_file, data=land_cover_data, header=header,
                                                fmt=['%d'] * 2 + ['%.6f'] * 2 + ['%.2f'] * 2 + ['%d'] * 19)
 

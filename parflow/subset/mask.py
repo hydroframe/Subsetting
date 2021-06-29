@@ -53,6 +53,20 @@ class SubsetMask:
         self.inner_mask_edges = self.find_mask_edges(self.inner_mask)  # edges
         self.bbox_edges = self.find_mask_edges(self.bbox_mask)  # edges
 
+    def __getstate__(self):
+        """
+        The `mask_tif` attribute is a gdal object that cannot be serialized (easily?).
+        This attribute is not needed for the most common use-case where the Mask class is serialized
+        for multi-processor execution (by a Clipper class to obtain the mask_array, for example).
+        So we simply omit it from the attributes that *should* be serialized.
+        """
+        state = self.__dict__.copy()
+        del state['mask_tif']
+        return state
+
+    def __setstate__(self, state):
+        self.__dict__.update(state)
+
     def _find_bbox(self):
         """locate the outer bbox area and return the masked array
 

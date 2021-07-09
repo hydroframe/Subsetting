@@ -1,7 +1,10 @@
 import unittest
 import os
 import numpy as np
-import gdal
+try:
+        from osgeo import gdal 
+except ImportError:
+    import gdal
 from osgeo import osr
 import parflow.subset.utils.io as file_io_tools
 import tests.test_files as test_files

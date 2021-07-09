@@ -28,7 +28,7 @@ class SubsetMaskClassTests(unittest.TestCase):
         my_mask.write_mask_to_tif("WBDHU8_conus1_mask_padded.tif")
 
     def test_all_zeroes_ones_mask(self):
-        my_mask = SubsetMask(test_all_zeros_and_ones_mask)
+        my_mask = SubsetMask(test_all_zeros_and_ones_mask,mask_value=0)
         self.assertSequenceEqual((1752, 2222, 3672, 4078), my_mask.inner_mask_edges)
         self.assertSequenceEqual((1752, 2222, 3672, 4078), my_mask.bbox_edges)
         self.assertSequenceEqual((471, 407), my_mask.bbox_shape)
@@ -40,7 +40,7 @@ class SubsetMaskClassTests(unittest.TestCase):
         self.assertSequenceEqual((471, 407), my_mask.inner_mask_shape)
 
     def test_get_padding_from_mask(self):
-        my_mask = SubsetMask(test_all_zeros_and_ones_mask)
+        my_mask = SubsetMask(test_all_zeros_and_ones_mask,mask_value=0)
         self.assertSequenceEqual((1752, 2222, 3672, 4078), my_mask.inner_mask_edges)
         self.assertSequenceEqual((1752, 2222, 3672, 4078), my_mask.bbox_edges)
         self.assertSequenceEqual((471, 407), my_mask.bbox_shape)

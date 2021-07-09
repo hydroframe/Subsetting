@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - requests
+  - shapely
   - basemap
   - gdal
   - geos

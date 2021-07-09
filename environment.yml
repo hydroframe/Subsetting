@@ -11,7 +11,9 @@ dependencies:
   - pandas
   - pip
   - python=3.7.6
+  - pyyaml
   - pip:
+    - pftools
     - pyqt5-sip
     - pyqtwebengine
     - parflowio

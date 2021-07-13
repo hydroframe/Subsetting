@@ -39,9 +39,9 @@ class SubsetMask:
         try:
             iter(mask_value)
         except TypeError:
-            self.mask_array = np.where(self.mask_array == mask_value, 1, 0)
+            self.mask_array = np.where(self.mask_array == mask_value, 1, self.mask_array)
         else:
-            self.mask_array = np.where(np.isin(self.mask_array, mask_value), 1, 0)
+            self.mask_array = np.where(np.isin(self.mask_array, mask_value), 1, self.mask_array)
             
         if not np.any(self.mask_array):
             raise Exception('Unable to create mask without a single masking location')

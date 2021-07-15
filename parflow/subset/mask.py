@@ -6,7 +6,6 @@ import numpy as np
 import numpy.ma as ma
 from parflow.subset.utils.io import read_geotiff, write_array_to_geotiff, write_bbox, read_file, write_pfb
 from parflow.subset.bbox import BBox
-from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 
 
 class SubsetMask:

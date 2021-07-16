@@ -109,7 +109,7 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=1, conus_version=1, conus_files='.',
+def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=None, conus_version=1, conus_files='.',
                  out_dir='.', out_name=None, clip_clm=False, run_script=False, padding=(0, 0, 0, 0),
                  attribute_name='OBJECTID', attribute_ids=None, write_tifs=False, manifest_file=conus_manifest):
     """subset a conus domain inputs for running a regional model
@@ -124,6 +124,7 @@ def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=1,
         path to tiff file containing mask. Required if shapefile is not provided.
     mask_value : int, optional
         integer value specifying the data value in the tiff file to consider as the masking value.
+        If None, all +ve values are considered as the masking value
         Only applicable if subset_tif is provided.
     conus_version : int, optional
         version of the CONUS domain to use (1 or 2) (Default value = 1)

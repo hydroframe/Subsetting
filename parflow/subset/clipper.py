@@ -1,11 +1,14 @@
 """Classes for clipping gridded inputs"""
+import os
 import logging
 from abc import ABC, abstractmethod
+from pathlib import Path
 import numpy as np
 import numpy.ma as ma
 from parflow.tools.io import read_clm
 from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from parflow.subset.utils import io as file_io_tools
+from parflowio.pyParflowio import PFData
 
 
 class Clipper(ABC):
@@ -13,7 +16,7 @@ class Clipper(ABC):
     """Abstract Clipper Class"""
 
     @abstractmethod
-    def subset(self, data_array):
+    def subset(self, data_file, data_array):
         """Clip the data_array
 
         Parameters
@@ -37,7 +40,7 @@ class BoxClipper(Clipper):
                f"z_0:{self.z_0}, z_end:{self.z_end}, nx:{self.nx}, ny:{self.ny}, nz:{self.nz!r}, " \
                f"ref_array:{self.ref_array!r}, padding:{self.padding!r}, no_data:{self.no_data!r}"
 
-    def __init__(self, ref_array, x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=NO_DATA):
+    def __init__(self, ref_file=None, ref_array=None, x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=NO_DATA):
         """
 
         Parameters
@@ -70,18 +73,47 @@ class BoxClipper(Clipper):
         Exception
             Invalid dimensions will raise an exception
         """
+        if ref_file is None and ref_array is None:
+            raise Exception("Error: The bulk clipper must be initialized with at least one of ref_array or ref_file")
+
         self.padding = padding
         self.no_data = no_data
-        self.ref_array = ref_array
-        if nx is None:
-            nx = self.ref_array.shape[2]
-        if ny is None:
-            ny = self.ref_array.shape[1]
-        if nz is None:
-            nz = self.ref_array.shape[0]
-        if nx < 1 or ny < 1 or nz < 1 or x < 1 or y < 1 or z < 1:
-            raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
-        self.update_bbox(x, y, z, nx, ny, nz, padding)
+
+        if not(ref_file is None):
+            # open the reference file's header and find out the shape of the input data
+            # reading the header is different for each file type. This code only support
+            # pfb files. If the call is made with another file type throw and exception
+            infile_path = Path(ref_file)
+            # get extension
+            ext = infile_path.suffix
+            file_string_path = os.fspath(infile_path)
+            if ext == '.pfb':  # parflow binary file
+                pfdata = PFData(file_string_path)
+                pfdata.loadHeader()
+                if nx is None:
+                    nx = pfdata.getNX() 
+                if ny is None:
+                    ny = pfdata.getNY()
+                if nz is None:
+                    nz = pfdata.getNZ()
+                if nx < 1 or ny < 1 or nz < 1 or x < 1 or y < 1 or z < 1:
+                    raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
+                pfdata.close()
+                del pfdata
+            else:
+                raise Exception("Error: only pfb files can be used directly with clippers")
+        else:
+            self.ref_array = ref_array
+            if nx is None:
+                nx = self.ref_array.shape[2]
+            if ny is None:
+                ny = self.ref_array.shape[1]
+            if nz is None:
+                nz = self.ref_array.shape[0]
+            if nx < 1 or ny < 1 or nz < 1 or x < 1 or y < 1 or z < 1:
+                raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
+
+        self.update_bbox(x=x, y=y, z=z, nx=nx, ny=ny, nz=nz, padding=padding)
 
     def update_bbox(self, x=None, y=None, z=None, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0)):
         """update the x,y,z, nx, ny, nz and padding values
@@ -125,7 +157,7 @@ class BoxClipper(Clipper):
             self.y_end = self.y_0 + ny
         self.padding = padding
 
-    def subset(self, data_array=None):
+    def subset(self, data_file=None, data_array=None):
         """ Clip the data_array to the region specified by the bounding box
 
         Parameters
@@ -139,9 +171,37 @@ class BoxClipper(Clipper):
             the clipped `data_array`
 
         """
+        if data_file is None and data_array is None:
+            raise Exception("Error: The bulk clipper's subset function must be called with at least one of data_array or data_file")
+
+        # if we have a data_file we will read it
+        if not(data_file is None):
+            infile_path = Path(data_file)
+            # get extension to be sure that we have a pfb file
+            ext = infile_path.suffix
+            file_string_path = os.fspath(infile_path)
+            if ext != '.pfb':  # parflow binary file
+                raise Exception("This subset function can only be called for pfb files")
+
+            data_array = file_io_tools.read_file(data_file,min_x=self.x_0,min_y=self.y_0,nx=self.nx,ny=self.ny)
+            self.ref_array = data_array
+            if any(self.padding):
+                print("This case (padding) is not supported at the moment\n")
+                # create a full dimensioned array of no_data_values
+                ret_array = np.full(shape=(self.nz,
+                                self.ny + self.padding[0] + self.padding[2],
+                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=data_array.dtype)
+                # assign values from the data_array into the return array, mind the padding
+                ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2], self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
+                return ret_array, None, None, None
+            return data_array, None, None, None
+
+
         if data_array is None:
             data_array = self.ref_array
+
         if any(self.padding):
+            print("This case (padding) is not supported at the moment\n")
             # create a full dimensioned array of no_data_values
             ret_array = np.full(shape=(self.nz,
                                 self.ny + self.padding[0] + self.padding[2],
@@ -186,7 +246,7 @@ class MaskClipper(Clipper):
                             self.bbox[0]:self.bbox[1],
                             self.bbox[2]:self.bbox[3]]
 
-    def subset(self, data_array, no_data=NO_DATA, crop_inner=1):
+    def subset(self, data_file=None, data_array=None, no_data=NO_DATA, crop_inner=1):
         """subset the data from data_array in the shape and extents of the clipper's clipped subset_mask
 
         Parameters
@@ -210,6 +270,12 @@ class MaskClipper(Clipper):
             x, y, nx, ny values indicating region clipped
 
         """
+        if not(data_file is None):
+            data_array = file_io_tools.read_file(data_file,min_x=self.bbox[0],min_y=self.bbox[2],nx=self.bbox[1]-self.bbox[0]+1,ny=self.bbox[3]-self.bbox[2]+1)
+
+        if data_array is None:
+            data_array = self.ref_array
+
         full_mask = self.subset_mask.bbox_mask.mask
         clip_mask = ~self.clipped_mask
         # Handle multi-layered files, such as subsurface or forcings
@@ -218,22 +284,23 @@ class MaskClipper(Clipper):
             clip_mask = np.broadcast_to(clip_mask, (data_array.shape[0], clip_mask.shape[1], clip_mask.shape[2]))
             logging.info(f'clipper: broadcast subset_mask to match input data z layers: {data_array.shape[0]}')
         # full_dim_mask the input data using numpy masked array module (True=InvalidData, False=ValidData)
-        masked_data = ma.masked_array(data=data_array, mask=full_mask)
+        masked_data = ma.masked_array(data=data_array, mask=clip_mask)
+        return_arr = masked_data
 
-        if crop_inner:
+        #if crop_inner:
             # return an array that includes all of the z data, and x and y no_data outside of the full_dim_mask area
-            return_arr = ma.masked_array(masked_data[:,
-                                         self.bbox[0]: self.bbox[1],
-                                         self.bbox[2]: self.bbox[3]].filled(fill_value=no_data),
-                                         mask=clip_mask).filled(fill_value=no_data)
+            #return_arr = ma.masked_array(masked_data[:,
+                                         #self.bbox[0]: self.bbox[1],
+                                         #self.bbox[2]: self.bbox[3]].filled(fill_value=no_data),
+                                         #mask=clip_mask).filled(fill_value=no_data)
             # logging.info(f'clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} '
             #              f'using bbox (top, bot, left, right) {self.printable_bbox}')
-        else:
+        #else:
             # return an array that includes all of the z data, and x and y inside the bounding box
-            return_arr = ma.masked_array(masked_data[:,
-                                         self.bbox[0]: self.bbox[1],
-                                         self.bbox[2]: self.bbox[3]],
-                                         mask=np.zeros(clip_mask.shape)).filled()
+            #return_arr = ma.masked_array(masked_data[:,
+                                         #self.bbox[0]: self.bbox[1],
+                                         #self.bbox[2]: self.bbox[3]],
+                                         #mask=np.zeros(clip_mask.shape)).filled()
             # logging.info(f'clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} '
             #              f'using bbox (top, bot, left, right) {self.printable_bbox}')
 
@@ -272,8 +339,9 @@ class ClmClipper:
             the raw clipped data (3d) read from 'lat_lon_file'
 
         """
-        data = file_io_tools.read_file(lat_lon_file)
-        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        #data = file_io_tools.read_file(lat_lon_file)
+        #clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_file=lat_lon_file)
         #sa_formatted = np.flip(clipped_data, axis=1).flatten()
         sa_formatted = clipped_data.flatten()
         return sa_formatted, clipped_data
@@ -296,8 +364,8 @@ class ClmClipper:
             vegm formatted representation of the data (2d)
         """
         lat_lon_proper = np.char.split(lat_lon_array.astype(str), ' ')
-        data = file_io_tools.read_file(land_cover_file)
-        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        #data = file_io_tools.read_file(land_cover_file)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_file=land_cover_file)
         #sa_formatted = np.flip(clipped_data, axis=1).flatten()
         sa_formatted = clipped_data.flatten()
         sand = 0.16

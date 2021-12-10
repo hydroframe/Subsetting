@@ -16,10 +16,11 @@ class RegressionClipTests(unittest.TestCase):
     """
 
     def test_subset_dem_to_tif_conus1(self):
-        data_array = file_io_tools.read_file(test_files.conus1_dem.as_posix())
+        data_file = test_files.conus1_dem.as_posix()
         my_mask = SubsetMask(test_files.huc10190004.get('conus1_mask').as_posix())
-        clipper = MaskClipper(subset_mask=my_mask, no_data_threshold=-1)
-        return_arr, new_geom, new_mask, bbox = clipper.subset(data_array)
+        mask_file = test_files.huc10190004.get('conus1_mask').as_posix()
+        clipper = MaskClipper(mask_file=mask_file, no_data_threshold=-1)
+        return_arr, new_geom, new_mask, bbox = clipper.subset(data_file)
         file_io_tools.write_array_to_geotiff("conus_1_clip_dem_test.tif",
                                              return_arr, new_geom, my_mask.mask_tif.GetProjection())
 
@@ -36,10 +37,10 @@ class RegressionClipTests(unittest.TestCase):
         os.remove('bbox_conus1.txt')
 
     def test_subset_tif_conus2(self):
-        data_array = file_io_tools.read_file(test_files.conus2_dem.as_posix())
+        data_file = test_files.conus2_dem.as_posix()
         my_mask = SubsetMask(test_files.huc10190004.get('conus2_mask').as_posix())
         clipper = MaskClipper(subset_mask=my_mask, no_data_threshold=-1)
-        return_arr, new_geom, new_mask, bbox = clipper.subset(data_array)
+        return_arr, new_geom, new_mask, bbox = clipper.subset(data_file)
         file_io_tools.write_array_to_geotiff("conus_2_clip_dem_test.tif",
                                              return_arr, new_geom, my_mask.mask_tif.GetProjection())
         self.assertIsNone(
@@ -55,12 +56,12 @@ class RegressionClipTests(unittest.TestCase):
         os.remove('bbox_conus2_full.txt')
 
     def test_compare_box_clips(self):
-        data_array = file_io_tools.read_file(test_files.conus1_dem.as_posix())
+        data_file = test_files.conus1_dem.as_posix()
         my_mask = SubsetMask(test_files.huc10190004.get('conus1_mask').as_posix())
         clipper = MaskClipper(subset_mask=my_mask, no_data_threshold=-1)
-        mask_subset, _, _, bbox = clipper.subset(data_array, crop_inner=0)
+        mask_subset, _, _, bbox = clipper.subset(data_file, crop_inner=0)
 
-        box_clipper = BoxClipper(ref_array=data_array, x=bbox[0], y=bbox[1], nx=bbox[2], ny=bbox[3])
+        box_clipper = BoxClipper(data_file, x=bbox[0], y=bbox[1], nx=bbox[2], ny=bbox[3])
         box_subset, _, _, _ = box_clipper.subset()
         self.assertEqual(mask_subset.shape[0], box_subset.shape[0])
         self.assertEqual(mask_subset.shape[1], box_subset.shape[1])
@@ -69,7 +70,8 @@ class RegressionClipTests(unittest.TestCase):
 
     def test_box_clip(self):
         data_array = file_io_tools.read_file(test_files.conus1_dem.as_posix())
-        box_clipper = BoxClipper(ref_array=data_array)
+        data_file = test_files.conus1_dem.as_posix()
+        box_clipper = BoxClipper(data_file=data_file)
         subset, _, _, _ = box_clipper.subset()
         self.assertEqual(1, subset.shape[0])
         self.assertEqual(3342, subset.shape[2])

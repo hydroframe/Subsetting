@@ -1,4 +1,5 @@
 """Classes for clipping gridded inputs"""
+import os
 import logging
 from abc import ABC, abstractmethod
 import numpy as np
@@ -6,7 +7,8 @@ import numpy.ma as ma
 from parflow.tools.io import read_clm
 from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from parflow.subset.utils import io as file_io_tools
-
+from parflow.subset.mask import SubsetMask
+from parflowio.pyParflowio import PFData
 
 class Clipper(ABC):
 
@@ -161,7 +163,7 @@ class MaskClipper(Clipper):
         return f"{self.__class__.__name__}(subset_mask:{self.subset_mask!r}, bbox:{self.bbox!r}, " \
                f"clipped_geom:{self.clipped_geom!r}, clipped_mask:{self.clipped_mask!r}"
 
-    def __init__(self, subset_mask, no_data_threshold=NO_DATA):
+    def __init__(self, mask_file, no_data_threshold=NO_DATA):
         """Assumes input mask_array has 1's written to valid data, 0's for bounding box,
              and <=no_data_threshold for no_data val, no_data_threshold must be < 0 or bounding box will
              not be identifiable
@@ -177,6 +179,8 @@ class MaskClipper(Clipper):
         -------
         MaskClipper
         """
+
+        subset_mask = SubsetMask(mask_file)
         self.subset_mask = subset_mask
         min_y, max_y, min_x, max_x = self.subset_mask.bbox_edges
         self.bbox = [min_y, max_y + 1, min_x, max_x + 1]
@@ -186,7 +190,16 @@ class MaskClipper(Clipper):
                             self.bbox[0]:self.bbox[1],
                             self.bbox[2]:self.bbox[3]]
 
-    def subset(self, data_array, no_data=NO_DATA, crop_inner=1):
+    def get_latest_data_file():
+        pass
+
+    def get_latest_data_array(self):
+        return(self.return_arr)
+    
+    def write_to_file(self,file_name):
+        pass
+
+    def subset(self, data_file, no_data=NO_DATA, crop_inner=1):
         """subset the data from data_array in the shape and extents of the clipper's clipped subset_mask
 
         Parameters
@@ -210,6 +223,26 @@ class MaskClipper(Clipper):
             x, y, nx, ny values indicating region clipped
 
         """
+
+        if data_file.endswith('.tif'):
+            data_array = file_io_tools.read_file(data_file)
+
+        elif data_file.endswith('.pfb'):  # parflow binary file
+            pfdata = PFData((data_file))
+            pfdata.loadHeader()
+            x = pfdata.getX()
+            y = pfdata.getY()    
+            nx = pfdata.getNX()
+            ny = pfdata.getNY()
+            
+            flag = pfdata.loadClipOfData(clip_x=x, clip_y=y, extent_x=nx, extent_y=ny)
+            data_array = pfdata.viewDataArray()
+            pfdata.close()
+            del pfdata
+        else:
+            raise Exception("Error: only pfb or tif files can be used directly with clippers")
+
+
         full_mask = self.subset_mask.bbox_mask.mask
         clip_mask = ~self.clipped_mask
         # Handle multi-layered files, such as subsurface or forcings
@@ -237,7 +270,9 @@ class MaskClipper(Clipper):
             # logging.info(f'clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} '
             #              f'using bbox (top, bot, left, right) {self.printable_bbox}')
 
-        return return_arr, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
+        self.return_arr = return_arr
+
+        return self.return_arr, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
 
 
 class ClmClipper:

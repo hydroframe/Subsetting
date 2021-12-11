@@ -15,7 +15,7 @@ class Clipper(ABC):
     """Abstract Clipper Class"""
 
     @abstractmethod
-    def subset(self, data_array):
+    def subset(self, data_file):
         """Clip the data_array
 
         Parameters
@@ -39,7 +39,8 @@ class BoxClipper(Clipper):
                f"z_0:{self.z_0}, z_end:{self.z_end}, nx:{self.nx}, ny:{self.ny}, nz:{self.nz!r}, " \
                f"ref_array:{self.ref_array!r}, padding:{self.padding!r}, no_data:{self.no_data!r}"
 
-    def __init__(self, ref_array, x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=NO_DATA):
+    
+    def __init__(self,x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=NO_DATA):
         """
 
         Parameters
@@ -72,15 +73,11 @@ class BoxClipper(Clipper):
         Exception
             Invalid dimensions will raise an exception
         """
+  
         self.padding = padding
         self.no_data = no_data
-        self.ref_array = ref_array
-        if nx is None:
-            nx = self.ref_array.shape[2]
-        if ny is None:
-            ny = self.ref_array.shape[1]
-        if nz is None:
-            nz = self.ref_array.shape[0]
+
+        self.data_array = []
         if nx < 1 or ny < 1 or nz < 1 or x < 1 or y < 1 or z < 1:
             raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
         self.update_bbox(x, y, z, nx, ny, nz, padding)
@@ -127,7 +124,7 @@ class BoxClipper(Clipper):
             self.y_end = self.y_0 + ny
         self.padding = padding
 
-    def subset(self, data_array=None):
+    def subset(self, data_file=None):
         """ Clip the data_array to the region specified by the bounding box
 
         Parameters
@@ -141,19 +138,39 @@ class BoxClipper(Clipper):
             the clipped `data_array`
 
         """
-        if data_array is None:
-            data_array = self.ref_array
+        print('I am here')
+        if (data_file and not self.data_array):
+            if data_file.endswith('.tif'):
+                self.data_array = file_io_tools.read_file(data_file)
+                print('simple regression test')
+                print(self.data_array)
+            
+
+            elif data_file.endswith('.pfb'):  # parflow binary file
+                pfdata = PFData((data_file))
+                x = pfdata.getX()
+                y = pfdata.getY()  
+                z = pfdata.getZ()  
+                nx = pfdata.getNX()
+                ny = pfdata.getNY()
+                nz= pfdata.getNZ()
+
+                flag = pfdata.loadClipOfData(clip_x=x,clip_y=y,extent_x=nx,extent_y=ny)
+                self.data_array = pfdata.viewDataArray()
+
+                print(self.data_array)
+            
         if any(self.padding):
+            print("This case (padding) is not supported at the moment\n")
             # create a full dimensioned array of no_data_values
             ret_array = np.full(shape=(self.nz,
-                                self.ny + self.padding[0] + self.padding[2],
-                                self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=data_array.dtype)
+                            self.ny + self.padding[0] + self.padding[2],
+                            self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=self.data_array.dtype)
             # assign values from the data_array into the return array, mind the padding
-            ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2],
-            self.padding[3]:self.nx + self.padding[3]] = data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
-        else:
-            ret_array = data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
-        return ret_array, None, None, None
+            ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2], self.padding[3]:self.nx + self.padding[3]] = self.data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
+            self.data_array = ret_array
+            return self.data_array , None, None, None
+        return self.data_array, None, None, None
 
 
 class MaskClipper(Clipper):
@@ -226,6 +243,7 @@ class MaskClipper(Clipper):
 
         if data_file.endswith('.tif'):
             data_array = file_io_tools.read_file(data_file)
+ 
 
         elif data_file.endswith('.pfb'):  # parflow binary file
             pfdata = PFData((data_file))
@@ -271,7 +289,6 @@ class MaskClipper(Clipper):
             #              f'using bbox (top, bot, left, right) {self.printable_bbox}')
 
         self.return_arr = return_arr
-
         return self.return_arr, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
 
 

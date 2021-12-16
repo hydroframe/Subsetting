@@ -180,6 +180,7 @@ class BulkClipperRegressionTests(unittest.TestCase):
 
     def test_mask_clip_default(self):
         mask = test_files.huc10190004.get('conus1_mask').as_posix()
+        print(mask)
         bulk_clipper.mask_clip(mask, self.good_input_file_list[:1])
         ref_data = read_file(test_files.huc10190004.get('conus1_dem').as_posix())
         written_data = read_file('./CONUS2.0_RawDEM_CONUS1clip_clip.pfb')

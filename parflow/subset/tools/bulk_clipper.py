@@ -101,7 +101,7 @@ def mask_clip(mask_file, data_files, out_dir='.', pfb_outs=1, tif_outs=0) -> Non
     mask = SubsetMask(mask_file)
 
     # create clipper with full_dim_mask
-    clipper = MaskClipper(subset_mask=mask, no_data_threshold=-1)
+    clipper = MaskClipper(mask_file, no_data_threshold=-1)
     # clip all inputs and write outputs
     clip_inputs(clipper, input_list=data_files, out_dir=out_dir, pfb_outs=pfb_outs,
                 tif_outs=tif_outs)
@@ -130,7 +130,8 @@ def box_clip(bbox, data_files, out_dir='.', pfb_outs=1, tif_outs=0) -> None:
     """
 
     # create clipper with bbox
-    clipper = BoxClipper(ref_array=file_io_tools.read_file(data_files[0]), x=bbox[0], y=bbox[1], nx=bbox[2], ny=bbox[3])
+    data_file = ref_array=file_io_tools.read_file(data_files[0]),
+    clipper = BoxClipper( x=bbox[0], y=bbox[1], nx=bbox[2], ny=bbox[3])
     # clip all inputs and write outputs
     clip_inputs(clipper, input_list=data_files, out_dir=out_dir, pfb_outs=pfb_outs,
                 tif_outs=tif_outs)
@@ -157,7 +158,8 @@ def _clip(clipper, data_file, out_dir, pfb_outs, tif_outs, output_suffix, ref_pr
     # A top-level function that is capable of being serialized and executed across cores.
     # The arguments and semantics of the inputs are identical to the public `clip_inputs` function.
     filename = Path(data_file).stem
-    return_arr, new_geom, _, _ = clipper.subset(file_io_tools.read_file(data_file))
+    #return_arr, new_geom, _, _ = clipper.subset(file_io_tools.read_file(data_file))
+    return_arr, new_geom, _, _ = clipper.subset(data_file)
     if pfb_outs:
         file_io_tools.write_pfb(return_arr, os.path.join(out_dir, f'{filename}{output_suffix}.pfb'))
     if tif_outs and new_geom is not None and ref_proj is not None:

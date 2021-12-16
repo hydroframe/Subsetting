@@ -78,9 +78,21 @@ class BoxClipper(Clipper):
         self.no_data = no_data
 
         self.data_array = []
-        if nx < 1 or ny < 1 or nz < 1 or x < 1 or y < 1 or z < 1:
+        self.box = False
+
+        self.x = x
+        self.y = y
+        self.z = z
+        self.nx = nx
+        self.ny = ny
+        self.nz = nz
+    
+        self.padding = padding
+
+        if nx < 1 or ny < 1  or x < 1 or y < 1:
             raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
-        self.update_bbox(x, y, z, nx, ny, nz, padding)
+        
+        #self.update_bbox(x, y, z, nx, ny, nz, padding)
 
     def update_bbox(self, x=None, y=None, z=None, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0)):
         """update the x,y,z, nx, ny, nz and padding values
@@ -116,13 +128,26 @@ class BoxClipper(Clipper):
         if x is not None:
             self.x_0 = x - 1
             self.x_end = self.x_0 + nx
-        if z is not None:
+        if z is not None and nz is not None:
             self.z_0 = z - 1
             self.z_end = self.z_0 + nz
         if y is not None:
             self.y_0 = y - 1
             self.y_end = self.y_0 + ny
         self.padding = padding
+        self.box = True 
+
+    
+
+    def get_latest_data_array(self):
+        return(self.return_array)
+    
+    def write_to_file(self,out_dir,file_name, ref_proj, no_data):
+        if file_name.endswith('.pfb'):
+            file_io_tools.write_pfb(self.return_array, os.path.join(out_dir, f'{file_name}'))
+        if file_name.endswith('.tif') and self.clipped_geom is not None and ref_proj is not None:
+            file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{file_name}'),
+                                                self.return_array, self.clipped_geom, ref_proj, no_data=no_data)
 
     def subset(self, data_file=None):
         """ Clip the data_array to the region specified by the bounding box
@@ -138,14 +163,17 @@ class BoxClipper(Clipper):
             the clipped `data_array`
 
         """
-        print('I am here')
+
         if (data_file and not self.data_array):
             if data_file.endswith('.tif'):
                 self.data_array = file_io_tools.read_file(data_file)
-                print('simple regression test')
-                print(self.data_array)
-            
-
+                if self.nx is None:
+                    self.nx = self.data_array.shape[2]
+                if self.ny is None:
+                    self.ny = self.data_array.shape[1]
+                if self.nz is None:
+                    self.nz = self.data_array.shape[0]
+    
             elif data_file.endswith('.pfb'):  # parflow binary file
                 pfdata = PFData((data_file))
                 x = pfdata.getX()
@@ -157,9 +185,25 @@ class BoxClipper(Clipper):
 
                 flag = pfdata.loadClipOfData(clip_x=x,clip_y=y,extent_x=nx,extent_y=ny)
                 self.data_array = pfdata.viewDataArray()
+                
+                if self.nx is None:
+                    self.nx = nx
+                if self.ny is None:
+                    self.ny = nx
+                if self.nz is None:
+                    self.nz = nz
 
-                print(self.data_array)
-            
+        if(not self.box):
+            self.update_bbox(self.x, self.y, self.z, self.nx, self.ny, self.nz, self.padding)
+    
+
+        if self.z_0 is None:
+            self.z_0 = self.z - 1
+        
+        if self.z_end is None:
+            self.z_end = self.z_0 + self.nz
+    
+
         if any(self.padding):
             print("This case (padding) is not supported at the moment\n")
             # create a full dimensioned array of no_data_values
@@ -168,9 +212,11 @@ class BoxClipper(Clipper):
                             self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=self.data_array.dtype)
             # assign values from the data_array into the return array, mind the padding
             ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2], self.padding[3]:self.nx + self.padding[3]] = self.data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
-            self.data_array = ret_array
-            return self.data_array , None, None, None
-        return self.data_array, None, None, None
+        else:
+            ret_array = self.data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
+            return ret_array , None, None, None
+        self.return_array = ret_array
+        return ret_array, None, None, None
 
 
 class MaskClipper(Clipper):
@@ -207,14 +253,16 @@ class MaskClipper(Clipper):
                             self.bbox[0]:self.bbox[1],
                             self.bbox[2]:self.bbox[3]]
 
-    def get_latest_data_file():
-        pass
-
     def get_latest_data_array(self):
         return(self.return_arr)
     
-    def write_to_file(self,file_name):
-        pass
+        
+    def write_to_file(self,out_dir,file_name, ref_proj, no_data):
+        if file_name.endswith('.pfb'):
+            file_io_tools.write_pfb(self.return_array, os.path.join(out_dir, f'{file_name}'))
+        if file_name.endswith('.tif') and self.clipped_geom is not None and ref_proj is not None:
+            file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{file_name}'),
+                                                self.return_array, self.clipped_geom, ref_proj, no_data=no_data)
 
     def subset(self, data_file, no_data=NO_DATA, crop_inner=1):
         """subset the data from data_array in the shape and extents of the clipper's clipped subset_mask

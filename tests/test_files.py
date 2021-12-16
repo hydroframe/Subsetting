@@ -3,6 +3,8 @@ from pathlib import Path
 test_inputs = Path(__file__).parent / 'test_inputs'
 huc10190004_inputs = test_inputs / 'HUC10190004'
 
+conus1_inputs = test_inputs / 'CONUS1_Inputs';
+
 conus1_dem = test_inputs / 'CONUS1_Inputs' / 'CONUS2.0_RawDEM_CONUS1clip.tif'
 conus1_dem_pfb = test_inputs / 'CONUS1_Inputs'/'CONUS2.0_RawDEM_CONUS1clip.pfb'
 conus2_dem = test_inputs / 'CONUS2_Inputs'/'CONUS2.0_RawDEM.tif'

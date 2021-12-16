@@ -35,11 +35,13 @@ class BoxClipper(Clipper):
     """Clip a rectangular data region specified by a bounding box
     """
     def __repr__(self):
-        return f"{self.__class__.__name__}(x_0:{self.x_0}, x_end:{self.x_end}, y_0:{self.y_0}, y_end:{self.y_end}, " \
-               f"z_0:{self.z_0}, z_end:{self.z_end}, nx:{self.nx}, ny:{self.ny}, nz:{self.nz!r}, " \
-               f"ref_array:{self.ref_array!r}, padding:{self.padding!r}, no_data:{self.no_data!r}"
+        if self.box:
+            return f"{self.__class__.__name__}(x_0:{self.x_0}, x_end:{self.x_end}, y_0:{self.y_0}, y_end:{self.y_end}, nx:{self.nx}, ny:{self.ny}, nz:{self.nz!r}, " \
+                f"ref_array:{self.ref_array!r}, padding:{self.padding!r}, no_data:{self.no_data!r}"
+        else:
+            return f"no_data:{self.no_data!r}"
 
-    
+        
     def __init__(self,x=1, y=1, z=1, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0), no_data=NO_DATA):
         """
 
@@ -77,7 +79,6 @@ class BoxClipper(Clipper):
         self.padding = padding
         self.no_data = no_data
 
-        self.data_array = []
         self.box = False
 
         self.x = x
@@ -88,11 +89,13 @@ class BoxClipper(Clipper):
         self.nz = nz
     
         self.padding = padding
-
-        if nx < 1 or ny < 1  or x < 1 or y < 1:
-            raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
         
-        #self.update_bbox(x, y, z, nx, ny, nz, padding)
+
+        if  self.nx is not None:
+            if nx < 1 or ny < 1  or x < 1 or y < 1:
+                raise Exception("Error: invalid dimension, x,y,z nx, ny, nz must be >=1")
+                
+            self.update_bbox(x, y, z, nx, ny, nz, padding)
 
     def update_bbox(self, x=None, y=None, z=None, nx=None, ny=None, nz=None, padding=(0, 0, 0, 0)):
         """update the x,y,z, nx, ny, nz and padding values
@@ -149,7 +152,7 @@ class BoxClipper(Clipper):
             file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{file_name}'),
                                                 self.return_array, self.clipped_geom, ref_proj, no_data=no_data)
 
-    def subset(self, data_file=None):
+    def subset(self, data=None):
         """ Clip the data_array to the region specified by the bounding box
 
         Parameters
@@ -163,57 +166,44 @@ class BoxClipper(Clipper):
             the clipped `data_array`
 
         """
+        data_file = None
+        data_array = None
 
-        if (data_file and not self.data_array):
+        if (type(data) is str):
+            data_file = data
+        
+        else:
+            data_array = data
+
+        if (data_file):
             if data_file.endswith('.tif'):
-                self.data_array = file_io_tools.read_file(data_file)
-                if self.nx is None:
-                    self.nx = self.data_array.shape[2]
-                if self.ny is None:
-                    self.ny = self.data_array.shape[1]
-                if self.nz is None:
-                    self.nz = self.data_array.shape[0]
+                data_array = file_io_tools.read_file(data_file)
     
             elif data_file.endswith('.pfb'):  # parflow binary file
                 pfdata = PFData((data_file))
-                x = pfdata.getX()
-                y = pfdata.getY()  
-                z = pfdata.getZ()  
-                nx = pfdata.getNX()
-                ny = pfdata.getNY()
-                nz= pfdata.getNZ()
-
-                flag = pfdata.loadClipOfData(clip_x=x,clip_y=y,extent_x=nx,extent_y=ny)
-                self.data_array = pfdata.viewDataArray()
                 
-                if self.nx is None:
-                    self.nx = nx
-                if self.ny is None:
-                    self.ny = nx
-                if self.nz is None:
-                    self.nz = nz
-
-        if(not self.box):
-            self.update_bbox(self.x, self.y, self.z, self.nx, self.ny, self.nz, self.padding)
+                if self.box:
+                    pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
+                else:
+                    pfdata.loadData()
+                data_array = pfdata.viewDataArray()
     
 
-        if self.z_0 is None:
-            self.z_0 = self.z - 1
-        
-        if self.z_end is None:
-            self.z_end = self.z_0 + self.nz
+        if(not self.box):
+            return data_array, None, None, None
+            #self.update_bbox(self.x, self.y, self.z, self.nx, self.ny, self.nz, self.padding)
     
 
         if any(self.padding):
-            print("This case (padding) is not supported at the moment\n")
+            #print("This case (padding) is not supported at the moment\n")
             # create a full dimensioned array of no_data_values
-            ret_array = np.full(shape=(self.nz,
+            ret_array = np.full(shape=(data_array.shape[0],
                             self.ny + self.padding[0] + self.padding[2],
-                            self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=self.data_array.dtype)
+                            self.nx + self.padding[1] + self.padding[3]), fill_value=self.no_data, dtype=data_array.dtype)
             # assign values from the data_array into the return array, mind the padding
-            ret_array[self.z_0:self.z_end, self.padding[2]:self.ny + self.padding[2], self.padding[3]:self.nx + self.padding[3]] = self.data_array[self.z_0:self.z_end, self.y_0:self.y_end,self.x_0:self.x_end]
+            ret_array[:, self.padding[2]:self.ny + self.padding[2], self.padding[3]:self.nx + self.padding[3]] = data_array[:, self.y_0:self.y_end,self.x_0:self.x_end]
         else:
-            ret_array = self.data_array[self.z_0:self.z_end, self.y_0:self.y_end, self.x_0:self.x_end]
+            ret_array = data_array[:,self.y_0:self.y_end, self.x_0:self.x_end]
             return ret_array , None, None, None
         self.return_array = ret_array
         return ret_array, None, None, None
@@ -226,7 +216,7 @@ class MaskClipper(Clipper):
         return f"{self.__class__.__name__}(subset_mask:{self.subset_mask!r}, bbox:{self.bbox!r}, " \
                f"clipped_geom:{self.clipped_geom!r}, clipped_mask:{self.clipped_mask!r}"
 
-    def __init__(self, mask_file, no_data_threshold=NO_DATA):
+    def __init__(self, subset_mask, no_data_threshold=NO_DATA):
         """Assumes input mask_array has 1's written to valid data, 0's for bounding box,
              and <=no_data_threshold for no_data val, no_data_threshold must be < 0 or bounding box will
              not be identifiable
@@ -242,9 +232,13 @@ class MaskClipper(Clipper):
         -------
         MaskClipper
         """
+    
+        if type(subset_mask) is str:
+            self.subset_mask = SubsetMask(subset_mask)
+        else:
+            self.subset_mask = subset_mask
 
-        subset_mask = SubsetMask(mask_file)
-        self.subset_mask = subset_mask
+
         min_y, max_y, min_x, max_x = self.subset_mask.bbox_edges
         self.bbox = [min_y, max_y + 1, min_x, max_x + 1]
         self.clipped_geom = self.subset_mask.calculate_new_geom(min_x, min_y,
@@ -264,7 +258,7 @@ class MaskClipper(Clipper):
             file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{file_name}'),
                                                 self.return_array, self.clipped_geom, ref_proj, no_data=no_data)
 
-    def subset(self, data_file, no_data=NO_DATA, crop_inner=1):
+    def subset(self, data, no_data=NO_DATA, crop_inner=1):
         """subset the data from data_array in the shape and extents of the clipper's clipped subset_mask
 
         Parameters
@@ -288,6 +282,13 @@ class MaskClipper(Clipper):
             x, y, nx, ny values indicating region clipped
 
         """
+        data_file = None
+        data_array = None
+        if (type(data) is str):
+            data_file = data
+        
+        else:
+            data_array = data
 
         if data_file.endswith('.tif'):
             data_array = file_io_tools.read_file(data_file)
@@ -353,7 +354,7 @@ class ClmClipper:
         """
         self.bbox = bbox.get_human_bbox()
         padded_extents = bbox.get_padded_extents()
-        self.clipper = BoxClipper(ref_array=None, x=padded_extents[2]+1, y=padded_extents[0]+1, nx=padded_extents[3]-padded_extents[2], ny=padded_extents[1]-padded_extents[0],
+        self.clipper = BoxClipper(x=padded_extents[2]+1, y=padded_extents[0]+1, nx=padded_extents[3]-padded_extents[2], ny=padded_extents[1]-padded_extents[0],
                                   nz=1)
 
     def clip_latlon(self, lat_lon_file):
@@ -373,7 +374,7 @@ class ClmClipper:
 
         """
         data = file_io_tools.read_file(lat_lon_file)
-        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data=data)
         #sa_formatted = np.flip(clipped_data, axis=1).flatten()
         sa_formatted = clipped_data.flatten()
         return sa_formatted, clipped_data
@@ -397,7 +398,7 @@ class ClmClipper:
         """
         lat_lon_proper = np.char.split(lat_lon_array.astype(str), ' ')
         data = file_io_tools.read_file(land_cover_file)
-        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data_array=data)
+        clipped_data, _, clipped_mask, bbox = self.clipper.subset(data=data)
         #sa_formatted = np.flip(clipped_data, axis=1).flatten()
         sa_formatted = clipped_data.flatten()
         sand = 0.16
@@ -448,7 +449,7 @@ class ClmClipper:
         _nz = self.clipper.nz
 
         self.clipper.update_bbox(z=1, nz=23)
-        clipped_data, _, _, _ = self.clipper.subset(data_array=vegm_data)
+        clipped_data, _, _, _ = self.clipper.subset(data=vegm_data)
 
         # Reapply old values - note that the z-parameter in update_bbox is 1-indexed, so _z_0 + 1
         self.clipper.update_bbox(z=_z_0+1, nz=_nz)

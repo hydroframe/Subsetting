@@ -276,6 +276,7 @@ def main():
         shape = out_name
         attribute_name = 'ID'
         # write the watershed shape object to *.shp
+ 
         watershed.write_shapefile((Path(args.input_path) / (shape  + '.shp')).as_posix())
 
         # collect all the ID values in the generated shapefile

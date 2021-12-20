@@ -171,23 +171,22 @@ class BoxClipper(Clipper):
 
         if (type(data) is str):
             data_file = data
+
+            if (data_file):
+                if data_file.endswith('.tif'):
+                    data_array = file_io_tools.read_file(data_file)
         
+                elif data_file.endswith('.pfb'):  # parflow binary file
+                    pfdata = PFData((data_file))
+                    
+                    if self.box:
+                        pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
+                    else:
+                        pfdata.loadData()
+                    data_array = pfdata.viewDataArray()
         else:
             data_array = data
-
-        if (data_file):
-            if data_file.endswith('.tif'):
-                data_array = file_io_tools.read_file(data_file)
-    
-            elif data_file.endswith('.pfb'):  # parflow binary file
-                pfdata = PFData((data_file))
-                
-                if self.box:
-                    pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
-                else:
-                    pfdata.loadData()
-                data_array = pfdata.viewDataArray()
-    
+        
 
         if(not self.box):
             return data_array, None, None, None
@@ -286,29 +285,26 @@ class MaskClipper(Clipper):
         data_array = None
         if (type(data) is str):
             data_file = data
-        
+
+            if data_file.endswith('.tif'):
+                data_array = file_io_tools.read_file(data_file)
+    
+            elif data_file.endswith('.pfb'):  # parflow binary file
+                pfdata = PFData((data_file))
+                pfdata.loadHeader()
+                x = pfdata.getX()
+                y = pfdata.getY()    
+                nx = pfdata.getNX()
+                ny = pfdata.getNY()
+                
+                flag = pfdata.loadClipOfData(clip_x=int(x), clip_y=int(y), extent_x=int(nx), extent_y=int(ny))
+                data_array = pfdata.viewDataArray()
+                pfdata.close()
+                del pfdata
+            else:
+                raise Exception("Error: only pfb or tif files can be used directly with clippers")
         else:
             data_array = data
-
-        if data_file.endswith('.tif'):
-            data_array = file_io_tools.read_file(data_file)
- 
-
-        elif data_file.endswith('.pfb'):  # parflow binary file
-            pfdata = PFData((data_file))
-            pfdata.loadHeader()
-            x = pfdata.getX()
-            y = pfdata.getY()    
-            nx = pfdata.getNX()
-            ny = pfdata.getNY()
-            
-            flag = pfdata.loadClipOfData(clip_x=x, clip_y=y, extent_x=nx, extent_y=ny)
-            data_array = pfdata.viewDataArray()
-            pfdata.close()
-            del pfdata
-        else:
-            raise Exception("Error: only pfb or tif files can be used directly with clippers")
-
 
         full_mask = self.subset_mask.bbox_mask.mask
         clip_mask = ~self.clipped_mask

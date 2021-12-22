@@ -3,6 +3,8 @@ import os
 import logging
 from abc import ABC, abstractmethod
 import numpy as np
+from numpy.core.fromnumeric import clip
+from numpy.core.numeric import full
 import numpy.ma as ma
 from parflow.tools.io import read_clm
 from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
@@ -172,18 +174,17 @@ class BoxClipper(Clipper):
         if (type(data) is str):
             data_file = data
 
-            if (data_file):
-                if data_file.endswith('.tif'):
-                    data_array = file_io_tools.read_file(data_file)
-        
-                elif data_file.endswith('.pfb'):  # parflow binary file
-                    pfdata = PFData((data_file))
-                    
-                    if self.box:
-                        pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
-                    else:
-                        pfdata.loadData()
-                    data_array = pfdata.viewDataArray()
+            if data_file.endswith('.tif'):
+                data_array = file_io_tools.read_file(data_file)
+    
+            elif data_file.endswith('.pfb'):  # parflow binary file
+                pfdata = PFData((data_file))
+                
+                if self.box:
+                    pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
+                else:
+                    pfdata.loadData()
+                data_array = pfdata.viewDataArray()
         else:
             data_array = data
         
@@ -292,15 +293,36 @@ class MaskClipper(Clipper):
             elif data_file.endswith('.pfb'):  # parflow binary file
                 pfdata = PFData((data_file))
                 pfdata.loadHeader()
-                x = pfdata.getX()
-                y = pfdata.getY()    
-                nx = pfdata.getNX()
-                ny = pfdata.getNY()
-                
-                flag = pfdata.loadClipOfData(clip_x=int(x), clip_y=int(y), extent_x=int(nx), extent_y=int(ny))
+
+                x = self.bbox[2]
+                nx = self.bbox[3] - self.bbox[2]
+
+                y = self.bbox[0]
+                ny = self.bbox[1] - self.bbox[0]
+
+                pfdata.loadClipOfData(int(x), int(y), int(nx), int(ny))
                 data_array = pfdata.viewDataArray()
+
+                #return data_array, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
                 pfdata.close()
                 del pfdata
+                full_mask = self.subset_mask.bbox_mask.mask
+                full_mask = full_mask[:,self.bbox[0]: self.bbox[1],self.bbox[2]: self.bbox[3]]  #data_array.shape[1], data_array.shape[2]))
+
+                clip_mask = ~self.clipped_mask
+                # Handle multi-layered files, such as subsurface or forcings
+                if data_array.shape[0] > 1:
+                    full_mask = np.broadcast_to(full_mask, data_array.shape)
+                    clip_mask = np.broadcast_to(clip_mask, (data_array.shape[0], clip_mask.shape[1], clip_mask.shape[2]))
+                    logging.info(f'clipper: broadcast subset_mask to match input data z layers: {data_array.shape[0]}')
+                # full_dim_mask the input data using numpy masked array module (True=InvalidData, False=ValidData)
+                masked_data = ma.masked_array(data=data_array, mask=full_mask)
+
+                return_arr = ma.masked_array(masked_data.filled(fill_value=no_data),
+                                         mask=clip_mask).filled(fill_value=no_data)
+
+                return return_arr, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
+
             else:
                 raise Exception("Error: only pfb or tif files can be used directly with clippers")
         else:

@@ -6,9 +6,9 @@ import argparse
 import sys
 import logging
 from datetime import datetime
-from parflow.subset.rasterizer import ShapefileRasterizer
-from parflow.subset.utils.arguments import is_valid_file, is_valid_path, is_positive_integer
-import parflow.subset.utils.io as file_io_tools
+from pfsubset.subset.rasterizer import ShapefileRasterizer
+from pfsubset.subset.utils.arguments import is_valid_file, is_valid_path, is_positive_integer
+import pfsubset.subset.utils.io as file_io_tools
 
 
 def parse_args(args):

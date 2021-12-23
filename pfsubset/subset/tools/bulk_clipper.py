@@ -10,11 +10,11 @@ from pathlib import Path
 import logging
 from datetime import datetime
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from parflow.subset.clipper import MaskClipper, BoxClipper
-from parflow.subset.utils.arguments import is_valid_file, is_valid_path
-from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
-from parflow.subset.mask import SubsetMask
-import parflow.subset.utils.io as file_io_tools
+from pfsubset.subset.clipper import MaskClipper, BoxClipper
+from pfsubset.subset.utils.arguments import is_valid_file, is_valid_path
+from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
+from pfsubset.subset.mask import SubsetMask
+import pfsubset.subset.utils.io as file_io_tools
 
 
 def parse_args(args) -> argparse.Namespace:

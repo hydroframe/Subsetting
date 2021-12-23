@@ -1,8 +1,8 @@
 import os
 import numpy as np
 from unittest import TestCase
-from parflow.subset.tools import rasterize_shape
-from parflow.subset.utils.io import read_file, read_bbox
+from pfsubset.subset.tools import rasterize_shape
+from pfsubset.subset.utils.io import read_file, read_bbox
 import test_files
 
 

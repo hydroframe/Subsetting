@@ -1,11 +1,11 @@
 import os
 import unittest
 import numpy as np
-import parflow.subset.utils.io as file_io_tools
+import pfsubset.subset.utils.io as file_io_tools
 import tests.test_files as test_files
-from parflow.subset.clipper import ClmClipper
-from parflow.subset.bbox import BBox
-from parflow.subset.mask import SubsetMask
+from pfsubset.subset.clipper import ClmClipper
+from pfsubset.subset.bbox import BBox
+from pfsubset.subset.mask import SubsetMask
 
 
 class ClmUtilsClipperRegressionTests(unittest.TestCase):

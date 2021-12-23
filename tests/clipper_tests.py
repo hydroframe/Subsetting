@@ -1,8 +1,8 @@
 import contextlib
 import unittest
-from parflow.subset.clipper import MaskClipper, BoxClipper
-import parflow.subset.utils.io as file_io_tools
-from parflow.subset.mask import SubsetMask
+from pfsubset.subset.clipper import MaskClipper, BoxClipper
+import pfsubset.subset.utils.io as file_io_tools
+from pfsubset.subset.mask import SubsetMask
 import numpy as np
 import tests.test_files as test_files
 import os

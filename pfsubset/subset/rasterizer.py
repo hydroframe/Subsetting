@@ -11,8 +11,8 @@ except ImportError:
 
 import os
 import logging
-from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
-from parflow.subset.mask import SubsetMask
+from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
+from pfsubset.subset.mask import SubsetMask
 
 
 class ShapefileRasterizer:

@@ -7,9 +7,9 @@ from numpy.core.fromnumeric import clip
 from numpy.core.numeric import full
 import numpy.ma as ma
 from parflow.tools.io import read_clm
-from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
-from parflow.subset.utils import io as file_io_tools
-from parflow.subset.mask import SubsetMask
+from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
+from pfsubset.subset.utils import io as file_io_tools
+from pfsubset.subset.mask import SubsetMask
 from parflowio.pyParflowio import PFData
 
 class Clipper(ABC):
@@ -177,7 +177,7 @@ class BoxClipper(Clipper):
             if data_file.endswith('.tif'):
                 data_array = file_io_tools.read_file(data_file)
     
-            elif data_file.endswith('.pfb'):  # parflow binary file
+            elif data_file.endswith('.pfb'):  # pfsubset binary file
                 pfdata = PFData((data_file))
                 
                 if self.box:
@@ -290,7 +290,7 @@ class MaskClipper(Clipper):
             if data_file.endswith('.tif'):
                 data_array = file_io_tools.read_file(data_file)
     
-            elif data_file.endswith('.pfb'):  # parflow binary file
+            elif data_file.endswith('.pfb'):  # pfsubset binary file
                 pfdata = PFData((data_file))
                 pfdata.loadHeader()
 
@@ -457,7 +457,7 @@ class ClmClipper:
         """
         vegm_data = read_clm(vegm_file, type='vegm')
 
-        # parflow returns an ndarray from read_clm which is (x, y) in dimensions
+        # pfsubset returns an ndarray from read_clm which is (x, y) in dimensions
         # transpose so that we're dealing with (z, y, x) dimensions
         vegm_data = np.transpose(vegm_data)
 

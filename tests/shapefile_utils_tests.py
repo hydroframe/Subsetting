@@ -2,9 +2,9 @@ import os
 import unittest
 from pathlib import Path
 import numpy as np
-import parflow.subset.utils.io as file_io_tools
+import pfsubset.subset.utils.io as file_io_tools
 import tests.test_files as test_files
-from parflow.subset.rasterizer import ShapefileRasterizer
+from pfsubset.subset.rasterizer import ShapefileRasterizer
 
 
 class ShapefileReprojectCase(unittest.TestCase):

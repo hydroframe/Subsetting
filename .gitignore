@@ -4,6 +4,11 @@
 *.pfb
 *.xml
 tests/test_inputs/CONUS1_Inputs/conus1_Grid_Centers_Short_Deg.format.sa
+tests/test_inputs/CONUS1_Inputs/PmE.flux.pfb
+tests/test_inputs/CONUS1_Inputs/conus1_landcover.sa
+tests/test_inputs/CONUS1_Inputs/grid3d.v3.pfb
+tests/test_inputs/CONUS1_Inputs/slopex.pfb
+tests/test_inputs/CONUS1_Inputs/slopey.pfb
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

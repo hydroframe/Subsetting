@@ -6,7 +6,7 @@ try:
 except ImportError:
     import gdal
 from osgeo import osr
-import parflow.subset.utils.io as file_io_tools
+import pfsubset.subset.utils.io as file_io_tools
 import tests.test_files as test_files
 
 

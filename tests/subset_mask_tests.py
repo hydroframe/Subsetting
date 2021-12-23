@@ -1,5 +1,5 @@
 import unittest
-from parflow.subset.mask import SubsetMask
+from pfsubset.subset.mask import SubsetMask
 from tests.test_files import huc10190004, test_all_zeros_and_ones_mask, test_padded_icom_mask
 
 

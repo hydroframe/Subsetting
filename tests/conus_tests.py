@@ -1,6 +1,6 @@
 import unittest
-import parflow.subset.data as data
-from parflow.subset.domain import Conus
+import pfsubset.subset.data as data
+from pfsubset.subset.domain import Conus
 import os
 import tests.test_files as test_files
 

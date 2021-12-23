@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
-<title>parflow.subset.utils.io API documentation</title>
+<title>pfsubset.subset.utils.io API documentation</title>
 <meta name="description" content="Common disk I/O operations" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>parflow.subset.utils.io</code></h1>
+<h1 class="title">Module <code>pfsubset.subset.utils.io</code></h1>
 </header>
 <section id="section-intro">
 <p>Common disk I/O operations</p>
@@ -36,9 +36,9 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 import gdal
-from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
+from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from parflowio.pyParflowio import PFData
-from parflow.subset.bbox import BBox
+from pfsubset.subset.bbox import BBox
 
 
 def read_file(infile):
@@ -275,7 +275,7 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="parflow.subset.utils.io.read_bbox"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.read_bbox"><code class="name flex">
 <span>def <span class="ident">read_bbox</span></span>(<span>bbox_file)</span>
 </code></dt>
 <dd>
@@ -315,7 +315,7 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
         return bbox.get_human_bbox()</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.utils.io.read_file"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.read_file"><code class="name flex">
 <span>def <span class="ident">read_file</span></span>(<span>infile)</span>
 </code></dt>
 <dd>
@@ -377,7 +377,7 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
     return res_arr</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.utils.io.read_geotiff"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.read_geotiff"><code class="name flex">
 <span>def <span class="ident">read_geotiff</span></span>(<span>infile)</span>
 </code></dt>
 <dd>
@@ -415,7 +415,7 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
     return gdal.Open(os.fspath(file_path))</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.utils.io.write_array_to_geotiff"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.write_array_to_geotiff"><code class="name flex">
 <span>def <span class="ident">write_array_to_geotiff</span></span>(<span>out_raster_path, data, geo_transform, projection, dtype=7, no_data=-999)</span>
 </code></dt>
 <dd>
@@ -484,7 +484,7 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
     data_set = None</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.utils.io.write_array_to_simple_ascii"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.write_array_to_simple_ascii"><code class="name flex">
 <span>def <span class="ident">write_array_to_simple_ascii</span></span>(<span>data, out_file)</span>
 </code></dt>
 <dd>
@@ -524,7 +524,7 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
                              header=f&#39;{data.shape[2]} {data.shape[1]} {data.shape[0]}&#39;)</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.utils.io.write_array_to_text_file"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.write_array_to_text_file"><code class="name flex">
 <span>def <span class="ident">write_array_to_text_file</span></span>(<span>data, out_file, header, fmt, delimiter=' ', comments='')</span>
 </code></dt>
 <dd>
@@ -579,7 +579,7 @@ def write_array_to_text_file(data, out_file, header, fmt, delimiter=&#39; &#39;,
     np.savetxt(fname=out_file, X=data, delimiter=delimiter, comments=comments, header=header, fmt=fmt)</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.utils.io.write_bbox"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.write_bbox"><code class="name flex">
 <span>def <span class="ident">write_bbox</span></span>(<span>bbox, outfile)</span>
 </code></dt>
 <dd>
@@ -621,7 +621,7 @@ where to write the file</p>
         fp.write(&#39;\t&#39;.join(&#39;%d&#39; % x for x in bbox))</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.utils.io.write_pfb"><code class="name flex">
+<dt id="pfsubset.subset.utils.io.write_pfb"><code class="name flex">
 <span>def <span class="ident">write_pfb</span></span>(<span>data, outfile, x0=0, y0=0, z0=0, dx=1000, dz=1000)</span>
 </code></dt>
 <dd>
@@ -703,19 +703,19 @@ where to write the file</p>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="parflow.subset.utils" href="index.html">parflow.subset.utils</a></code></li>
+<li><code><a title="pfsubset.subset.utils" href="index.html">pfsubset.subset.utils</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="parflow.subset.utils.io.read_bbox" href="#parflow.subset.utils.io.read_bbox">read_bbox</a></code></li>
-<li><code><a title="parflow.subset.utils.io.read_file" href="#parflow.subset.utils.io.read_file">read_file</a></code></li>
-<li><code><a title="parflow.subset.utils.io.read_geotiff" href="#parflow.subset.utils.io.read_geotiff">read_geotiff</a></code></li>
-<li><code><a title="parflow.subset.utils.io.write_array_to_geotiff" href="#parflow.subset.utils.io.write_array_to_geotiff">write_array_to_geotiff</a></code></li>
-<li><code><a title="parflow.subset.utils.io.write_array_to_simple_ascii" href="#parflow.subset.utils.io.write_array_to_simple_ascii">write_array_to_simple_ascii</a></code></li>
-<li><code><a title="parflow.subset.utils.io.write_array_to_text_file" href="#parflow.subset.utils.io.write_array_to_text_file">write_array_to_text_file</a></code></li>
-<li><code><a title="parflow.subset.utils.io.write_bbox" href="#parflow.subset.utils.io.write_bbox">write_bbox</a></code></li>
-<li><code><a title="parflow.subset.utils.io.write_pfb" href="#parflow.subset.utils.io.write_pfb">write_pfb</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.read_bbox" href="#pfsubset.subset.utils.io.read_bbox">read_bbox</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.read_file" href="#pfsubset.subset.utils.io.read_file">read_file</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.read_geotiff" href="#pfsubset.subset.utils.io.read_geotiff">read_geotiff</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.write_array_to_geotiff" href="#pfsubset.subset.utils.io.write_array_to_geotiff">write_array_to_geotiff</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.write_array_to_simple_ascii" href="#pfsubset.subset.utils.io.write_array_to_simple_ascii">write_array_to_simple_ascii</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.write_array_to_text_file" href="#pfsubset.subset.utils.io.write_array_to_text_file">write_array_to_text_file</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.write_bbox" href="#pfsubset.subset.utils.io.write_bbox">write_bbox</a></code></li>
+<li><code><a title="pfsubset.subset.utils.io.write_pfb" href="#pfsubset.subset.utils.io.write_pfb">write_pfb</a></code></li>
 </ul>
 </li>
 </ul>

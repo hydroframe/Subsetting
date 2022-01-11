@@ -2,6 +2,7 @@
 import os
 import logging
 from abc import ABC, abstractmethod
+from pathlib import Path
 import numpy as np
 from numpy.core.fromnumeric import clip
 from numpy.core.numeric import full
@@ -336,22 +337,23 @@ class MaskClipper(Clipper):
             clip_mask = np.broadcast_to(clip_mask, (data_array.shape[0], clip_mask.shape[1], clip_mask.shape[2]))
             logging.info(f'clipper: broadcast subset_mask to match input data z layers: {data_array.shape[0]}')
         # full_dim_mask the input data using numpy masked array module (True=InvalidData, False=ValidData)
-        masked_data = ma.masked_array(data=data_array, mask=full_mask)
+        masked_data = ma.masked_array(data=data_array, mask=clip_mask)
+        return_arr = masked_data
 
-        if crop_inner:
+        #if crop_inner:
             # return an array that includes all of the z data, and x and y no_data outside of the full_dim_mask area
-            return_arr = ma.masked_array(masked_data[:,
-                                         self.bbox[0]: self.bbox[1],
-                                         self.bbox[2]: self.bbox[3]].filled(fill_value=no_data),
-                                         mask=clip_mask).filled(fill_value=no_data)
+            #return_arr = ma.masked_array(masked_data[:,
+                                         #self.bbox[0]: self.bbox[1],
+                                         #self.bbox[2]: self.bbox[3]].filled(fill_value=no_data),
+                                         #mask=clip_mask).filled(fill_value=no_data)
             # logging.info(f'clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} '
             #              f'using bbox (top, bot, left, right) {self.printable_bbox}')
-        else:
+        #else:
             # return an array that includes all of the z data, and x and y inside the bounding box
-            return_arr = ma.masked_array(masked_data[:,
-                                         self.bbox[0]: self.bbox[1],
-                                         self.bbox[2]: self.bbox[3]],
-                                         mask=np.zeros(clip_mask.shape)).filled()
+            #return_arr = ma.masked_array(masked_data[:,
+                                         #self.bbox[0]: self.bbox[1],
+                                         #self.bbox[2]: self.bbox[3]],
+                                         #mask=np.zeros(clip_mask.shape)).filled()
             # logging.info(f'clipped data with (z,y,x) shape {data_array.shape} to {return_arr.shape} '
             #              f'using bbox (top, bot, left, right) {self.printable_bbox}')
 

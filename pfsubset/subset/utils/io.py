@@ -15,7 +15,7 @@ from parflowio.pyParflowio import PFData
 from pfsubset.subset.bbox import BBox
 
 
-def read_file(infile):
+def read_file(infile,min_x=None,min_y=None,nx=None,ny=None):
     """read an input file and return a 3d numpy array
 
     Parameters
@@ -48,7 +48,11 @@ def read_file(infile):
     elif ext == '.pfb':  # pfsubset binary file
         pfdata = PFData(file_string_path)
         pfdata.loadHeader()
-        pfdata.loadData()
+        if not (min_x is None):
+            print("Attemping to load clip\n");
+            pfdata.loadClipOfData(min_x,min_y,nx,ny)
+        else:
+            pfdata.loadData()
         res_arr = pfdata.moveDataArray()
         pfdata.close()
         del pfdata

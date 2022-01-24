@@ -109,7 +109,7 @@ chmod +x run_tests.sh
 
 #### Create subset from CONUS models from a shapefile
 ```
-python -m parflow.subset.tools.subset_conus --input_path -i INPUT_PATH (--shapefile -s
+python -m pfsubset.subset.tools.subset_conus --input_path -i INPUT_PATH (--shapefile -s
                                      SHAPEFILE | --watershed -w HUCIDS) 
                                      --conus_files -f CONUS_FILES
                                      [--manifest -m MANIFEST_FILE]
@@ -126,12 +126,12 @@ python -m parflow.subset.tools.subset_conus --input_path -i INPUT_PATH (--shapef
 
 Create a subset of the CONUS1 domain with CLM inputs based on the shapefile at ~/downloads/shapfiles/WBDHU8.shp and write the .tcl file to run the model
 ```
-python -m parflow.subset.tools.subset_conus -i ~/downloads/shapefiles -s WBDHU8 -f ~/downloads/conus1 -v 1 -r -n watershedA_conus1_clip
+python -m pfsubset.subset.tools.subset_conus -i ~/downloads/shapefiles -s WBDHU8 -f ~/downloads/conus1 -v 1 -r -n watershedA_conus1_clip
 ```
 
 #### Rasterize a shapefile for use as a mask
 ```
-python -m parflow.subset.tools.rasterize_shape -i <path_to_shapefile_parts> -s <shapefile_name> -r <reference_dataset> 
+python -m pfsubset.subset.tools.rasterize_shape -i <path_to_shapefile_parts> -s <shapefile_name> -r <reference_dataset> 
                               -o [path_to_write_outputs=.] 
                               -n [output_filename=shapfile_name] 
                               -p [padding clockwise from top (top,right,bottom,left)=(0,0,0,0)]                              
@@ -144,7 +144,7 @@ python -m parflow.subset.tools.rasterize_shape -i <path_to_shapefile_parts> -s <
 
 Re-project the shapefile at ~/downloads/shapfiles/WBDHU8.shp to the CONUS1 projection and extent
 ```
-python -m parflow.subset.tools.rasterize_shape -i ~/downloads/shapefiles -s WBDHU8 -r ~/conus_inputs/1/Domain_Blank_Mask.tif
+python -m pfsubset.subset.tools.rasterize_shape -i ~/downloads/shapefiles -s WBDHU8 -r ~/conus_inputs/1/Domain_Blank_Mask.tif
 ```
 
 
@@ -154,7 +154,7 @@ assumes all files are identically gridded and same as the mask file. If setting 
 must supply at least one tif with correct projection and transform information as either the mask file, 
 as a reference dataset with the -r option, or in the list of datafiles to clip
 ```
-python -m parflow.subset.tools.bulk_clipper (--maskfile -m MASK_FILE | --bboxfile -b BBOX_FILE | --inline-bbox -l X1 Y1 NX NY)
+python -m pfsubset.subset.tools.bulk_clipper (--maskfile -m MASK_FILE | --bboxfile -b BBOX_FILE | --inline-bbox -l X1 Y1 NX NY)
        (--datafiles -d DATA_FILES [DATA_FILES ...] | --glob -g GLOB_PATTERN)
        [--input_path -i INPUT_PATH] [--ref_file -r REF_FILE] [--out_dir -o OUT_DIR]
        [--pfb_outs -p] [--tif_outs -t]
@@ -163,14 +163,14 @@ python -m parflow.subset.tools.bulk_clipper (--maskfile -m MASK_FILE | --bboxfil
 
 Clip the domain outputs to the bounds of a mask generated from rasterize_shape or subset_conus
 ```
-python -m parflow.subset.tools.bulk_clipper -m ~/outputs/WBDHU8.tif -d ~/outputs/runname.out.press.00001.pfb ~/outputs/runname.out.press.00002.pfb
+python -m pfsubset.subset.tools.bulk_clipper -m ~/outputs/WBDHU8.tif -d ~/outputs/runname.out.press.00001.pfb ~/outputs/runname.out.press.00002.pfb
 ```
 
 **Example usage with bounding box file:**
 
 Clip the domain outputs, starting at x, y, and extending for nx, ny
 ```
-python -m parflow.subset.tools.bulk_clipper -b ~/outputs/bbox.txt -d ~/outputs/runname.out.press.00001.pfb ~/outputs/runname.out.press.00002.pfb
+python -m pfsubset.subset.tools.bulk_clipper -b ~/outputs/bbox.txt -d ~/outputs/runname.out.press.00001.pfb ~/outputs/runname.out.press.00002.pfb
 ```
 where bbox.txt is a tab-separated text file in the format:
 
@@ -189,7 +189,7 @@ Example bbox.txt clipping only the very first (lower left) cell in a domain:
 
 Clip the domain outputs, starting at x, y, and extending for nx, ny
 ```
-python -m parflow.subset.tools.bulk_clipper -l 1 1 10 20 -d ~/outputs/runname.out.press.00001.pfb ~/outputs/runname.out.press.00002.pfb
+python -m pfsubset.subset.tools.bulk_clipper -l 1 1 10 20 -d ~/outputs/runname.out.press.00001.pfb ~/outputs/runname.out.press.00002.pfb
 ```
 clips a 10 x 20 grid anchored in the lower left from each of the inputs
 

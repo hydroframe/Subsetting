@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 from tests.test_files import test_domain_inputs, test_domain_manifest
-from parflow.subset.domain import ParflowDomain
+from pfsubset.subset.domain import ParflowDomain
 
 
 class PFDomainClassTests(unittest.TestCase):

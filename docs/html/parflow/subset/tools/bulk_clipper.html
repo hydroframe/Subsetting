@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.1" />
-<title>parflow.subset.tools.bulk_clipper API documentation</title>
+<title>pfsubset.subset.tools.bulk_clipper API documentation</title>
 <meta name="description" content="Convenience wrapper for looping and clipping identically gridded in inputs …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>parflow.subset.tools.bulk_clipper</code></h1>
+<h1 class="title">Module <code>pfsubset.subset.tools.bulk_clipper</code></h1>
 </header>
 <section id="section-intro">
 <p>Convenience wrapper for looping and clipping identically gridded in inputs</p>
@@ -39,11 +39,11 @@ import os
 from pathlib import Path
 import logging
 from datetime import datetime
-from parflow.subset.clipper import MaskClipper, BoxClipper
-from parflow.subset.utils.arguments import is_valid_file, is_valid_path
-from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
-from parflow.subset.mask import SubsetMask
-import parflow.subset.utils.io as file_io_tools
+from pfsubset.subset.clipper import MaskClipper, BoxClipper
+from pfsubset.subset.utils.arguments import is_valid_file, is_valid_path
+from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
+from pfsubset.subset.mask import SubsetMask
+import pfsubset.subset.utils.io as file_io_tools
 
 
 def parse_args(args) -&gt; argparse.Namespace:
@@ -282,7 +282,7 @@ if __name__ == &#39;__main__&#39;:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="parflow.subset.tools.bulk_clipper.box_clip"><code class="name flex">
+<dt id="pfsubset.subset.tools.bulk_clipper.box_clip"><code class="name flex">
 <span>def <span class="ident">box_clip</span></span>(<span>bbox, data_files, out_dir='.', pfb_outs=1, tif_outs=0) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -338,7 +338,7 @@ if __name__ == &#39;__main__&#39;:
                 tif_outs=tif_outs)</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.tools.bulk_clipper.clip_inputs"><code class="name flex">
+<dt id="pfsubset.subset.tools.bulk_clipper.clip_inputs"><code class="name flex">
 <span>def <span class="ident">clip_inputs</span></span>(<span>clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_data=-999) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -406,7 +406,7 @@ if __name__ == &#39;__main__&#39;:
         del return_arr</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.tools.bulk_clipper.get_file_list"><code class="name flex">
+<dt id="pfsubset.subset.tools.bulk_clipper.get_file_list"><code class="name flex">
 <span>def <span class="ident">get_file_list</span></span>(<span>input_dir, glob_pattern=None, files=None) ‑> list</span>
 </code></dt>
 <dd>
@@ -453,7 +453,7 @@ if __name__ == &#39;__main__&#39;:
     return list(file_list)</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.tools.bulk_clipper.locate_tifs"><code class="name flex">
+<dt id="pfsubset.subset.tools.bulk_clipper.locate_tifs"><code class="name flex">
 <span>def <span class="ident">locate_tifs</span></span>(<span>file_list) ‑> list</span>
 </code></dt>
 <dd>
@@ -489,7 +489,7 @@ if __name__ == &#39;__main__&#39;:
     return list([s for s in file_list if &#39;.tif&#39; in s.lower()])</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.tools.bulk_clipper.main"><code class="name flex">
+<dt id="pfsubset.subset.tools.bulk_clipper.main"><code class="name flex">
 <span>def <span class="ident">main</span></span>(<span>)</span>
 </code></dt>
 <dd>
@@ -524,7 +524,7 @@ if __name__ == &#39;__main__&#39;:
     logging.info(f&#39;completed process at {end_date} for a runtime of {end_date-start_date}&#39;)</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.tools.bulk_clipper.mask_clip"><code class="name flex">
+<dt id="pfsubset.subset.tools.bulk_clipper.mask_clip"><code class="name flex">
 <span>def <span class="ident">mask_clip</span></span>(<span>mask_file, data_files, out_dir='.', pfb_outs=1, tif_outs=0) ‑> NoneType</span>
 </code></dt>
 <dd>
@@ -581,7 +581,7 @@ if __name__ == &#39;__main__&#39;:
                 tif_outs=tif_outs)</code></pre>
 </details>
 </dd>
-<dt id="parflow.subset.tools.bulk_clipper.parse_args"><code class="name flex">
+<dt id="pfsubset.subset.tools.bulk_clipper.parse_args"><code class="name flex">
 <span>def <span class="ident">parse_args</span></span>(<span>args) ‑> argparse.Namespace</span>
 </code></dt>
 <dd>
@@ -673,18 +673,18 @@ if __name__ == &#39;__main__&#39;:
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="parflow.subset.tools" href="index.html">parflow.subset.tools</a></code></li>
+<li><code><a title="pfsubset.subset.tools" href="index.html">pfsubset.subset.tools</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="two-column">
-<li><code><a title="parflow.subset.tools.bulk_clipper.box_clip" href="#parflow.subset.tools.bulk_clipper.box_clip">box_clip</a></code></li>
-<li><code><a title="parflow.subset.tools.bulk_clipper.clip_inputs" href="#parflow.subset.tools.bulk_clipper.clip_inputs">clip_inputs</a></code></li>
-<li><code><a title="parflow.subset.tools.bulk_clipper.get_file_list" href="#parflow.subset.tools.bulk_clipper.get_file_list">get_file_list</a></code></li>
-<li><code><a title="parflow.subset.tools.bulk_clipper.locate_tifs" href="#parflow.subset.tools.bulk_clipper.locate_tifs">locate_tifs</a></code></li>
-<li><code><a title="parflow.subset.tools.bulk_clipper.main" href="#parflow.subset.tools.bulk_clipper.main">main</a></code></li>
-<li><code><a title="parflow.subset.tools.bulk_clipper.mask_clip" href="#parflow.subset.tools.bulk_clipper.mask_clip">mask_clip</a></code></li>
-<li><code><a title="parflow.subset.tools.bulk_clipper.parse_args" href="#parflow.subset.tools.bulk_clipper.parse_args">parse_args</a></code></li>
+<li><code><a title="pfsubset.subset.tools.bulk_clipper.box_clip" href="#pfsubset.subset.tools.bulk_clipper.box_clip">box_clip</a></code></li>
+<li><code><a title="pfsubset.subset.tools.bulk_clipper.clip_inputs" href="#pfsubset.subset.tools.bulk_clipper.clip_inputs">clip_inputs</a></code></li>
+<li><code><a title="pfsubset.subset.tools.bulk_clipper.get_file_list" href="#pfsubset.subset.tools.bulk_clipper.get_file_list">get_file_list</a></code></li>
+<li><code><a title="pfsubset.subset.tools.bulk_clipper.locate_tifs" href="#pfsubset.subset.tools.bulk_clipper.locate_tifs">locate_tifs</a></code></li>
+<li><code><a title="pfsubset.subset.tools.bulk_clipper.main" href="#pfsubset.subset.tools.bulk_clipper.main">main</a></code></li>
+<li><code><a title="pfsubset.subset.tools.bulk_clipper.mask_clip" href="#pfsubset.subset.tools.bulk_clipper.mask_clip">mask_clip</a></code></li>
+<li><code><a title="pfsubset.subset.tools.bulk_clipper.parse_args" href="#pfsubset.subset.tools.bulk_clipper.parse_args">parse_args</a></code></li>
 </ul>
 </li>
 </ul>

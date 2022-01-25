@@ -221,9 +221,13 @@ def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=No
     if run_script == 1:
         # the Run object reads sys.argv, and this is problematic because they share a common flag -r
         sys.argv = ['Run']
-        slopex_file = os.path.join(out_dir, f'{Path(conus.required_files.get("SLOPE_X")).stem}_clip.pfb')
-        slopey_file = os.path.join(out_dir, f'{Path(conus.required_files.get("SLOPE_Y")).stem}_clip.pfb')
-        solid_file = os.path.join(out_dir, f'{out_name}.pfsol')
+
+        static_out_dir = os.path.join(out_dir,'/static')
+
+
+        slopex_file = os.path.join(static_out_dir, f'{Path(conus.required_files.get("SLOPE_X")).stem}_clip.pfb')
+        slopey_file = os.path.join(static_out_dir, f'{Path(conus.required_files.get("SLOPE_Y")).stem}_clip.pfb')
+        solid_file = os.path.join(static_out_dir, f'{out_name}.pfsol')
         bbox = subset_mask.get_bbox()
         extents = bbox.get_padded_extents()
 
@@ -262,6 +266,8 @@ def main():
     args = parse_args(cmd_line_args[1:])
     logging.basicConfig(filename=os.path.join(args.out_dir, 'subset_conus.log'), filemode='w', level=logging.INFO)
     logging.info(f'start process at {start_date} from command {" ".join(cmd_line_args[:])}')
+
+
     shape = args.shapefile
     ids = args.attribute_ids
     out_name = args.out_name

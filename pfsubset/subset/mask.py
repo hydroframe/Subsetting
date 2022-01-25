@@ -4,8 +4,8 @@
 import logging
 import numpy as np
 import numpy.ma as ma
-from parflow.subset.utils.io import read_geotiff, write_array_to_geotiff, write_bbox, read_file, write_pfb
-from parflow.subset.bbox import BBox
+from pfsubset.subset.utils.io import read_geotiff, write_array_to_geotiff, write_bbox, read_file, write_pfb
+from pfsubset.subset.bbox import BBox
 
 
 class SubsetMask:

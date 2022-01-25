@@ -11,18 +11,18 @@ from pathlib import Path
 from datetime import datetime
 import numpy as np
 import shapefile
-from parflow.subset.utils.arguments import is_valid_path, is_positive_integer, is_valid_file
-from parflow.subset.clipper import MaskClipper
-from parflow.subset.domain import Conus
-from parflow.subset.rasterizer import ShapefileRasterizer
-import parflow.subset.tools.bulk_clipper as bulk_clipper
-from parflow.subset.clipper import ClmClipper
-from parflow.subset.data import parkinglot_template, conus_manifest
+from pfsubset.subset.utils.arguments import is_valid_path, is_positive_integer, is_valid_file
+from pfsubset.subset.clipper import MaskClipper
+from pfsubset.subset.domain import Conus
+from pfsubset.subset.rasterizer import ShapefileRasterizer
+import pfsubset.subset.tools.bulk_clipper as bulk_clipper
+from pfsubset.subset.clipper import ClmClipper
+from pfsubset.subset.data import parkinglot_template, conus_manifest
 from parflow.tools.builders import SolidFileBuilder
-from parflow.subset import TIF_NO_DATA_VALUE_OUT
-from parflow.subset.data import parking_lot_template
-from parflow.subset.utils import huc2shape
-from parflow.subset.mask import SubsetMask
+from pfsubset.subset import TIF_NO_DATA_VALUE_OUT
+from pfsubset.subset.data import parking_lot_template
+from pfsubset.subset.utils import huc2shape
+from pfsubset.subset.mask import SubsetMask
 
 def parse_args(args):
     """Parse the command line arguments
@@ -149,7 +149,7 @@ def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=No
 
     Returns
     -------
-    run_script : parflow.tools.Run
+    run_script : pfsubset.tools.Run
         The Run object which can be used to execute the ParFlow model subset that was created by subset_conus
     """
     assert any((shapefile, subset_tif)) and not all((shapefile, subset_tif)), \
@@ -282,6 +282,7 @@ def main():
         shape = out_name
         attribute_name = 'ID'
         # write the watershed shape object to *.shp
+ 
         watershed.write_shapefile((Path(args.input_path) / (shape  + '.shp')).as_posix())
 
         # collect all the ID values in the generated shapefile

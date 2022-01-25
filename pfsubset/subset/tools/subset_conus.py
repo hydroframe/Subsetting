@@ -155,10 +155,6 @@ def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=No
     assert any((shapefile, subset_tif)) and not all((shapefile, subset_tif)), \
         'Specify either a shapefile or a subset_tif file.'
 
-    
-    static_out_dir = os.path.join(out_dir,'/static')
-    print("the static output dir is {}", static_out_dir)
-
     if out_name is None:
         out_name = shapefile or os.path.splitext(os.path.basename(subset_tif))[0]
     conus = Conus(version=conus_version, local_path=conus_files, manifest_file=manifest_file)
@@ -226,12 +222,9 @@ def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=No
         # the Run object reads sys.argv, and this is problematic because they share a common flag -r
         sys.argv = ['Run']
 
-        static_out_dir = os.path.join(out_dir,'/static')
-
-
-        slopex_file = os.path.join(static_out_dir, f'{Path(conus.required_files.get("SLOPE_X")).stem}_clip.pfb')
-        slopey_file = os.path.join(static_out_dir, f'{Path(conus.required_files.get("SLOPE_Y")).stem}_clip.pfb')
-        solid_file = os.path.join(static_out_dir, f'{out_name}.pfsol')
+        slopex_file = os.path.join(out_dir, f'{Path(conus.required_files.get("SLOPE_X")).stem}_clip.pfb')
+        slopey_file = os.path.join(out_dir, f'{Path(conus.required_files.get("SLOPE_Y")).stem}_clip.pfb')
+        solid_file = os.path.join(out_dir, f'{out_name}.pfsol')
         bbox = subset_mask.get_bbox()
         extents = bbox.get_padded_extents()
 
@@ -260,6 +253,12 @@ def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=No
         run_script.write(file_name=os.path.join(out_dir, out_name), file_format='yaml')
         run_script.write(file_name=os.path.join(out_dir, out_name), file_format='json')
         return run_script
+        
+    if(Path(out_dir).is_dir()):
+        if(not Path(out_dir+ '/static').is_dir()):
+            os.mkdir('./'+ out_dir + '/static')
+        Path(out_dir + '/slopex_clip.pfb').rename(out_dir + '/static/slopex_clip.pfb')
+        Path(out_dir + '/slopey_clip.pfb').rename(out_dir + '/static/slopey_clip.pfb')
 
 
 def main():
@@ -302,6 +301,7 @@ def main():
                  conus_files=args.conus_files, out_dir=args.out_dir, out_name=out_name, clip_clm=args.clip_clm,
                  run_script=args.run_script, padding=args.padding, attribute_ids=ids,
                  attribute_name=attribute_name, write_tifs=args.write_tifs, manifest_file=args.manifest_file)
+    
 
     end_date = datetime.utcnow()
     logging.info(f'completed process at {end_date} for a runtime of {end_date - start_date}')

@@ -155,6 +155,10 @@ def subset_conus(input_path=None, shapefile=None, subset_tif=None, mask_value=No
     assert any((shapefile, subset_tif)) and not all((shapefile, subset_tif)), \
         'Specify either a shapefile or a subset_tif file.'
 
+    
+    static_out_dir = os.path.join(out_dir,'/static')
+    print("the static output dir is {}", static_out_dir)
+
     if out_name is None:
         out_name = shapefile or os.path.splitext(os.path.basename(subset_tif))[0]
     conus = Conus(version=conus_version, local_path=conus_files, manifest_file=manifest_file)

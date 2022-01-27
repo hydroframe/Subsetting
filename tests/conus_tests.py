@@ -1,8 +1,8 @@
 import unittest
-import parflow.subset.data as data
-from parflow.subset.domain import Conus
+import pfsubset.subset.data as data
+from pfsubset.subset.domain import Conus
 import os
-
+import tests.test_files as test_files
 
 class ConusClassTests(unittest.TestCase):
 
@@ -10,8 +10,8 @@ class ConusClassTests(unittest.TestCase):
     def test_normal_startup(self):
         if os.getenv('TRAVIS', default=False):
             pass
-        elif os.path.isdir('../subset_1/CONUS1_inputs'):
-            conus1 = Conus(local_path='../subset_1/CONUS1_inputs')
+        elif os.path.isdir(test_files.conus1_inputs): 
+            conus1 = Conus(local_path=test_files.conus1_inputs)
             self.assertEqual(conus1.manifest_file, data.conus_manifest)
         else:
             print('CONUS1_inputs not found, skipping test.')

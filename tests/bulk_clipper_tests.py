@@ -2,9 +2,9 @@ import shutil
 import unittest
 from pathlib import Path
 
-from parflow.subset.tools import bulk_clipper
+from pfsubset.subset.tools import bulk_clipper
 from tests import test_files
-from parflow.subset.utils.io import read_file
+from pfsubset.subset.utils.io import read_file
 import numpy as np
 import os
 

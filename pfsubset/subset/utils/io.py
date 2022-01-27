@@ -10,9 +10,9 @@ try:
     from osgeo import gdal
 except ImportError:
     import gdal
-from parflow.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
+from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from parflowio.pyParflowio import PFData
-from parflow.subset.bbox import BBox
+from pfsubset.subset.bbox import BBox
 
 
 def read_file(infile,min_x=None,min_y=None,nx=None,ny=None):

@@ -4,8 +4,8 @@ import unittest
 from pathlib import Path
 import numpy as np
 from tests import test_files
-from parflow.subset.tools import subset_conus
-from parflow.subset.utils.io import read_file
+from pfsubset.subset.tools import subset_conus
+from pfsubset.subset.utils.io import read_file
 
 
 class SubsetConusCLITests(unittest.TestCase):

@@ -20,10 +20,10 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=['pyyaml>=5.3.0', 'pandas>=1.0', 'parflowio>=0.0.4', 'pftools>=1.0.0'],
-    namespace_packages=['parflow'],
+    namespace_packages=['pfsubset'],
     package_data={
         # Include any *.yaml, *.tcl files found in the "data" subdirectory
-        # of the "parflow.subset" package, also:
-        "parflow.subset": ["data/*.yaml", "data/*.tcl"],
+        # of the "pfsubset.subset" package, also:
+        "pfsubset.subset": ["data/*.yaml", "data/*.tcl"],
     }
 )

@@ -170,21 +170,21 @@ class BoxClipper(Clipper):
         """
         data_file = None
         data_array = None
-
-        if (type(data) is str):
-            data_file = data
+        if (not isinstance(data, np.ndarray)):
+            data_file = str(data)
 
             if data_file.endswith('.tif'):
                 data_array = file_io_tools.read_file(data_file)
     
             elif data_file.endswith('.pfb'):  # pfsubset binary file
                 pfdata = PFData((data_file))
-                
+                pfdata.loadHeader()
                 if self.box:
                     pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
                 else:
                     pfdata.loadData()
-                data_array = pfdata.viewDataArray()
+                data_array = pfdata.moveDataArray()
+                pfdata.close()
         else:
             data_array = data
         
@@ -193,7 +193,6 @@ class BoxClipper(Clipper):
             return data_array, None, None, None
             #self.update_bbox(self.x, self.y, self.z, self.nx, self.ny, self.nz, self.padding)
     
-
         if any(self.padding):
             #print("This case (padding) is not supported at the moment\n")
             # create a full dimensioned array of no_data_values
@@ -286,7 +285,6 @@ class MaskClipper(Clipper):
         data_array = None
         if (type(data) is str):
             data_file = data
-
             if data_file.endswith('.tif'):
                 data_array = file_io_tools.read_file(data_file)
     

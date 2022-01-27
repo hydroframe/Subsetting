@@ -285,9 +285,6 @@ def main():
             for record in shp.records():
                 ids.append(str(record[0]))
 
-
-
-
     subset_conus(input_path=args.input_path, shapefile=shape, conus_version=args.conus_version,
                  conus_files=args.conus_files, out_dir=args.out_dir, out_name=out_name, clip_clm=args.clip_clm,
                  run_script=args.run_script, padding=args.padding, attribute_ids=ids,

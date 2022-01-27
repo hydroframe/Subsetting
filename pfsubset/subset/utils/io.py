@@ -39,13 +39,13 @@ def read_file(infile,min_x=None,min_y=None,nx=None,ny=None):
             res_arr = res_arr[np.newaxis, ...]
         # flip y axis so tiff aligns with PFB native alignment
         res_arr = np.flip(res_arr, axis=1)
-    elif ext == '.sa':  # pfsubset ascii file
+    elif ext == '.sa':  # parflow ascii file
         with open(file_string_path, 'r') as fi:
             header = fi.readline()
         nx, ny, nz = [int(x) for x in header.strip().split(' ')]
         arr = pd.read_csv(file_string_path, skiprows=1, header=None).values
         res_arr = np.reshape(arr, (nz, ny, nx))[:, :, :]
-    elif ext == '.pfb':  # pfsubset binary file
+    elif ext == '.pfb':  # parflow binary file
         pfdata = PFData(file_string_path)
         pfdata.loadHeader()
         if not (min_x is None):

@@ -7,7 +7,7 @@ setuptools.setup(
     name="parflow_subsetter",
     version="0.99.8",
     author="HydroFrame Team",
-    author_email="parflow@pfsubset.org",
+    author_email="parflow@parflow.org",
     description="A set of tools for clipping ParFlow model inputs and outputs",
     long_description=long_description,
     long_description_content_type="text/markdown",

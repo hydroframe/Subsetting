@@ -17,7 +17,7 @@ class Clipper(ABC):
     """Abstract Clipper Class"""
 
     @abstractmethod
-    def subset(self, data_file):
+    def subset(self, data):
         """Clip the data_array
 
         Parameters

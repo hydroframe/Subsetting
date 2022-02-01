@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="parflow_subsetter",
-    version="0.99.8",
+    version="1.0.0",
     author="HydroFrame Team",
     author_email="parflow@parflow.org",
     description="A set of tools for clipping ParFlow model inputs and outputs",

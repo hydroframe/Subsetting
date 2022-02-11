@@ -90,7 +90,7 @@ For CONUS1 and CONUS2 domains, local copies of model input files are required.
 
 If your local filenames differ from this list, update the local filenames in:
 
-`parflow/subset/data/conus_manifest.yaml`
+`pfsubset/subset/data/conus_manifest.yaml`
  
 Or copy the format of the file list above into a new `.yaml` file and pass it as an argument to `subset_conus` 
 script using the `--manifest` parameter

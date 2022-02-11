@@ -18,17 +18,17 @@ class Clipper(ABC):
 
     @abstractmethod
     def subset(self, data):
-        """Clip the data_array
+        """Clip the data
 
         Parameters
         ----------
-        data_array : ndarray
+        data : pfb files or ndarray
             3d array of data to be clipped
 
         Returns
         -------
         ndarray
-            clipped portion of data_array
+            clipped portion of pfb files or data_array
         """
         pass
 
@@ -49,8 +49,6 @@ class BoxClipper(Clipper):
 
         Parameters
         ----------
-        ref_array : ndarray
-            the full extent array identical in dimension to the data that will be clipped
         x : int, optional
             the starting x value (1 based index)
         y : int, optional
@@ -159,8 +157,8 @@ class BoxClipper(Clipper):
 
         Parameters
         ----------
-        data_array : ndarray, optional
-            a 3d array of data to clip, if no array passed return clip of the initialization array
+        data : pfb file, tif file, ndarray
+            pfb file or tif file or a 3d array of data to clip
 
         Returns
         -------
@@ -222,7 +220,7 @@ class MaskClipper(Clipper):
 
         Parameters
         ----------
-        subset_mask : SubsetMask
+        subset_mask : SubsetMask or Mask file
             instantiated mask object
         no_data_threshold : int
             upper bound to which all values are no_data
@@ -262,8 +260,8 @@ class MaskClipper(Clipper):
 
         Parameters
         ----------
-        data_array : numpy.ndarray
-            3d array of data to subset
+        data: pfb or tif file or numpy.ndarray
+            pfb file or 3d array of data to subset
         no_data : int
             no data value for outputs (Default = NO_DATA)
         crop_inner : int

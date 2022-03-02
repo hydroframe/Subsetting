@@ -13,9 +13,9 @@ except ImportError:
 from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from parflowio.pyParflowio import PFData
 from pfsubset.subset.bbox import BBox
+from pf_xarray import ParflowBinaryReader, read_pfb
 
-
-def read_file(infile,min_x=None,min_y=None,nx=None,ny=None):
+def read_file(infile,min_x=None,min_y=None,nx=None,ny=None,xarray=False):
     """read an input file and return a 3d numpy array
 
     Parameters
@@ -46,16 +46,20 @@ def read_file(infile,min_x=None,min_y=None,nx=None,ny=None):
         arr = pd.read_csv(file_string_path, skiprows=1, header=None).values
         res_arr = np.reshape(arr, (nz, ny, nx))[:, :, :]
     elif ext == '.pfb':  # parflow binary file
-        pfdata = PFData(file_string_path)
-        pfdata.loadHeader()
-        if not (min_x is None):
-            print("Attemping to load clip\n");
-            pfdata.loadClipOfData(min_x,min_y,nx,ny)
+        if xarray:
+            with ParflowBinaryReader(file_string_path) as pfb:
+                res_arr = pfb.read_subarray(min_x,min_y,0,nx,ny,10)
         else:
-            pfdata.loadData()
-        res_arr = pfdata.moveDataArray()
-        pfdata.close()
-        del pfdata
+            pfdata = PFData(file_string_path)
+            pfdata.loadHeader()
+            if not (min_x is None):
+                print("Attemping to load clip\n");
+                pfdata.loadClipOfData(min_x,min_y,nx,ny)
+            else:
+                pfdata.loadData()
+            res_arr = pfdata.moveDataArray()
+            pfdata.close()
+            del pfdata
     else:
         raise ValueError('can not read file type ' + ext)
 

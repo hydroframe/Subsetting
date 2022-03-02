@@ -107,7 +107,7 @@ def mask_clip(mask_file, data_files, out_dir='.', pfb_outs=1, tif_outs=0) -> Non
                 tif_outs=tif_outs)
 
 
-def box_clip(bbox, data_files, out_dir='.', pfb_outs=1, tif_outs=0) -> None:
+def box_clip(bbox, data_files, out_dir='.', pfb_outs=1, tif_outs=0, xarray=False) -> None:
     """clip a list of files using a bounding box
 
     Parameters
@@ -134,7 +134,7 @@ def box_clip(bbox, data_files, out_dir='.', pfb_outs=1, tif_outs=0) -> None:
     clipper = BoxClipper( x=bbox[0], y=bbox[1], nx=bbox[2], ny=bbox[3])
     # clip all inputs and write outputs
     clip_inputs(clipper, input_list=data_files, out_dir=out_dir, pfb_outs=pfb_outs,
-                tif_outs=tif_outs)
+                tif_outs=tif_outs,xarray=xarray)
 
 
 def locate_tifs(file_list) -> list:
@@ -154,12 +154,12 @@ def locate_tifs(file_list) -> list:
     return list([s for s in file_list if '.tif' in s.lower()])
 
 
-def _clip(clipper, data_file, out_dir, pfb_outs, tif_outs, output_suffix, ref_proj, no_data):
+def _clip(clipper, data_file, out_dir, pfb_outs, tif_outs, output_suffix, ref_proj, no_data, xarray=False):
     # A top-level function that is capable of being serialized and executed across cores.
     # The arguments and semantics of the inputs are identical to the public `clip_inputs` function.
     filename = Path(data_file).stem
     #return_arr, new_geom, _, _ = clipper.subset(file_io_tools.read_file(data_file))
-    return_arr, new_geom, _, _ = clipper.subset(data_file)
+    return_arr, new_geom, _, _ = clipper.subset(data_file, xarray)
     if pfb_outs:
         file_io_tools.write_pfb(return_arr, os.path.join(out_dir, f'{filename}{output_suffix}.pfb'))
     if tif_outs and new_geom is not None and ref_proj is not None:
@@ -168,7 +168,7 @@ def _clip(clipper, data_file, out_dir, pfb_outs, tif_outs, output_suffix, ref_pr
 
 
 def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_data=NO_DATA, output_suffix='_clip',
-                n_workers=1) -> None:
+                n_workers=1,xarray=False) -> None:
     """clip a list of files using a clipper object
 
     Parameters
@@ -201,7 +201,7 @@ def clip_inputs(clipper, input_list, out_dir='.', pfb_outs=1, tif_outs=0, no_dat
     with ProcessPoolExecutor(max_workers=min(n_workers, len(input_list))) as executor:
         to_do = []
         for data_file in input_list:
-            future = executor.submit(_clip, clipper, data_file, out_dir, pfb_outs, tif_outs, output_suffix, ref_proj, no_data)
+            future = executor.submit(_clip, clipper, data_file, out_dir, pfb_outs, tif_outs, output_suffix, ref_proj, no_data, xarray)
             to_do.append(future)
 
         for future in as_completed(to_do):

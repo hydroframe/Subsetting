@@ -11,6 +11,7 @@ from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from pfsubset.subset.utils import io as file_io_tools
 from pfsubset.subset.mask import SubsetMask
 from parflowio.pyParflowio import PFData
+from pf_xarray import ParflowBinaryReader, read_pfb
 
 class Clipper(ABC):
 
@@ -154,7 +155,7 @@ class BoxClipper(Clipper):
             file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{file_name}'),
                                                 self.return_array, self.clipped_geom, ref_proj, no_data=no_data)
 
-    def subset(self, data=None):
+    def subset(self, data=None, xarray=False):
         """ Clip the data_array to the region specified by the bounding box
 
         Parameters
@@ -177,14 +178,19 @@ class BoxClipper(Clipper):
                 data_array = file_io_tools.read_file(data_file)
     
             elif data_file.endswith('.pfb'):  # pfsubset binary file
-                pfdata = PFData((data_file))
-                pfdata.loadHeader()
-                if self.box:
-                    pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
+                if xarray:
+                    with ParflowBinaryReader(data_file) as pfb:
+                        data_array = pfb.read_subarray(self.x_0,self.y_0,0,self.nx,self.ny,100)
+
                 else:
-                    pfdata.loadData()
-                data_array = pfdata.moveDataArray()
-                pfdata.close()
+                    pfdata = PFData((data_file))
+                    pfdata.loadHeader()
+                    if self.box:
+                        pfdata.loadClipOfData(clip_x=self.x_0,clip_y=self.y_0,extent_x=self.nx,extent_y=self.ny)
+                    else:
+                        pfdata.loadData()
+                    data_array = pfdata.moveDataArray()
+                    pfdata.close()
         else:
             data_array = data
         

@@ -7,11 +7,11 @@ from numpy.core.fromnumeric import clip
 from numpy.core.numeric import full
 import numpy.ma as ma
 from parflow.tools.io import read_clm
+from parflow.tools.io import ParflowBinaryReader
 from pfsubset.subset import TIF_NO_DATA_VALUE_OUT as NO_DATA
 from pfsubset.subset.utils import io as file_io_tools
 from pfsubset.subset.mask import SubsetMask
 from parflowio.pyParflowio import PFData
-from pf_xarray import ParflowBinaryReader, read_pfb
 
 class Clipper(ABC):
 
@@ -180,8 +180,7 @@ class BoxClipper(Clipper):
             elif data_file.endswith('.pfb'):  # pfsubset binary file
                 if xarray:
                     with ParflowBinaryReader(data_file) as pfb:
-                        data_array = pfb.read_subarray(self.x_0,self.y_0,0,self.nx,self.ny,100)
-
+                        data_array = pfb.read_subarray(self.x_0, self.y_0, 0, self.nx, self.ny, None)
                 else:
                     pfdata = PFData((data_file))
                     pfdata.loadHeader()
@@ -237,12 +236,11 @@ class MaskClipper(Clipper):
         -------
         MaskClipper
         """
-    
+
         if type(subset_mask) is str:
             self.subset_mask = SubsetMask(subset_mask)
         else:
             self.subset_mask = subset_mask
-
 
         min_y, max_y, min_x, max_x = self.subset_mask.bbox_edges
         self.bbox = [min_y, max_y + 1, min_x, max_x + 1]
@@ -263,7 +261,7 @@ class MaskClipper(Clipper):
             file_io_tools.write_array_to_geotiff(os.path.join(out_dir, f'{file_name}'),
                                                 self.return_array, self.clipped_geom, ref_proj, no_data=no_data)
 
-    def subset(self, data, no_data=NO_DATA, crop_inner=1):
+    def subset(self, data, no_data=NO_DATA, crop_inner=1, xarray=False):
         """subset the data from data_array in the shape and extents of the clipper's clipped subset_mask
 
         Parameters
@@ -295,21 +293,27 @@ class MaskClipper(Clipper):
                 data_array = file_io_tools.read_file(data_file)
     
             elif data_file.endswith('.pfb'):  # pfsubset binary file
-                pfdata = PFData((data_file))
-                pfdata.loadHeader()
-
                 x = self.bbox[2]
                 nx = self.bbox[3] - self.bbox[2]
 
                 y = self.bbox[0]
                 ny = self.bbox[1] - self.bbox[0]
 
-                pfdata.loadClipOfData(int(x), int(y), int(nx), int(ny))
-                data_array = pfdata.viewDataArray()
+                if xarray:
+                    with ParflowBinaryReader(data_file) as pfb:
+                        data_array = pfb.read_subarray(x, y, 0, nx, ny, None)
+                
+                else: 
+                    pfdata = PFData((data_file))
+                    pfdata.loadHeader()
 
-                #return data_array, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
-                pfdata.close()
-                del pfdata
+                    pfdata.loadClipOfData(int(x), int(y), int(nx), int(ny))
+                    data_array = pfdata.viewDataArray()
+
+                    #return data_array, self.clipped_geom, self.clipped_mask, self.subset_mask.get_human_bbox()
+                    pfdata.close()
+                    del pfdata
+                    
                 full_mask = self.subset_mask.bbox_mask.mask
                 full_mask = full_mask[:,self.bbox[0]: self.bbox[1],self.bbox[2]: self.bbox[3]]  #data_array.shape[1], data_array.shape[2]))
 
